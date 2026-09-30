@@ -212,7 +212,7 @@
    "due_at": "2026-09-28T23:59:00-07:00",
    "status": "missing",
    "grade": "F",
-   "teacher_comment": "No response/missing your student, Please make arrangements to reassess to demonstrate Proficiency."
+   "teacher_comment": "No response/missing please make arrangements to reassess to demonstrate Proficiency."
   },
   {
    "id": "8de1a3cb33",
@@ -377,7 +377,7 @@
    "due_at": null,
    "status": "incomplete",
    "grade": null,
-   "teacher_comment": "your student, Mr. Greene will work 1:1 with you Monday to finish your essay organizer and your essay."
+   "teacher_comment": "Mr. Greene will work 1:1 with you Monday to finish your essay organizer and your essay."
   },
   {
    "id": "c73656ebbd",
@@ -388,7 +388,7 @@
    "due_at": "2026-09-02T15:00:00-07:00",
    "status": "submitted",
    "grade": "7.5/10",
-   "teacher_comment": "your student, there's not enough evidence, you lack a solid understanding of energy and how it works based o [truncated as shown on page]"
+   "teacher_comment": "There's not enough evidence, you lack a solid understanding of energy and how it works based o [truncated as shown on page]"
   },
   {
    "id": "7875026a44",
