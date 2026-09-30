@@ -134,6 +134,9 @@
   .chip .cm { color: var(--muted); font-size: 11px; }
   .chip .crow { display: flex; gap: 6px; align-items: center; margin-top: 4px; }
   .chip .crow button { border: none; background: none; cursor: pointer; font-size: 12px; color: var(--muted); padding: 0 2px; }
+  .chip select { font-size: 11px; padding: 2px 4px; border: 1px solid var(--line); border-radius: 6px;
+      background: #fff; max-width: 118px; font-family: inherit; }
+  .sugrow select { font-size: 13px; }
   .chip.heavy-note { border-color: var(--amber); }
   .sugrow { display: flex; gap: 10px; align-items: center; background: var(--card);
             border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin-bottom: 8px;
@@ -458,20 +461,29 @@ function renderPlanner(L) {
     const p = planOf(a.id);
     if (p && byDay[p] && !isDone(a.id) && !isDropped(a.id)) byDay[p].push(a);
   });
-  let h = `<p class="hint">Deciding <i>when</i> to start makes starting much more likely. Suggestions keep each day to 3 or fewer and put the earliest deadlines first — move anything around.</p>`;
+  let h = `<p class="hint">Deciding <i>when</i> to start makes starting much more likely. Accept a suggested day, pick your own from the dropdown, or spread everything at once — and move anything between days later.</p>`;
   h += `<div class="week">` + days.map(d => {
     const k = dayKey(d), items = byDay[k];
+    const moveOpts = cur => days.map(dd => {
+      const kk = dayKey(dd);
+      return `<option value="${kk}"${kk === cur ? " selected" : ""}>${kk === t ? "Today" : planLabel(kk)}</option>`;
+    }).join("");
     return `<div class="daycol ${k === t ? "today" : ""}"><h3>${k === t ? "Today" : planLabel(k)}</h3>
       <div class="dsub">${items.length} planned</div>` +
       (items.map(a => `<div class="chip"><div class="ct">${esc(a.title)}</div>
         <div class="cm">${esc(a.course)} · ${esc(relDay(a.due_at))}</div>
-        <div class="crow"><button data-pdone="${a.id}" title="Mark done">✓ done</button>
+        <div class="crow"><select data-moveday="${a.id}" title="Move to another day">${moveOpts(k)}</select>
+        <button data-pdone="${a.id}" title="Mark done">✓</button>
         <button data-unplan="${a.id}" title="Remove from plan">✕</button></div></div>`).join("") || `<div class="cm">—</div>`) +
       `</div>`;
   }).join("") + `</div>`;
 
   const loads = plannedLoads();
   const unplanned = L.upcoming.filter(a => !planOf(a.id) && !isDropped(a.id));
+  const pickOpts = `<option value="">Pick a day…</option>` + days.map(d => {
+    const k = dayKey(d);
+    return `<option value="${k}">${k === t ? "Today" : planLabel(k)}</option>`;
+  }).join("");
   h += `<h2>Suggestions<span class="count">${unplanned.length}</span></h2>`;
   if (unplanned.length) {
     h += `<div class="controls"><button class="btn blue" id="autospread">Spread them across the week</button></div>`;
@@ -481,6 +493,7 @@ function renderPlanner(L) {
         <div class="sm">${esc(a.course)} · ${esc(relDay(a.due_at))}${a.points != null ? ` · ${a.points} pts` : ""}</div></div>
         <div class="spacer"></div>
         ${s ? `<button class="btn" data-plan="${a.id}" data-day="${s}">Start ${esc(planLabel(s))}</button>` : `<span class="sm">No open day before it's due</span>`}
+        <select data-planday="${a.id}" aria-label="Choose a start day">${pickOpts}</select>
       </div>`;
     }).join("");
   } else {
@@ -524,6 +537,12 @@ function render() {
   });
   document.querySelectorAll("[data-plan]").forEach(b => {
     b.onclick = () => { plan[b.dataset.plan] = {v: b.dataset.day, ts: Date.now()}; saveLocal(); pushSoon(400); render(); };
+  });
+  document.querySelectorAll("[data-planday]").forEach(s => {
+    s.onchange = () => { if (s.value) { plan[s.dataset.planday] = {v: s.value, ts: Date.now()}; saveLocal(); pushSoon(400); render(); } };
+  });
+  document.querySelectorAll("[data-moveday]").forEach(s => {
+    s.onchange = () => { plan[s.dataset.moveday] = {v: s.value, ts: Date.now()}; saveLocal(); pushSoon(400); render(); };
   });
   document.querySelectorAll("[data-bringback]").forEach(b => {
     b.onclick = () => { dropped[b.dataset.bringback] = {v: false, ts: Date.now()}; saveLocal(); pushSoon(400); render(); };
