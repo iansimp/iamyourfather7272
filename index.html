@@ -12,6 +12,8 @@
     --amberbg: #fffbeb; --green: #15803d; --greenbg: #f0fdf4; --blue: #1d4ed8;
     --bluebg: #eff6ff; --purple: #7e22ce; --purplebg: #faf5ff;
   }
+  .schlink { font-size: 12px; color: var(--blue); text-decoration: none; white-space: nowrap; }
+  .schlink:hover { text-decoration: underline; }
   * { box-sizing: border-box; }
   body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
          background: var(--bg); color: var(--ink); line-height: 1.45; }
@@ -242,6 +244,7 @@ const TZ = "America/Los_Angeles";
 const dayFmt = new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric", timeZone: TZ });
 const dtFmt = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZone: TZ });
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const sLink = a => a.url ? ` <a class="schlink" href="${esc(a.url)}" target="_blank" rel="noopener">Schoology ↗</a>` : "";
 const dayKey = d => new Date(d).toLocaleString("en-CA", { timeZone: TZ }).slice(0, 10);
 const todayKey = () => dayKey(new Date());
 const parseK = k => new Date(k + "T12:00:00");
@@ -352,7 +355,7 @@ function card(a) {
   const dueCls = past && !isDone(a.id) ? "due late" : "due";
   return `<div class="card ${past && !isDone(a.id) ? "overdue" : ""}">
     <div class="card-top"><p class="title">${esc(a.title)}</p><div>${statusBadge(a)}</div></div>
-    <p class="course">${esc(a.course)}</p>
+    <p class="course">${esc(a.course)}${sLink(a)}</p>
     <div class="meta"><span class="tag">${esc(a.type || "other")}</span>
       ${a.points != null ? `<span class="tag">${a.points} pt${a.points === 1 ? "" : "s"}</span>` : ""}
       <span class="${dueCls}">${esc(relDay(a.due_at))}${a.due_at ? " · " + esc(dtFmt.format(new Date(a.due_at))) : ""}</span>
@@ -400,7 +403,7 @@ function checkRow(a, L) {
   const state = rec ? rec.v : "pending";
   let inner = `<div class="card-top"><p class="title">${esc(a.title)}</p><div>${statusBadge(a)}</div></div>
     <p class="course">${esc(a.course)}</p>
-    <div class="dayline">${esc(dayPos(a, t))} · ${esc(relDay(a.due_at))}${a.points != null ? ` · ${a.points} pts` : ""}</div>
+    <div class="dayline">${esc(dayPos(a, t))} · ${esc(relDay(a.due_at))}${a.points != null ? ` · ${a.points} pts` : ""}${sLink(a)}</div>
     ${a.teacher_comment ? `<div class="comment"><b>Teacher comment</b>${esc(a.teacher_comment)}</div>` : ""}`;
   if (state === "did") {
     inner += `<div class="actions"><span class="badge completed">Today's portion done ✓</span>
@@ -456,7 +459,7 @@ function renderToday(L) {
   if (L.submittedRecent.length) {
     h += `<h2>Submitted<span class="count">${L.submittedRecent.length}</span></h2>`;
     h += L.submittedRecent.map(a => `<div class="check done-today"><div class="card-top"><p class="title">${esc(a.title)}</p>
-      <div><span class="badge submitted">Submitted ✓</span></div></div><p class="course">${esc(a.course)}</p></div>`).join("");
+      <div><span class="badge submitted">Submitted ✓</span></div></div><p class="course">${esc(a.course)}${sLink(a)}</p></div>`).join("");
   }
   el.innerHTML = h;
 }
@@ -513,7 +516,7 @@ function renderPlanner(L) {
     const maxD = a.due_at && dayKey(new Date(a.due_at)) >= t ? dayKey(new Date(a.due_at)) : dayKey(new Date(Date.now() + 13 * 864e5));
     h += `<div class="detail" id="detailpanel">
       <div class="card-top"><p class="title">${esc(a.title)}</p><div>${statusBadge(a)}</div></div>
-      <p class="course">${esc(a.course)} · ${esc(a.type || "")}${a.points != null ? ` · ${a.points} pts` : ""}</p>
+      <p class="course">${esc(a.course)} · ${esc(a.type || "")}${a.points != null ? ` · ${a.points} pts` : ""}${sLink(a)}</p>
       <div class="meta"><span class="${a.due_at && new Date(a.due_at) < new Date() ? "due late" : "due"}">${esc(relDay(a.due_at))}</span></div>
       ${a.teacher_comment ? `<div class="comment"><b>Teacher comment</b>${esc(a.teacher_comment)}</div>` : ""}
       ${s ? `<p class="hint">On the calendar: <b>${esc(planLabel(s))}</b>${e ? ` → <b>${esc(planLabel(e))}</b> (${workDays(a).length} work days)` : " → until completed"}.</p>`
@@ -531,7 +534,7 @@ function renderPlanner(L) {
     h += `<h2>No due date — pick a start day<span class="count">${L.unplannedNodate.length}</span></h2>
       <p class="hint">These show on the Today checklist each day for two weeks from the start day, until marked completed.</p>`;
     h += L.unplannedNodate.map(a => `<div class="sugrow" style="display:flex;gap:10px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-bottom:8px;flex-wrap:wrap">
-      <div><div style="font-weight:650;font-size:14px">${esc(a.title)}</div><div style="font-size:12px;color:var(--muted)">${esc(a.course)}</div></div>
+      <div><div style="font-weight:650;font-size:14px">${esc(a.title)}</div><div style="font-size:12px;color:var(--muted)">${esc(a.course)}${sLink(a)}</div></div>
       <div style="flex:1"></div>
       <button class="btn small" data-planstart="${a.id}" data-day="${t}">Start today</button>
       <input type="date" data-nddate="${a.id}" min="${t}" value="${t}" aria-label="Choose a start day">
@@ -560,7 +563,7 @@ function renderTackle(L) {
       <p class="course">${esc(a.course)}</p>
       <div class="meta"><span class="tag">${esc(a.type || "other")}</span>
         ${a.points != null ? `<span class="tag">${a.points} pts</span>` : ""}
-        <span class="due late">${esc(relDay(a.due_at))}</span></div>
+        <span class="due late">${esc(relDay(a.due_at))}</span>${sLink(a)}</div>
       ${a.teacher_comment ? `<div class="comment"><b>Teacher comment</b>${esc(a.teacher_comment)}</div>` : ""}
       <div class="suggest">💡 ${esc(ageHint(a))}</div>
       <div class="note-row"><textarea placeholder="Add a note…" data-note="${a.id}">${esc(noteOf(a.id))}</textarea></div>
@@ -592,7 +595,7 @@ function renderTackle(L) {
     h += `<h2>Overdue, on the calendar<span class="count">${sched.length}</span></h2>`;
     h += sched.map(a => { const s = planOf(a.id), e = endK(a);
       return `<div class="card"><div class="card-top"><p class="title">${esc(a.title)}</p><div>${statusBadge(a)}</div></div>
-      <p class="course">${esc(a.course)} · catch-up strip ${esc(planLabel(s))}${e ? " → " + esc(planLabel(e)) : ""}</p>
+      <p class="course">${esc(a.course)} · catch-up strip ${esc(planLabel(s))}${e ? " → " + esc(planLabel(e)) : ""}${sLink(a)}</p>
       <div class="actions" style="display:flex;gap:8px;margin-top:6px"><button class="btn small" data-goto="planner">See on calendar</button>
       <button class="btn small quiet" data-unplan="${a.id}">Unschedule</button></div></div>`; }).join("");
   }
@@ -600,7 +603,7 @@ function renderTackle(L) {
     h += `<h2>Needs a look — past due, unclear status<span class="count">${L.look.length}</span></h2>
       <p class="hint">Schoology shows no usable status for these. Give each the same treatment: done, scheduled, or set aside.</p>`;
     h += L.look.map(a => `<div class="card"><div class="card-top"><p class="title">${esc(a.title)}</p><div>${statusBadge(a)}</div></div>
-      <p class="course">${esc(a.course)} · ${esc(relDay(a.due_at))}${a.status ? ` · status: ${esc(a.status)}` : ""}</p>
+      <p class="course">${esc(a.course)} · ${esc(relDay(a.due_at))}${a.status ? ` · status: ${esc(a.status)}` : ""}${sLink(a)}</p>
       <div class="decide">
         <button class="btn small primary" data-look="done" data-id="${a.id}">Done ✓</button>
         <button class="btn small blue" data-look="sched" data-id="${a.id}">Schedule…</button>
@@ -614,7 +617,7 @@ function renderTackle(L) {
     h += `<h2>Set aside<span class="count">${L.dropped.length}</span></h2>`;
     h += L.dropped.map(a => `<div class="card"><div class="card-top"><p class="title">${esc(a.title)}</p>
       <button class="btn small" data-bringback="${a.id}">Bring back</button></div>
-      <p class="course">${esc(a.course)} · ${esc(relDay(a.due_at))}</p></div>`).join("");
+      <p class="course">${esc(a.course)} · ${esc(relDay(a.due_at))}${sLink(a)}</p></div>`).join("");
   }
   el.innerHTML = h;
 }
