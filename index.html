@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Schoolwork</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #fff; --ink: #1c2333; --muted: #6b7280;
+    --line: #e5e7eb; --red: #dc2626; --redbg: #fef2f2; --amber: #b45309;
+    --amberbg: #fffbeb; --green: #15803d; --greenbg: #f0fdf4; --blue: #1d4ed8;
+    --bluebg: #eff6ff; --purple: #7e22ce; --purplebg: #faf5ff;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+         background: var(--bg); color: var(--ink); line-height: 1.45; }
+  header { background: var(--ink); color: #fff; padding: 18px 20px; position: sticky; top: 0; z-index: 5; }
+  header h1 { margin: 0; font-size: 20px; font-weight: 700; }
+  header p { margin: 4px 0 0; font-size: 12px; color: #b6bdc9; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 16px 16px 60px; }
+  .controls { display: flex; gap: 10px; margin: 4px 0 18px; flex-wrap: wrap; }
+  select { font-size: 14px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+  h2 { font-size: 15px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 26px 0 10px; }
+  h2 .count { background: var(--ink); color: #fff; border-radius: 999px; font-size: 12px;
+              padding: 1px 9px; margin-left: 6px; vertical-align: 2px; }
+  h2.overdue-h { color: var(--red); }
+  h2.overdue-h .count { background: var(--red); }
+  details.fold { margin: 26px 0 10px; }
+  details.fold > summary { cursor: pointer; font-size: 15px; text-transform: uppercase; letter-spacing: .06em;
+      color: var(--muted); font-weight: 700; list-style: none; }
+  details.fold > summary::-webkit-details-marker { display: none; }
+  details.fold > summary::before { content: "▸ "; }
+  details.fold[open] > summary::before { content: "▾ "; }
+  details.fold > summary .count { background: #9ca3af; color: #fff; border-radius: 999px; font-size: 12px;
+      padding: 1px 9px; margin-left: 6px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+          padding: 14px 16px; margin-bottom: 10px; }
+  .card.overdue { border-left: 4px solid var(--red); }
+  .card.turned { opacity: .72; }
+  .card-top { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+  .title { font-weight: 650; font-size: 15px; margin: 0; }
+  .course { font-size: 12.5px; color: var(--muted); margin: 2px 0 8px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; font-size: 12px; align-items: center; }
+  .tag { border-radius: 999px; padding: 2px 10px; font-weight: 600; background: #eef0f3; color: #374151; }
+  .tag.test { background: var(--redbg); color: var(--red); }
+  .tag.quiz { background: var(--amberbg); color: var(--amber); }
+  .tag.homework { background: var(--bluebg); color: var(--blue); }
+  .tag.permission-slip { background: var(--purplebg); color: var(--purple); }
+  .tag.extra-credit { background: var(--greenbg); color: var(--green); }
+  .tag.project { background: var(--purplebg); color: var(--purple); }
+  .due { font-weight: 600; }
+  .due.late { color: var(--red); }
+  .badge { border-radius: 999px; padding: 2px 10px; font-weight: 700; white-space: nowrap; }
+  .badge.missing { background: var(--redbg); color: var(--red); }
+  .badge.submitted { background: var(--bluebg); color: var(--blue); }
+  .badge.graded { background: var(--greenbg); color: var(--green); }
+  .badge.turnedin { background: var(--greenbg); color: var(--green); }
+  .comment { background: #f9fafb; border-left: 3px solid var(--line); padding: 8px 12px;
+             font-size: 13px; margin: 10px 0 4px; border-radius: 0 8px 8px 0; }
+  .comment b { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .05em;
+               color: var(--muted); margin-bottom: 2px; }
+  .note-row { margin-top: 10px; }
+  textarea { width: 100%; font: inherit; font-size: 13px; border: 1px solid var(--line);
+             border-radius: 8px; padding: 8px 10px; resize: vertical; min-height: 34px; }
+  textarea::placeholder { color: #9ca3af; }
+  .turnin { margin-top: 8px; font-size: 13px; display: flex; align-items: center; gap: 8px;
+            color: var(--muted); cursor: pointer; user-select: none; }
+  .turnin input { width: 16px; height: 16px; accent-color: var(--green); }
+  .grades { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+  .grade-card { background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+                padding: 12px 14px; }
+  .grade-card .g-course { font-size: 13px; font-weight: 600; }
+  .grade-card .g-val { font-size: 22px; font-weight: 750; margin-top: 4px; }
+  .empty { color: var(--muted); font-size: 14px; padding: 12px 4px; }
+  .day-group { font-size: 13px; font-weight: 700; color: var(--muted); margin: 14px 0 8px; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; padding: 20px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Schoolwork</h1>
+  <p id="fetched">Loading…</p>
+</header>
+<div class="wrap">
+  <div class="controls">
+    <select id="courseFilter"><option value="">All courses</option></select>
+  </div>
+
+  <h2 class="overdue-h">Overdue<span class="count" id="overdueCount"></span></h2>
+  <div id="overdue"></div>
+
+  <h2>Upcoming<span class="count" id="upcomingCount"></span></h2>
+  <div id="upcoming"></div>
+
+  <details class="fold" id="recentWrap">
+    <summary>Recently graded<span class="count" id="recentCount"></span></summary>
+    <div id="recent" style="margin-top:10px"></div>
+  </details>
+
+  <details class="fold" id="lookWrap">
+    <summary>Needs a look — past due, no status in Schoology<span class="count" id="lookCount"></span></summary>
+    <div id="look" style="margin-top:10px"></div>
+  </details>
+
+  <details class="fold" id="nodateWrap">
+    <summary>No due date<span class="count" id="nodateCount"></span></summary>
+    <div id="nodate" style="margin-top:10px"></div>
+  </details>
+
+  <h2>Marked as turned in<span class="count" id="turnedCount"></span></h2>
+  <div id="turned"></div>
+
+  <h2>Grades</h2>
+  <div class="grades" id="grades"></div>
+</div>
+<footer>Read-only view. Notes and turned-in marks are saved in this browser only.</footer>
+
+<script>
+const LS_NOTES = "sw_notes_v1", LS_TURNED = "sw_turned_v1";
+const notes = JSON.parse(localStorage.getItem(LS_NOTES) || "{}");
+const turned = new Set(JSON.parse(localStorage.getItem(LS_TURNED) || "[]"));
+const saveNotes = () => localStorage.setItem(LS_NOTES, JSON.stringify(notes));
+const saveTurned = () => localStorage.setItem(LS_TURNED, JSON.stringify([...turned]));
+const key = a => [a.course, a.title, a.due_at || ""].join("|").replace(/"/g, "");
+const TZ = "America/Los_Angeles";
+
+const dayFmt = new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric", timeZone: TZ });
+const dtFmt = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZone: TZ });
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+function relDay(iso) {
+  if (!iso) return "No due date";
+  const d = new Date(iso), now = new Date();
+  const day = s => new Date(s.toLocaleString("en-US", { timeZone: TZ })).setHours(0,0,0,0);
+  const diff = Math.round((day(d) - day(now)) / 864e5);
+  if (diff === 0) return "Due today";
+  if (diff === 1) return "Due tomorrow";
+  if (diff === -1) return "1 day overdue";
+  if (diff < 0) return `${-diff} days overdue`;
+  return "Due " + dayFmt.format(d);
+}
+
+function badge(a) {
+  if (turned.has(key(a))) return `<span class="badge turnedin">Turned in ✓</span>`;
+  const s = (a.status || "").toLowerCase();
+  if (s === "missing" || s === "incomplete" || s === "missing annotation")
+    return `<span class="badge missing">${esc(a.status)}</span>`;
+  if (s === "submitted") return `<span class="badge submitted">Submitted</span>`;
+  if (s === "graded") return `<span class="badge graded">${esc(a.grade || "Graded")}</span>`;
+  if (s) return `<span class="badge">${esc(a.status)}</span>`;
+  return "";
+}
+
+function card(a) {
+  const k = key(a), isTurned = turned.has(k);
+  const past = a.due_at && new Date(a.due_at) < new Date();
+  const dueCls = past && !isTurned ? "due late" : "due";
+  const typeCls = (a.type || "other").toLowerCase().replace(/[^a-z-]/g, "");
+  const pts = a.points != null ? `<span class="tag">${a.points} pt${a.points === 1 ? "" : "s"}</span>` : "";
+  return `<div class="card ${isTurned ? "turned" : ""} ${past && !isTurned ? "overdue" : ""}">
+    <div class="card-top"><p class="title">${esc(a.title)}</p>${badge(a)}</div>
+    <p class="course">${esc(a.course)}</p>
+    <div class="meta">
+      <span class="tag ${typeCls}">${esc(a.type || "other")}</span>${pts}
+      <span class="${dueCls}">${esc(relDay(a.due_at))}${a.due_at ? " · " + esc(dtFmt.format(new Date(a.due_at))) : ""}</span>
+    </div>
+    ${a.teacher_comment ? `<div class="comment"><b>Teacher comment</b>${esc(a.teacher_comment)}</div>` : ""}
+    <div class="note-row"><textarea placeholder="Add a note…" data-note="${k}">${esc(notes[key(a)] || "")}</textarea></div>
+    <label class="turnin"><input type="checkbox" data-turn="${k}" ${isTurned ? "checked" : ""}> Marked as turned in (teacher hasn't marked it)</label>
+  </div>`;
+}
+
+let DATA = null, courseFilter = "";
+const MISSING = s => ["missing", "incomplete", "missing annotation"].includes((s || "").toLowerCase());
+const GRADED = s => ["graded", "submitted"].includes((s || "").toLowerCase());
+
+function render() {
+  const list = DATA.assignments.filter(a => !courseFilter || a.course === courseFilter);
+  const now = new Date(), cutoff = new Date(now - 30 * 864e5);
+  const isTurned = a => turned.has(key(a));
+  const past = a => a.due_at && new Date(a.due_at) < now;
+
+  const overdue = list.filter(a => past(a) && MISSING(a.status) && !isTurned(a))
+    .sort((x, y) => new Date(x.due_at) - new Date(y.due_at));
+  const upcoming = list.filter(a => a.due_at && new Date(a.due_at) >= now && !isTurned(a) && !GRADED(a.status))
+    .sort((x, y) => new Date(x.due_at) - new Date(y.due_at));
+  const recent = list.filter(a => GRADED(a.status) && a.due_at && new Date(a.due_at) >= cutoff && !isTurned(a))
+    .sort((x, y) => new Date(y.due_at) - new Date(x.due_at));
+  const look = list.filter(a => past(a) && !MISSING(a.status) && !GRADED(a.status) && !isTurned(a))
+    .sort((x, y) => new Date(x.due_at) - new Date(y.due_at));
+  const nodate = list.filter(a => !a.due_at && !isTurned(a) && !GRADED(a.status));
+  const turnedList = list.filter(isTurned);
+
+  const set = (id, n) => document.getElementById(id).textContent = n;
+  set("overdueCount", overdue.length); set("upcomingCount", upcoming.length);
+  set("recentCount", recent.length); set("lookCount", look.length);
+  set("nodateCount", nodate.length); set("turnedCount", turnedList.length);
+
+  document.getElementById("overdue").innerHTML =
+    overdue.length ? overdue.map(card).join("") : `<div class="empty">Nothing overdue.</div>`;
+
+  let up = "", lastDay = "";
+  for (const a of upcoming) {
+    const d = dayFmt.format(new Date(a.due_at));
+    if (d !== lastDay) { up += `<div class="day-group">${d}</div>`; lastDay = d; }
+    up += card(a);
+  }
+  document.getElementById("upcoming").innerHTML = up || `<div class="empty">Nothing upcoming.</div>`;
+  document.getElementById("recent").innerHTML =
+    recent.length ? recent.map(card).join("") : `<div class="empty">Nothing in the last 30 days.</div>`;
+  document.getElementById("look").innerHTML =
+    look.length ? look.map(card).join("") : `<div class="empty">Nothing to check.</div>`;
+  document.getElementById("nodate").innerHTML =
+    nodate.length ? nodate.map(card).join("") : `<div class="empty">None.</div>`;
+  document.getElementById("turned").innerHTML =
+    turnedList.length ? turnedList.map(card).join("") : `<div class="empty">None.</div>`;
+
+  document.getElementById("grades").innerHTML = DATA.courses
+    .map(c => `<div class="grade-card"><div class="g-course">${esc(c.name)}</div>
+      <div class="g-val">${c.grade_letter ? esc(c.grade_letter) : "—"}${c.grade_pct != null ? ` <span style="font-size:14px;color:var(--muted)">${c.grade_pct}%</span>` : ""}</div></div>`).join("");
+
+  document.querySelectorAll("[data-note]").forEach(t => {
+    t.oninput = () => { notes[t.dataset.note] = t.value; saveNotes(); };
+  });
+  document.querySelectorAll("[data-turn]").forEach(c => {
+    c.onchange = () => {
+      if (c.checked) turned.add(c.dataset.turn); else turned.delete(c.dataset.turn);
+      saveTurned(); render();
+    };
+  });
+}
+
+fetch("schoology.json").then(r => r.json()).then(d => {
+  DATA = d;
+  document.getElementById("fetched").textContent =
+    "Updated " + new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZone: TZ }).format(new Date(d.fetched_at));
+  const sel = document.getElementById("courseFilter");
+  [...new Set(d.assignments.map(a => a.course))].sort().forEach(c => {
+    const o = document.createElement("option"); o.value = c; o.textContent = c; sel.appendChild(o);
+  });
+  sel.onchange = () => { courseFilter = sel.value; render(); };
+  render();
+}).catch(() => { document.getElementById("fetched").textContent = "Could not load data."; });
+</script>
+</body>
+</html>
