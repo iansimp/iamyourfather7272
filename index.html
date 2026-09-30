@@ -114,15 +114,88 @@
   <h2>Grades</h2>
   <div class="grades" id="grades"></div>
 </div>
-<footer>Read-only view. Notes and turned-in marks are saved in this browser only.</footer>
+<footer>Read-only view of Schoology. Notes and checkmarks sync across this family's devices.</footer>
 
 <script>
-const LS_NOTES = "sw_notes_v1", LS_TURNED = "sw_turned_v1";
-const notes = JSON.parse(localStorage.getItem(LS_NOTES) || "{}");
-const turned = new Set(JSON.parse(localStorage.getItem(LS_TURNED) || "[]"));
-const saveNotes = () => localStorage.setItem(LS_NOTES, JSON.stringify(notes));
-const saveTurned = () => localStorage.setItem(LS_TURNED, JSON.stringify([...turned]));
-const key = a => [a.course, a.title, a.due_at || ""].join("|").replace(/"/g, "");
+// Shared sync store (Google Apps Script web app; anyone-with-the-link, same
+// privacy model as this dashboard). State maps assignment id -> {v, ts};
+// last write wins per key. Empty note / unchecked box is stored as a
+// tombstone ({v:""}/{v:false}) so deletions propagate instead of resurrecting.
+const SYNC_URL = "https://script.google.com/macros/s/AKfycbxLyT8zIchjSUCOs2ZuBBh2ctCn6tsTE1DppVW-bfrzUM-hXUeXy60rmyGK9ZG3NwAb/exec";
+const LS_STATE = "sw_state_v2";
+const key = a => [a.course, a.title, a.due_at || ""].join("|").replace(/"/g, ""); // legacy v1 key, for migration only
+let notes = {}, done = {};
+try {
+  const c = JSON.parse(localStorage.getItem(LS_STATE) || "{}");
+  notes = c.notes || {}; done = c.done || {};
+} catch (e) { /* corrupted cache: start clean, remote will refill */ }
+const saveLocal = () => { try { localStorage.setItem(LS_STATE, JSON.stringify({notes, done})); } catch (e) {} };
+const noteOf = id => (notes[id] && notes[id].v) || "";
+const isDone = id => !!(done[id] && done[id].v);
+
+function mergeState(remote) {
+  let changed = false;
+  const apply = (local, r) => {
+    for (const k in (r || {})) {
+      const cur = local[k], inc = r[k];
+      if (!cur || (inc.ts || 0) >= (cur.ts || 0)) {
+        if (!cur || cur.v !== inc.v || cur.ts !== inc.ts) { local[k] = inc; changed = true; }
+      }
+    }
+  };
+  apply(notes, remote && remote.notes);
+  apply(done, remote && remote.done);
+  if (changed) saveLocal();
+  return changed;
+}
+
+let pushTimer = null;
+function pushState() {
+  clearTimeout(pushTimer); pushTimer = null;
+  fetch(SYNC_URL + "?action=write&data=" + encodeURIComponent(JSON.stringify({notes, done})))
+    .catch(() => {}); // offline: stays local, syncs on next change or poll
+}
+const pushSoon = ms => { clearTimeout(pushTimer); pushTimer = setTimeout(pushState, ms); };
+function pullState(cb) {
+  fetch(SYNC_URL + "?action=read").then(r => r.json()).then(remote => {
+    cb(mergeState(remote));
+  }).catch(() => cb(false));
+}
+
+// One-time migration from the old per-browser format (course|title|due keys).
+function migrateLegacy() {
+  let changed = false;
+  try {
+    const ln = JSON.parse(localStorage.getItem("sw_notes_v1") || "{}");
+    const lt = JSON.parse(localStorage.getItem("sw_turned_v1") || "[]");
+    if (Object.keys(ln).length || lt.length) {
+      const byKey = {};
+      DATA.assignments.forEach(a => { byKey[key(a)] = a.id; });
+      for (const k in ln) {
+        const id = byKey[k];
+        if (id && !notes[id] && ln[k]) { notes[id] = {v: ln[k], ts: 0}; changed = true; }
+      }
+      lt.forEach(k => {
+        const id = byKey[k];
+        if (id && !done[id]) { done[id] = {v: true, ts: 0}; changed = true; }
+      });
+      localStorage.removeItem("sw_notes_v1");
+      localStorage.removeItem("sw_turned_v1");
+    }
+  } catch (e) {}
+  if (changed) { saveLocal(); pushSoon(500); }
+}
+
+function renderPreserveFocus() {
+  const ae = document.activeElement;
+  const nk = ae && ae.dataset ? ae.dataset.note : null;
+  const pos = ae && nk ? ae.selectionStart : null;
+  render();
+  if (nk) {
+    const t = document.querySelector('[data-note="' + nk + '"]');
+    if (t) { t.focus(); if (pos != null) { try { t.setSelectionRange(pos, pos); } catch (e) {} } }
+  }
+}
 const TZ = "America/Los_Angeles";
 
 const dayFmt = new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric", timeZone: TZ });
@@ -142,7 +215,7 @@ function relDay(iso) {
 }
 
 function badge(a) {
-  if (turned.has(key(a))) return `<span class="badge turnedin">Turned in ✓</span>`;
+  if (isDone(a.id)) return `<span class="badge turnedin">Turned in ✓</span>`;
   const s = (a.status || "").toLowerCase();
   if (s === "missing" || s === "incomplete" || s === "missing annotation")
     return `<span class="badge missing">${esc(a.status)}</span>`;
@@ -153,7 +226,7 @@ function badge(a) {
 }
 
 function card(a) {
-  const k = key(a), isTurned = turned.has(k);
+  const isTurned = isDone(a.id);
   const past = a.due_at && new Date(a.due_at) < new Date();
   const dueCls = past && !isTurned ? "due late" : "due";
   const typeCls = (a.type || "other").toLowerCase().replace(/[^a-z-]/g, "");
@@ -166,8 +239,8 @@ function card(a) {
       <span class="${dueCls}">${esc(relDay(a.due_at))}${a.due_at ? " · " + esc(dtFmt.format(new Date(a.due_at))) : ""}</span>
     </div>
     ${a.teacher_comment ? `<div class="comment"><b>Teacher comment</b>${esc(a.teacher_comment)}</div>` : ""}
-    <div class="note-row"><textarea placeholder="Add a note…" data-note="${k}">${esc(notes[key(a)] || "")}</textarea></div>
-    <label class="turnin"><input type="checkbox" data-turn="${k}" ${isTurned ? "checked" : ""}> Marked as turned in (teacher hasn't marked it)</label>
+    <div class="note-row"><textarea placeholder="Add a note…" data-note="${a.id}">${esc(noteOf(a.id))}</textarea></div>
+    <label class="turnin"><input type="checkbox" data-turn="${a.id}" ${isTurned ? "checked" : ""}> Marked as turned in (teacher hasn't marked it)</label>
   </div>`;
 }
 
@@ -178,7 +251,7 @@ const GRADED = s => ["graded", "submitted"].includes((s || "").toLowerCase());
 function render() {
   const list = DATA.assignments.filter(a => !courseFilter || a.course === courseFilter);
   const now = new Date(), cutoff = new Date(now - 30 * 864e5);
-  const isTurned = a => turned.has(key(a));
+  const isTurned = a => isDone(a.id);
   const past = a => a.due_at && new Date(a.due_at) < now;
 
   const overdue = list.filter(a => past(a) && MISSING(a.status) && !isTurned(a))
@@ -221,12 +294,15 @@ function render() {
       <div class="g-val">${c.grade_letter ? esc(c.grade_letter) : "—"}${c.grade_pct != null ? ` <span style="font-size:14px;color:var(--muted)">${c.grade_pct}%</span>` : ""}</div></div>`).join("");
 
   document.querySelectorAll("[data-note]").forEach(t => {
-    t.oninput = () => { notes[t.dataset.note] = t.value; saveNotes(); };
+    t.oninput = () => {
+      notes[t.dataset.note] = {v: t.value, ts: Date.now()};
+      saveLocal(); pushSoon(1500);
+    };
   });
   document.querySelectorAll("[data-turn]").forEach(c => {
     c.onchange = () => {
-      if (c.checked) turned.add(c.dataset.turn); else turned.delete(c.dataset.turn);
-      saveTurned(); render();
+      done[c.dataset.turn] = {v: c.checked, ts: Date.now()};
+      saveLocal(); pushSoon(400); render();
     };
   });
 }
@@ -240,7 +316,10 @@ fetch("schoology.json").then(r => r.json()).then(d => {
     const o = document.createElement("option"); o.value = c; o.textContent = c; sel.appendChild(o);
   });
   sel.onchange = () => { courseFilter = sel.value; render(); };
+  migrateLegacy();
   render();
+  pullState(changed => { if (changed) renderPreserveFocus(); });
+  setInterval(() => pullState(changed => { if (changed) renderPreserveFocus(); }), 60000);
 }).catch(() => { document.getElementById("fetched").textContent = "Could not load data."; });
 </script>
 </body>
