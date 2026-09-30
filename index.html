@@ -15,12 +15,19 @@
   * { box-sizing: border-box; }
   body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
          background: var(--bg); color: var(--ink); line-height: 1.45; }
-  header { background: var(--ink); color: #fff; padding: 18px 20px; position: sticky; top: 0; z-index: 5; }
+  header { background: var(--ink); color: #fff; padding: 18px 20px 0; position: sticky; top: 0; z-index: 5; }
   header h1 { margin: 0; font-size: 20px; font-weight: 700; }
-  header p { margin: 4px 0 0; font-size: 12px; color: #b6bdc9; }
-  .wrap { max-width: 860px; margin: 0 auto; padding: 16px 16px 60px; }
-  .controls { display: flex; gap: 10px; margin: 4px 0 18px; flex-wrap: wrap; }
-  select { font-size: 14px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+  header p { margin: 4px 0 10px; font-size: 12px; color: #b6bdc9; }
+  .tabs { display: flex; gap: 4px; overflow-x: auto; padding-bottom: 10px; }
+  .tab { background: none; border: none; color: #b6bdc9; font: inherit; font-size: 14px; font-weight: 600;
+         padding: 8px 14px; border-radius: 10px 10px 0 0; cursor: pointer; white-space: nowrap; }
+  .tab.active { background: var(--bg); color: var(--ink); }
+  .tab .n { background: var(--red); color: #fff; border-radius: 999px; font-size: 11px;
+            padding: 1px 7px; margin-left: 5px; }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 16px 16px 60px; }
+  .controls { display: flex; gap: 10px; margin: 4px 0 18px; flex-wrap: wrap; align-items: center; }
+  select, input[type="date"] { font-size: 14px; padding: 8px 10px; border: 1px solid var(--line);
+      border-radius: 8px; background: #fff; font-family: inherit; }
   h2 { font-size: 15px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 26px 0 10px; }
   h2 .count { background: var(--ink); color: #fff; border-radius: 999px; font-size: 12px;
               padding: 1px 9px; margin-left: 6px; vertical-align: 2px; }
@@ -34,6 +41,22 @@
   details.fold[open] > summary::before { content: "▾ "; }
   details.fold > summary .count { background: #9ca3af; color: #fff; border-radius: 999px; font-size: 12px;
       padding: 1px 9px; margin-left: 6px; }
+
+  /* stat cards */
+  .stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; margin-bottom: 6px; }
+  .stat { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px;
+          cursor: pointer; text-align: left; font: inherit; color: inherit; }
+  .stat:hover { border-color: #c7cdd6; }
+  .stat .num { font-size: 26px; font-weight: 750; }
+  .stat .lbl { font-size: 13px; font-weight: 650; margin-top: 2px; }
+  .stat .def { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+  .stat.alert .num { color: var(--red); }
+
+  .banner { background: var(--amberbg); border: 1px solid #fde68a; border-radius: 12px;
+            padding: 12px 16px; margin: 14px 0; display: flex; gap: 12px; align-items: center;
+            justify-content: space-between; flex-wrap: wrap; }
+  .banner p { margin: 0; font-size: 14px; }
+
   .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px;
           padding: 14px 16px; margin-bottom: 10px; }
   .card.overdue { border-left: 4px solid var(--red); }
@@ -51,11 +74,13 @@
   .tag.project { background: var(--purplebg); color: var(--purple); }
   .due { font-weight: 600; }
   .due.late { color: var(--red); }
-  .badge { border-radius: 999px; padding: 2px 10px; font-weight: 700; white-space: nowrap; }
+  .badge { border-radius: 999px; padding: 2px 10px; font-weight: 700; white-space: nowrap; font-size: 12px; }
   .badge.missing { background: var(--redbg); color: var(--red); }
   .badge.submitted { background: var(--bluebg); color: var(--blue); }
   .badge.graded { background: var(--greenbg); color: var(--green); }
   .badge.turnedin { background: var(--greenbg); color: var(--green); }
+  .badge.planned { background: var(--bluebg); color: var(--blue); cursor: pointer; }
+  .badge.setaside { background: #eef0f3; color: var(--muted); }
   .comment { background: #f9fafb; border-left: 3px solid var(--line); padding: 8px 12px;
              font-size: 13px; margin: 10px 0 4px; border-radius: 0 8px 8px 0; }
   .comment b { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .05em;
@@ -74,6 +99,48 @@
   .grade-card .g-val { font-size: 22px; font-weight: 750; margin-top: 4px; }
   .empty { color: var(--muted); font-size: 14px; padding: 12px 4px; }
   .day-group { font-size: 13px; font-weight: 700; color: var(--muted); margin: 14px 0 8px; }
+  .hint { font-size: 13px; color: var(--muted); margin: 6px 0 14px; }
+
+  /* triage focus mode */
+  .focus { background: var(--card); border: 2px solid var(--ink); border-radius: 16px;
+           padding: 22px; margin: 16px 0; }
+  .focus-progress { font-size: 12px; text-transform: uppercase; letter-spacing: .06em;
+                    color: var(--muted); font-weight: 700; margin-bottom: 10px; }
+  .focus .title { font-size: 19px; }
+  .suggest { background: var(--bluebg); border-radius: 10px; padding: 10px 14px; font-size: 13px;
+             margin: 12px 0; color: #1e3a8a; }
+  .decide { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .btn { font: inherit; font-size: 14px; font-weight: 650; border-radius: 10px; padding: 10px 16px;
+         border: 1px solid var(--line); background: #fff; cursor: pointer; }
+  .btn:hover { border-color: #9ca3af; }
+  .btn.primary { background: var(--green); border-color: var(--green); color: #fff; }
+  .btn.blue { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .btn.quiet { background: none; border-color: transparent; color: var(--muted); font-weight: 500; }
+  .pickrow { display: flex; gap: 8px; margin-top: 10px; align-items: center; flex-wrap: wrap; }
+  .summary { background: var(--greenbg); border: 1px solid #bbf7d0; border-radius: 12px;
+             padding: 16px 18px; margin: 16px 0; font-size: 14px; }
+
+  /* planner */
+  .week { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(160px, 1fr);
+          gap: 10px; overflow-x: auto; padding-bottom: 8px; }
+  .daycol { background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+            padding: 10px; min-height: 120px; }
+  .daycol.today { border-color: var(--blue); box-shadow: 0 0 0 1px var(--blue); }
+  .daycol h3 { margin: 0 0 2px; font-size: 13px; }
+  .daycol .dsub { font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+  .chip { background: var(--bg); border: 1px solid var(--line); border-radius: 8px;
+          padding: 6px 8px; font-size: 12px; margin-bottom: 6px; }
+  .chip .ct { font-weight: 650; }
+  .chip .cm { color: var(--muted); font-size: 11px; }
+  .chip .crow { display: flex; gap: 6px; align-items: center; margin-top: 4px; }
+  .chip .crow button { border: none; background: none; cursor: pointer; font-size: 12px; color: var(--muted); padding: 0 2px; }
+  .chip.heavy-note { border-color: var(--amber); }
+  .sugrow { display: flex; gap: 10px; align-items: center; background: var(--card);
+            border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin-bottom: 8px;
+            flex-wrap: wrap; }
+  .sugrow .st { font-weight: 650; font-size: 14px; }
+  .sugrow .sm { font-size: 12px; color: var(--muted); }
+  .sugrow .spacer { flex: 1; }
   footer { text-align: center; color: var(--muted); font-size: 12px; padding: 20px; }
 </style>
 </head>
@@ -81,70 +148,56 @@
 <header>
   <h1>Schoolwork</h1>
   <p id="fetched">Loading…</p>
+  <nav class="tabs" id="tabs">
+    <button class="tab active" data-tab="today">Today</button>
+    <button class="tab" data-tab="tackle">Tackle<span class="n" id="tackleBadge" style="display:none"></span></button>
+    <button class="tab" data-tab="planner">Planner</button>
+    <button class="tab" data-tab="grades">Grades</button>
+  </nav>
 </header>
 <div class="wrap">
   <div class="controls">
     <select id="courseFilter"><option value="">All courses</option></select>
   </div>
 
-  <h2 class="overdue-h">Overdue<span class="count" id="overdueCount"></span></h2>
-  <div id="overdue"></div>
-
-  <h2>Upcoming<span class="count" id="upcomingCount"></span></h2>
-  <div id="upcoming"></div>
-
-  <details class="fold" id="recentWrap">
-    <summary>Recently graded<span class="count" id="recentCount"></span></summary>
-    <div id="recent" style="margin-top:10px"></div>
-  </details>
-
-  <details class="fold" id="lookWrap">
-    <summary>Needs a look — past due, no status in Schoology<span class="count" id="lookCount"></span></summary>
-    <div id="look" style="margin-top:10px"></div>
-  </details>
-
-  <details class="fold" id="nodateWrap">
-    <summary>No due date<span class="count" id="nodateCount"></span></summary>
-    <div id="nodate" style="margin-top:10px"></div>
-  </details>
-
-  <h2>Marked as turned in<span class="count" id="turnedCount"></span></h2>
-  <div id="turned"></div>
-
-  <h2>Grades</h2>
-  <div class="grades" id="grades"></div>
+  <section id="tab-today"></section>
+  <section id="tab-tackle" style="display:none"></section>
+  <section id="tab-planner" style="display:none"></section>
+  <section id="tab-grades" style="display:none"></section>
 </div>
-<footer>Read-only view of Schoology. Notes and checkmarks sync across this family's devices.</footer>
+<footer>Read-only view of Schoology. Notes, checkmarks and plans sync across this family's devices.</footer>
 
 <script>
 // Shared sync store (Google Apps Script web app; anyone-with-the-link, same
-// privacy model as this dashboard). State maps assignment id -> {v, ts};
-// last write wins per key. Empty note / unchecked box is stored as a
-// tombstone ({v:""}/{v:false}) so deletions propagate instead of resurrecting.
+// privacy model as this dashboard). Each map is assignment id -> {v, ts};
+// last write wins per key. Clearing a value stores a tombstone ({v:""} /
+// {v:false}) so deletions propagate instead of resurrecting.
 const SYNC_URL = "https://script.google.com/macros/s/AKfycbxLyT8zIchjSUCOs2ZuBBh2ctCn6tsTE1DppVW-bfrzUM-hXUeXy60rmyGK9ZG3NwAb/exec";
 const LS_STATE = "sw_state_v2";
+const MAPS = ["notes", "done", "plan", "dropped"];
 const key = a => [a.course, a.title, a.due_at || ""].join("|").replace(/"/g, ""); // legacy v1 key, for migration only
-let notes = {}, done = {};
+let notes = {}, done = {}, plan = {}, dropped = {};
 try {
   const c = JSON.parse(localStorage.getItem(LS_STATE) || "{}");
-  notes = c.notes || {}; done = c.done || {};
+  notes = c.notes || {}; done = c.done || {}; plan = c.plan || {}; dropped = c.dropped || {};
 } catch (e) { /* corrupted cache: start clean, remote will refill */ }
-const saveLocal = () => { try { localStorage.setItem(LS_STATE, JSON.stringify({notes, done})); } catch (e) {} };
+const saveLocal = () => { try { localStorage.setItem(LS_STATE, JSON.stringify({notes, done, plan, dropped})); } catch (e) {} };
 const noteOf = id => (notes[id] && notes[id].v) || "";
 const isDone = id => !!(done[id] && done[id].v);
+const planOf = id => (plan[id] && plan[id].v) || "";
+const isDropped = id => !!(dropped[id] && dropped[id].v);
 
 function mergeState(remote) {
   let changed = false;
-  const apply = (local, r) => {
-    for (const k in (r || {})) {
+  for (const m of MAPS) {
+    const local = {notes, done, plan, dropped}[m], r = (remote && remote[m]) || {};
+    for (const k in r) {
       const cur = local[k], inc = r[k];
       if (!cur || (inc.ts || 0) >= (cur.ts || 0)) {
         if (!cur || cur.v !== inc.v || cur.ts !== inc.ts) { local[k] = inc; changed = true; }
       }
     }
-  };
-  apply(notes, remote && remote.notes);
-  apply(done, remote && remote.done);
+  }
   if (changed) saveLocal();
   return changed;
 }
@@ -152,7 +205,7 @@ function mergeState(remote) {
 let pushTimer = null;
 function pushState() {
   clearTimeout(pushTimer); pushTimer = null;
-  fetch(SYNC_URL + "?action=write&data=" + encodeURIComponent(JSON.stringify({notes, done})))
+  fetch(SYNC_URL + "?action=write&data=" + encodeURIComponent(JSON.stringify({notes, done, plan, dropped})))
     .catch(() => {}); // offline: stays local, syncs on next change or poll
 }
 const pushSoon = ms => { clearTimeout(pushTimer); pushTimer = setTimeout(pushState, ms); };
@@ -186,21 +239,22 @@ function migrateLegacy() {
   if (changed) { saveLocal(); pushSoon(500); }
 }
 
-function renderPreserveFocus() {
-  const ae = document.activeElement;
-  const nk = ae && ae.dataset ? ae.dataset.note : null;
-  const pos = ae && nk ? ae.selectionStart : null;
-  render();
-  if (nk) {
-    const t = document.querySelector('[data-note="' + nk + '"]');
-    if (t) { t.focus(); if (pos != null) { try { t.setSelectionRange(pos, pos); } catch (e) {} } }
-  }
-}
 const TZ = "America/Los_Angeles";
-
 const dayFmt = new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric", timeZone: TZ });
 const dtFmt = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZone: TZ });
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const dayKey = d => new Date(d).toLocaleString("en-CA", { timeZone: TZ }).slice(0, 10);
+const todayKey = () => dayKey(new Date());
+const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+const weekDays = () => { const t = new Date(); return [...Array(7)].map((_, i) => addDays(t, i)); };
+function planLabel(iso) {
+  if (!iso) return "";
+  const t = todayKey();
+  if (iso === t) return "Today";
+  if (iso === dayKey(addDays(new Date(), 1))) return "Tomorrow";
+  return new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric", timeZone: TZ })
+    .format(new Date(iso + "T12:00:00"));
+}
 
 function relDay(iso) {
   if (!iso) return "No due date";
@@ -216,13 +270,16 @@ function relDay(iso) {
 
 function badge(a) {
   if (isDone(a.id)) return `<span class="badge turnedin">Turned in ✓</span>`;
+  if (isDropped(a.id)) return `<span class="badge setaside">Set aside</span>`;
+  let out = "";
+  if (planOf(a.id)) out += `<span class="badge planned" data-unplan="${a.id}" title="Remove from plan">Starts ${esc(planLabel(planOf(a.id)))} ✕</span>`;
   const s = (a.status || "").toLowerCase();
   if (s === "missing" || s === "incomplete" || s === "missing annotation")
-    return `<span class="badge missing">${esc(a.status)}</span>`;
-  if (s === "submitted") return `<span class="badge submitted">Submitted</span>`;
-  if (s === "graded") return `<span class="badge graded">${esc(a.grade || "Graded")}</span>`;
-  if (s) return `<span class="badge">${esc(a.status)}</span>`;
-  return "";
+    out += `<span class="badge missing">${esc(a.status)}</span>`;
+  else if (s === "submitted") out += `<span class="badge submitted">Submitted</span>`;
+  else if (s === "graded") out += `<span class="badge graded">${esc(a.grade || "Graded")}</span>`;
+  else if (s) out += `<span class="badge">${esc(a.status)}</span>`;
+  return out;
 }
 
 function card(a) {
@@ -232,7 +289,7 @@ function card(a) {
   const typeCls = (a.type || "other").toLowerCase().replace(/[^a-z-]/g, "");
   const pts = a.points != null ? `<span class="tag">${a.points} pt${a.points === 1 ? "" : "s"}</span>` : "";
   return `<div class="card ${isTurned ? "turned" : ""} ${past && !isTurned ? "overdue" : ""}">
-    <div class="card-top"><p class="title">${esc(a.title)}</p>${badge(a)}</div>
+    <div class="card-top"><p class="title">${esc(a.title)}</p><div>${badge(a)}</div></div>
     <p class="course">${esc(a.course)}</p>
     <div class="meta">
       <span class="tag ${typeCls}">${esc(a.type || "other")}</span>${pts}
@@ -244,68 +301,278 @@ function card(a) {
   </div>`;
 }
 
-let DATA = null, courseFilter = "";
+let DATA = null, courseFilter = "", activeTab = "today";
+let triageSession = false, triagePos = 0, triageSummary = null, pickDayFor = null;
 const MISSING = s => ["missing", "incomplete", "missing annotation"].includes((s || "").toLowerCase());
 const GRADED = s => ["graded", "submitted"].includes((s || "").toLowerCase());
 
-function render() {
+function lists() {
   const list = DATA.assignments.filter(a => !courseFilter || a.course === courseFilter);
   const now = new Date(), cutoff = new Date(now - 30 * 864e5);
-  const isTurned = a => isDone(a.id);
   const past = a => a.due_at && new Date(a.due_at) < now;
-
-  const overdue = list.filter(a => past(a) && MISSING(a.status) && !isTurned(a))
-    .sort((x, y) => new Date(x.due_at) - new Date(y.due_at));
-  const upcoming = list.filter(a => a.due_at && new Date(a.due_at) >= now && !isTurned(a) && !GRADED(a.status))
-    .sort((x, y) => new Date(x.due_at) - new Date(y.due_at));
-  const recent = list.filter(a => GRADED(a.status) && a.due_at && new Date(a.due_at) >= cutoff && !isTurned(a))
+  const byDue = (x, y) => new Date(x.due_at) - new Date(y.due_at);
+  const L = {};
+  L.overdue = list.filter(a => past(a) && MISSING(a.status) && !isDone(a.id) && !isDropped(a.id)).sort(byDue);
+  L.upcoming = list.filter(a => a.due_at && new Date(a.due_at) >= now && !isDone(a.id) && !GRADED(a.status)).sort(byDue);
+  L.recent = list.filter(a => GRADED(a.status) && a.due_at && new Date(a.due_at) >= cutoff && !isDone(a.id))
     .sort((x, y) => new Date(y.due_at) - new Date(x.due_at));
-  const look = list.filter(a => past(a) && !MISSING(a.status) && !GRADED(a.status) && !isTurned(a))
-    .sort((x, y) => new Date(x.due_at) - new Date(y.due_at));
-  const nodate = list.filter(a => !a.due_at && !isTurned(a) && !GRADED(a.status));
-  const turnedList = list.filter(isTurned);
+  L.look = list.filter(a => past(a) && !MISSING(a.status) && !GRADED(a.status) && !isDone(a.id) && !isDropped(a.id)).sort(byDue);
+  L.nodate = list.filter(a => !a.due_at && !isDone(a.id) && !GRADED(a.status) && !isDropped(a.id));
+  L.turned = list.filter(a => isDone(a.id));
+  L.dropped = list.filter(a => isDropped(a.id));
+  L.triage = L.overdue.filter(a => !planOf(a.id));
+  const t = todayKey();
+  L.plannedToday = list.filter(a => planOf(a.id) === t && !isDone(a.id) && !isDropped(a.id)).sort(byDue);
+  L.dueWeek = L.upcoming.filter(a => new Date(a.due_at) < addDays(now, 7));
+  return L;
+}
 
-  const set = (id, n) => document.getElementById(id).textContent = n;
-  set("overdueCount", overdue.length); set("upcomingCount", upcoming.length);
-  set("recentCount", recent.length); set("lookCount", look.length);
-  set("nodateCount", nodate.length); set("turnedCount", turnedList.length);
-
-  document.getElementById("overdue").innerHTML =
-    overdue.length ? overdue.map(card).join("") : `<div class="empty">Nothing overdue.</div>`;
-
-  let up = "", lastDay = "";
-  for (const a of upcoming) {
-    const d = dayFmt.format(new Date(a.due_at));
-    if (d !== lastDay) { up += `<div class="day-group">${d}</div>`; lastDay = d; }
-    up += card(a);
+/* ---------- Today ---------- */
+function statCard(num, label, def, tab, alert) {
+  return `<button class="stat ${alert && num ? "alert" : ""}" data-goto="${tab}">
+    <div class="num">${num}</div><div class="lbl">${label}</div><div class="def">${def}</div></button>`;
+}
+function renderToday(L) {
+  const el = document.getElementById("tab-today");
+  let h = `<div class="stats">
+    ${statCard(L.triage.length, "Overdue", "Past due, flagged missing, no plan yet", "tackle", true)}
+    ${statCard(L.dueWeek.length, "Due this week", "Due in the next 7 days", "planner")}
+    ${statCard(L.plannedToday.length, "Starting today", "Planned to start today", "today")}
+    ${statCard(L.nodate.length, "No due date", "No deadline in Schoology", "today")}
+    ${statCard(L.recent.length, "Recently graded", "Returned in the last 30 days", "grades")}
+  </div>`;
+  if (L.triage.length) {
+    h += `<div class="banner"><p><b>${L.triage.length} overdue item${L.triage.length === 1 ? "" : "s"}</b> need${L.triage.length === 1 ? "s" : ""} a decision. Tackle them one at a time — about 10 minutes.</p>
+      <button class="btn blue" data-goto="tackle">Start tackling</button></div>`;
   }
-  document.getElementById("upcoming").innerHTML = up || `<div class="empty">Nothing upcoming.</div>`;
-  document.getElementById("recent").innerHTML =
-    recent.length ? recent.map(card).join("") : `<div class="empty">Nothing in the last 30 days.</div>`;
-  document.getElementById("look").innerHTML =
-    look.length ? look.map(card).join("") : `<div class="empty">Nothing to check.</div>`;
-  document.getElementById("nodate").innerHTML =
-    nodate.length ? nodate.map(card).join("") : `<div class="empty">None.</div>`;
-  document.getElementById("turned").innerHTML =
-    turnedList.length ? turnedList.map(card).join("") : `<div class="empty">None.</div>`;
+  h += `<h2>Starting today<span class="count">${L.plannedToday.length}</span></h2>`;
+  h += L.plannedToday.length ? L.plannedToday.map(card).join("")
+    : `<div class="empty">Nothing planned for today yet. ${L.upcoming.length ? "Head to the Planner to spread out what's coming up." : ""}</div>`;
+  h += `<details class="fold"><summary>Needs a look — past due, no status in Schoology<span class="count">${L.look.length}</span></summary>
+    <div style="margin-top:10px">${L.look.length ? L.look.map(card).join("") : `<div class="empty">Nothing to check.</div>`}</div></details>`;
+  h += `<details class="fold"><summary>No due date<span class="count">${L.nodate.length}</span></summary>
+    <div style="margin-top:10px">${L.nodate.length ? L.nodate.map(card).join("") : `<div class="empty">None.</div>`}</div></details>`;
+  el.innerHTML = h;
+}
 
-  document.getElementById("grades").innerHTML = DATA.courses
+/* ---------- Tackle (overdue triage) ---------- */
+function ageHint(a) {
+  const days = Math.max(1, Math.round((Date.now() - new Date(a.due_at)) / 864e5));
+  if (days <= 3) return `Overdue ${days} day${days === 1 ? "" : "s"} — suggestion: start it today or tomorrow.`;
+  if (days <= 14) return `Overdue ${days} days — suggestion: pick a realistic day this week.`;
+  if (days <= 30) return `Overdue ${days} days — suggestion: schedule it, or set it aside if it's not going to happen.`;
+  return `Overdue ${days} days — suggestion: set it aside unless it's already done.`;
+}
+function renderTackle(L) {
+  const el = document.getElementById("tab-tackle");
+  const q = L.triage;
+  let h = "";
+  if (triageSession && triagePos < q.length) {
+    const a = q[triagePos], total = q.length;
+    const decided = triageSummary.done + triageSummary.planned + triageSummary.dropped;
+    h += `<div class="focus">
+      <div class="focus-progress">Tackle the backlog · ${decided} of ${total} decided</div>
+      <p class="title">${esc(a.title)}</p>
+      <p class="course">${esc(a.course)}</p>
+      <div class="meta"><span class="tag">${esc(a.type || "other")}</span>
+        ${a.points != null ? `<span class="tag">${a.points} pts</span>` : ""}
+        <span class="due late">${esc(relDay(a.due_at))}</span></div>
+      ${a.teacher_comment ? `<div class="comment"><b>Teacher comment</b>${esc(a.teacher_comment)}</div>` : ""}
+      <div class="suggest">💡 ${esc(ageHint(a))}</div>
+      <div class="note-row"><textarea placeholder="Add a note…" data-note="${a.id}">${esc(noteOf(a.id))}</textarea></div>
+      <div class="decide">
+        <button class="btn primary" data-dec="done" data-id="${a.id}">Done ✓</button>
+        <button class="btn blue" data-dec="today" data-id="${a.id}">Start today</button>
+        <button class="btn blue" data-dec="tomorrow" data-id="${a.id}">Start tomorrow</button>
+        <button class="btn" data-dec="pick" data-id="${a.id}">Pick a day…</button>
+        <button class="btn" data-dec="drop" data-id="${a.id}">Set aside</button>
+        <button class="btn quiet" data-dec="skip">Skip →</button>
+      </div>
+      ${pickDayFor === a.id ? `<div class="pickrow"><input type="date" id="pickdate" min="${todayKey()}" value="${todayKey()}">
+        <button class="btn blue" data-dec="pickgo" data-id="${a.id}">Set day</button></div>` : ""}
+    </div>`;
+  } else {
+    if (triageSession && triagePos >= q.length && triageSummary) {
+      const s = triageSummary;
+      h += `<div class="summary"><b>Backlog tackled.</b> Done: ${s.done} · Planned: ${s.planned} · Set aside: ${s.dropped}${s.skipped ? ` · Skipped: ${s.skipped}` : ""}.</div>`;
+      triageSession = false;
+    }
+    if (q.length) {
+      h += `<div class="banner"><p><b>${q.length} overdue item${q.length === 1 ? "" : "s"}</b> without a plan. One decision at a time, no need to finish them all.</p>
+        <button class="btn blue" id="startTackle">Start tackling</button></div>`;
+    } else {
+      h += `<div class="summary"><b>All caught up.</b> Nothing overdue needs a decision.</div>`;
+    }
+  }
+  h += `<h2 class="overdue-h">Overdue<span class="count">${L.overdue.length}</span></h2>`;
+  h += L.overdue.length ? L.overdue.map(card).join("") : `<div class="empty">Nothing overdue.</div>`;
+  if (L.dropped.length) {
+    h += `<h2>Set aside<span class="count">${L.dropped.length}</span></h2>
+      <p class="hint">Decided not to chase these for now. Bring any of them back whenever.</p>`;
+    h += L.dropped.map(a => `<div class="card"><div class="card-top"><p class="title">${esc(a.title)}</p>
+      <button class="btn" data-bringback="${a.id}">Bring back</button></div>
+      <p class="course">${esc(a.course)} · ${esc(relDay(a.due_at))}</p></div>`).join("");
+  }
+  el.innerHTML = h;
+}
+function decide(action, id) {
+  const t = Date.now();
+  if (action === "done") { done[id] = {v: true, ts: t}; triageSummary.done++; }
+  else if (action === "today") { plan[id] = {v: todayKey(), ts: t}; triageSummary.planned++; }
+  else if (action === "tomorrow") { plan[id] = {v: dayKey(addDays(new Date(), 1)), ts: t}; triageSummary.planned++; }
+  else if (action === "pickgo") {
+    const inp = document.getElementById("pickdate");
+    if (inp && inp.value) { plan[id] = {v: inp.value, ts: t}; triageSummary.planned++; }
+    pickDayFor = null;
+  }
+  else if (action === "pick") { pickDayFor = (pickDayFor === id ? null : id); render(); return; }
+  else if (action === "drop") { dropped[id] = {v: true, ts: t}; triageSummary.dropped++; }
+  else if (action === "skip") { triageSummary.skipped++; triagePos++; render(); return; }
+  saveLocal(); pushSoon(400); render();
+}
+
+/* ---------- Planner ---------- */
+function plannedLoads() {
+  const loads = {};
+  weekDays().forEach(d => loads[dayKey(d)] = 0);
+  DATA.assignments.forEach(a => {
+    const p = planOf(a.id);
+    if (p && loads[p] !== undefined && !isDone(a.id) && !isDropped(a.id)) loads[p]++;
+  });
+  return loads;
+}
+function suggestDay(a, loads) {
+  const days = weekDays(), dueK = dayKey(new Date(a.due_at));
+  let cands = days.filter(d => dayKey(d) < dueK);
+  if (!cands.length) cands = days.filter(d => dayKey(d) <= dueK);
+  if (!cands.length) return null;
+  cands.sort((x, y) => (loads[dayKey(x)] - loads[dayKey(y)]) || (x - y));
+  return dayKey(cands.find(d => loads[dayKey(d)] < 3) || cands[0]);
+}
+function renderPlanner(L) {
+  const el = document.getElementById("tab-planner");
+  const days = weekDays(), t = todayKey();
+  const byDay = {};
+  days.forEach(d => byDay[dayKey(d)] = []);
+  DATA.assignments.forEach(a => {
+    const p = planOf(a.id);
+    if (p && byDay[p] && !isDone(a.id) && !isDropped(a.id)) byDay[p].push(a);
+  });
+  let h = `<p class="hint">Deciding <i>when</i> to start makes starting much more likely. Suggestions keep each day to 3 or fewer and put the earliest deadlines first — move anything around.</p>`;
+  h += `<div class="week">` + days.map(d => {
+    const k = dayKey(d), items = byDay[k];
+    return `<div class="daycol ${k === t ? "today" : ""}"><h3>${k === t ? "Today" : planLabel(k)}</h3>
+      <div class="dsub">${items.length} planned</div>` +
+      (items.map(a => `<div class="chip"><div class="ct">${esc(a.title)}</div>
+        <div class="cm">${esc(a.course)} · ${esc(relDay(a.due_at))}</div>
+        <div class="crow"><button data-pdone="${a.id}" title="Mark done">✓ done</button>
+        <button data-unplan="${a.id}" title="Remove from plan">✕</button></div></div>`).join("") || `<div class="cm">—</div>`) +
+      `</div>`;
+  }).join("") + `</div>`;
+
+  const loads = plannedLoads();
+  const unplanned = L.upcoming.filter(a => !planOf(a.id) && !isDropped(a.id));
+  h += `<h2>Suggestions<span class="count">${unplanned.length}</span></h2>`;
+  if (unplanned.length) {
+    h += `<div class="controls"><button class="btn blue" id="autospread">Spread them across the week</button></div>`;
+    h += unplanned.map(a => {
+      const s = suggestDay(a, loads);
+      return `<div class="sugrow"><div><div class="st">${esc(a.title)}</div>
+        <div class="sm">${esc(a.course)} · ${esc(relDay(a.due_at))}${a.points != null ? ` · ${a.points} pts` : ""}</div></div>
+        <div class="spacer"></div>
+        ${s ? `<button class="btn" data-plan="${a.id}" data-day="${s}">Start ${esc(planLabel(s))}</button>` : `<span class="sm">No open day before it's due</span>`}
+      </div>`;
+    }).join("");
+  } else {
+    h += `<div class="empty">Everything upcoming has a start day. Nice.</div>`;
+  }
+  el.innerHTML = h;
+}
+
+/* ---------- Grades ---------- */
+function renderGrades(L) {
+  const el = document.getElementById("tab-grades");
+  el.innerHTML = `<h2>Grades</h2><div class="grades">` + DATA.courses
     .map(c => `<div class="grade-card"><div class="g-course">${esc(c.name)}</div>
-      <div class="g-val">${c.grade_letter ? esc(c.grade_letter) : "—"}${c.grade_pct != null ? ` <span style="font-size:14px;color:var(--muted)">${c.grade_pct}%</span>` : ""}</div></div>`).join("");
+      <div class="g-val">${c.grade_letter ? esc(c.grade_letter) : "—"}${c.grade_pct != null ? ` <span style="font-size:14px;color:var(--muted)">${c.grade_pct}%</span>` : ""}</div></div>`).join("")
+    + `</div><h2>Recently graded<span class="count">${L.recent.length}</span></h2>`
+    + (L.recent.length ? L.recent.map(card).join("") : `<div class="empty">Nothing in the last 30 days.</div>`);
+}
 
+/* ---------- render + events ---------- */
+function render() {
+  const L = lists();
+  const tb = document.getElementById("tackleBadge");
+  tb.style.display = L.triage.length ? "" : "none";
+  tb.textContent = L.triage.length;
+  renderToday(L); renderTackle(L); renderPlanner(L); renderGrades(L);
+  document.querySelectorAll("[data-goto]").forEach(b => b.onclick = () => switchTab(b.dataset.goto));
   document.querySelectorAll("[data-note]").forEach(t => {
-    t.oninput = () => {
-      notes[t.dataset.note] = {v: t.value, ts: Date.now()};
-      saveLocal(); pushSoon(1500);
-    };
+    t.oninput = () => { notes[t.dataset.note] = {v: t.value, ts: Date.now()}; saveLocal(); pushSoon(1500); };
   });
   document.querySelectorAll("[data-turn]").forEach(c => {
-    c.onchange = () => {
-      done[c.dataset.turn] = {v: c.checked, ts: Date.now()};
-      saveLocal(); pushSoon(400); render();
-    };
+    c.onchange = () => { done[c.dataset.turn] = {v: c.checked, ts: Date.now()}; saveLocal(); pushSoon(400); render(); };
   });
+  document.querySelectorAll("[data-unplan]").forEach(b => {
+    b.onclick = () => { plan[b.dataset.unplan] = {v: "", ts: Date.now()}; saveLocal(); pushSoon(400); render(); };
+  });
+  document.querySelectorAll(".badge.planned").forEach(b => {
+    b.onclick = () => { plan[b.dataset.unplan] = {v: "", ts: Date.now()}; saveLocal(); pushSoon(400); render(); };
+  });
+  document.querySelectorAll("[data-pdone]").forEach(b => {
+    b.onclick = () => { done[b.dataset.pdone] = {v: true, ts: Date.now()}; saveLocal(); pushSoon(400); render(); };
+  });
+  document.querySelectorAll("[data-plan]").forEach(b => {
+    b.onclick = () => { plan[b.dataset.plan] = {v: b.dataset.day, ts: Date.now()}; saveLocal(); pushSoon(400); render(); };
+  });
+  document.querySelectorAll("[data-bringback]").forEach(b => {
+    b.onclick = () => { dropped[b.dataset.bringback] = {v: false, ts: Date.now()}; saveLocal(); pushSoon(400); render(); };
+  });
+  document.querySelectorAll("[data-dec]").forEach(b => {
+    b.onclick = () => decide(b.dataset.dec, b.dataset.id);
+  });
+  const st = document.getElementById("startTackle");
+  if (st) st.onclick = () => {
+    triageSession = true; triagePos = 0; pickDayFor = null;
+    triageSummary = {done: 0, planned: 0, dropped: 0, skipped: 0};
+    render();
+  };
+  const as = document.getElementById("autospread");
+  if (as) as.onclick = () => {
+    const loads = plannedLoads(), t = Date.now();
+    let n = 0;
+    lists().upcoming.filter(a => !planOf(a.id) && !isDropped(a.id))
+      .sort((x, y) => new Date(x.due_at) - new Date(y.due_at))
+      .forEach(a => {
+        const s = suggestDay(a, loads);
+        if (s) { plan[a.id] = {v: s, ts: t}; loads[s]++; n++; }
+      });
+    saveLocal(); pushSoon(500); render();
+  };
 }
+function switchTab(name) {
+  activeTab = name;
+  document.querySelectorAll(".tab").forEach(b => b.classList.toggle("active", b.dataset.tab === name));
+  ["today", "tackle", "planner", "grades"].forEach(t =>
+    document.getElementById("tab-" + t).style.display = t === name ? "" : "none");
+  if (name === "tackle" && lists().triage.length && !triageSession) {
+    triageSession = true; triagePos = 0; pickDayFor = null;
+    triageSummary = {done: 0, planned: 0, dropped: 0, skipped: 0};
+    render();
+  }
+  window.scrollTo(0, 0);
+}
+function renderPreserveFocus() {
+  const ae = document.activeElement;
+  const nk = ae && ae.dataset ? ae.dataset.note : null;
+  const pos = ae && nk ? ae.selectionStart : null;
+  render();
+  if (nk) {
+    const t = document.querySelector('[data-note="' + nk + '"]');
+    if (t) { t.focus(); if (pos != null) { try { t.setSelectionRange(pos, pos); } catch (e) {} } }
+  }
+}
+document.querySelectorAll(".tab").forEach(b => b.onclick = () => switchTab(b.dataset.tab));
 
 fetch("schoology.json").then(r => r.json()).then(d => {
   DATA = d;
@@ -315,11 +582,23 @@ fetch("schoology.json").then(r => r.json()).then(d => {
   [...new Set(d.assignments.map(a => a.course))].sort().forEach(c => {
     const o = document.createElement("option"); o.value = c; o.textContent = c; sel.appendChild(o);
   });
-  sel.onchange = () => { courseFilter = sel.value; render(); };
+  sel.onchange = () => { courseFilter = sel.value; triagePos = 0; render(); };
   migrateLegacy();
   render();
-  pullState(changed => { if (changed) renderPreserveFocus(); });
-  setInterval(() => pullState(changed => { if (changed) renderPreserveFocus(); }), 60000);
+  pullState(changed => {
+    if (!changed) return;
+    const ae = document.activeElement;
+    if (ae && (ae.tagName === "TEXTAREA" || ae.tagName === "INPUT")) return;
+    if (triageSession) return;
+    renderPreserveFocus();
+  });
+  setInterval(() => pullState(changed => {
+    if (!changed) return;
+    const ae = document.activeElement;
+    if (ae && (ae.tagName === "TEXTAREA" || ae.tagName === "INPUT")) return;
+    if (triageSession) return;
+    renderPreserveFocus();
+  }), 60000);
 }).catch(() => { document.getElementById("fetched").textContent = "Could not load data."; });
 </script>
 </body>
