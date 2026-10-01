@@ -400,12 +400,12 @@ function lists() {
   const byDue = (x, y) => new Date(effDue(x)) - new Date(effDue(y));
   const L = {};
   L.overdue = list.filter(a => past(a) && MISSING(a.status) && !isDone(a.id) && !isDropped(a.id)).sort(byDue);
-  L.triage = L.overdue.filter(a => !planOf(a.id));
+  L.triage = L.overdue.filter(a => !planOf(a.id) && !isSubmitted(a.id));
   L.upcoming = list.filter(a => { const ed = effDue(a); return ed && new Date(ed) >= now && !isDone(a.id) && !GRADED(a.status); }).sort(byDue);
   L.unplannedUpcoming = L.upcoming.filter(a => !planOf(a.id) && !isDropped(a.id));
   L.recent = list.filter(a => { const ed = effDue(a); return GRADED(a.status) && ed && new Date(ed) >= cutoff && !isDone(a.id); })
     .sort((x, y) => new Date(effDue(y)) - new Date(effDue(x)));
-  L.look = list.filter(a => past(a) && !MISSING(a.status) && !GRADED(a.status) && !isDone(a.id) && !isDropped(a.id) && !planOf(a.id)).sort(byDue);
+  L.look = list.filter(a => past(a) && !MISSING(a.status) && !GRADED(a.status) && !isDone(a.id) && !isDropped(a.id) && !planOf(a.id) && !isSubmitted(a.id)).sort(byDue);
   L.nodate = list.filter(a => !effDue(a) && !isDone(a.id) && !GRADED(a.status) && !isDropped(a.id));
   L.unplannedNodate = L.nodate.filter(a => !planOf(a.id));
   L.dropped = list.filter(a => isDropped(a.id));
@@ -480,7 +480,8 @@ function renderToday(L) {
   if (L.submittedRecent.length) {
     h += `<h2>Submitted<span class="count">${L.submittedRecent.length}</span></h2>`;
     h += L.submittedRecent.map(a => `<div class="check done-today"><div class="card-top"><p class="title">${esc(a.title)}</p>
-      <div><span class="badge submitted">Submitted ✓</span></div></div><p class="course">${esc(a.course)}${sLink(a)}</p></div>`).join("");
+      <div><span class="badge submitted">Submitted ✓</span></div></div><p class="course">${esc(a.course)}${sLink(a)}</p>
+      <div class="actions"><button class="btn small quiet" data-msub="${a.id}">Undo submitted</button></div></div>`).join("");
   }
   el.innerHTML = h;
 }
@@ -588,10 +589,10 @@ function ageHint(a) {
 function renderTackle(L) {
   const el = document.getElementById("tab-tackle");
   const q = L.triage;
-  let h = `<p class="hint"><b>Tackle is the inbox.</b> Every overdue assignment waits here until someone makes a call on it — done, scheduled onto the calendar, or set aside. Once scheduled, it leaves this list and lives on the calendar like everything else.</p>`;
+  let h = `<p class="hint"><b>Tackle is the inbox.</b> Every overdue assignment waits here until someone makes a call on it — done, submitted, scheduled onto the calendar, or set aside. Once decided, it leaves this list.</p>`;
   if (triageSession && triagePos < q.length) {
     const a = q[triagePos];
-    const decided = triageSummary.done + triageSummary.planned + triageSummary.dropped;
+    const decided = triageSummary.done + triageSummary.planned + triageSummary.dropped + triageSummary.submitted;
     h += `<div class="focus">
       <div class="focus-progress">Tackle the backlog · ${decided} of ${q.length} decided</div>
       <p class="title">${esc(a.title)}</p>
@@ -604,18 +605,19 @@ function renderTackle(L) {
       <div class="note-row"><textarea placeholder="Add a note…" data-note="${a.id}">${esc(noteOf(a.id))}</textarea></div>
       <div class="decide">
         <button class="btn primary" data-tdec="done" data-id="${a.id}">Done ✓</button>
+        <button class="btn blue" data-tdec="sub" data-id="${a.id}">Submitted ✓</button>
         <button class="btn blue" data-tdec="sched" data-id="${a.id}">Schedule…</button>
         <button class="btn" data-tdec="drop" data-id="${a.id}">Set aside</button>
         <button class="btn quiet" data-tdec="skip">Skip →</button>
+        <button class="btn quiet" data-tdec="exit">← All pills</button>
       </div>
-      ${statusRow(a, {noDone: true})}
       ${schedFor === a.id ? `<div class="pickrow"><input type="date" id="scheddate" min="${todayKey()}" value="${todayKey()}">
         <button class="btn blue" data-tdec="schedgo" data-id="${a.id}">Put on calendar</button></div>` : ""}
     </div>`;
   } else {
     if (triageSession && triagePos >= q.length && triageSummary) {
       const s = triageSummary;
-      h += `<div class="summary"><b>Backlog tackled.</b> Done: ${s.done} · Scheduled: ${s.planned} · Set aside: ${s.dropped}${s.skipped ? ` · Skipped: ${s.skipped}` : ""}.</div>`;
+      h += `<div class="summary"><b>Backlog tackled.</b> Done: ${s.done} · Submitted: ${s.submitted} · Scheduled: ${s.planned} · Set aside: ${s.dropped}${s.skipped ? ` · Skipped: ${s.skipped}` : ""}.</div>`;
       triageSession = false;
     }
     if (q.length) {
@@ -638,7 +640,7 @@ function renderTackle(L) {
   }
   if (L.look.length) {
     h += `<h2>Needs a look — past due, unclear status<span class="count">${L.look.length}</span></h2>
-      <p class="hint">Schoology shows no usable status for these. Give each the same treatment: done, scheduled, or set aside.</p>`;
+      <p class="hint">Schoology shows no usable status for these. Give each the same treatment: done, submitted, scheduled, or set aside.</p>`;
     h += L.look.map(a => `<div class="card"><div class="card-top"><p class="title">${esc(a.title)}</p><div>${statusBadge(a)}</div></div>
       <p class="course">${esc(a.course)} · ${esc(relDay(effDue(a)))}${a.status ? ` · status: ${esc(a.status)}` : ""}${sLink(a)}</p>
       <div class="decide">
@@ -675,6 +677,8 @@ function renderGrades(L) {
 function tdecide(action, id) {
   const t = Date.now();
   if (action === "done") { done[id] = {v: true, ts: t}; triageSummary.done++; }
+  else if (action === "sub") { submitted[id] = {v: true, ts: t}; triageSummary.submitted++; }
+  else if (action === "exit") { triageSession = false; schedFor = null; render(); return; }
   else if (action === "schedgo") {
     const inp = document.getElementById("scheddate");
     if (inp && inp.value) { plan[id] = {v: inp.value, ts: t}; triageSummary.planned++; }
@@ -768,7 +772,7 @@ function render() {
   document.querySelectorAll("[data-tsel]").forEach(b => b.onclick = () => {
     const id = b.dataset.tsel;
     triageSession = true; schedFor = null;
-    triageSummary = {done: 0, planned: 0, dropped: 0, skipped: 0};
+    triageSummary = {done: 0, planned: 0, dropped: 0, skipped: 0, submitted: 0};
     const q = lists().triage; triagePos = Math.max(0, q.findIndex(a => a.id === id));
     render();
   });
@@ -790,7 +794,7 @@ function render() {
   const st = document.getElementById("startTackle");
   if (st) st.onclick = () => {
     triageSession = true; triagePos = 0; schedFor = null;
-    triageSummary = {done: 0, planned: 0, dropped: 0, skipped: 0};
+    triageSummary = {done: 0, planned: 0, dropped: 0, skipped: 0, submitted: 0};
     render();
   };
 }
