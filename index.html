@@ -182,6 +182,13 @@ a{color:var(--accent)}
 .pickbtn .pp{font-size:10px;font-weight:700;min-height:12px}
 .pickbtn.on{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
 .pickbtn:disabled{opacity:.35;cursor:not-allowed}
+.pickbtn.due{border-color:var(--orange-deep);color:var(--orange-deep)}
+.navcount{display:inline-block;font-size:11px;font-weight:800;background:var(--orange);color:#fff;border-radius:99px;padding:1px 7px;margin-left:6px;vertical-align:2px}
+.snoozedline{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);margin-top:4px}
+.snoozedline .chip{height:32px;font-size:12px}
+.dueset{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dueset input[type=date]{height:40px;padding:0 10px;border-radius:10px;border:1.5px solid var(--border2);font-size:14px;font-family:inherit;background:#fff}
+.dueset .chip{height:40px;padding:0 14px}
 .plansum{font-size:13px;color:var(--muted)}
 .planfoot{display:flex;justify-content:flex-end;gap:10px}
 .saveplan{height:44px;padding:0 22px;border-radius:12px;border:0;background:var(--accent);color:#fff;font-size:15px;font-weight:700}
@@ -380,7 +387,7 @@ const ICONS = {
 };
 
 /* ================= v2 state store ================= */
-// v2state: id -> {v:{done,done_at,part_done_days[],snoozed_until,ask_parent,parent_answer,plan:{nights[],set_by},note,parent_asked_at}, ts, fts:{field:ts}}
+// v2state: id -> {v:{done,done_at,submitted,part_done_days[],snoozed_until,ask_parent,parent_answer,plan:{nights[],set_by},note,manual_due,parent_asked_at}, ts, fts:{field:ts}}
 // v2catchup/v2nights/v2extra/v2pick: {v, ts}. v1 maps are read for migration + manual due dates.
 // v2pick pins tonight's catch-up pick for the day: {d: dayKey, id} — so finishing
 // it shows all-clear instead of auto-promoting the next old item.
@@ -395,6 +402,8 @@ try {
 } catch (e) { /* start clean; remote refills */ }
 const saveLocal = () => { try { localStorage.setItem(LS_V2, JSON.stringify({ v2state, v2catchup, v2nights, v2extra, v2pick, v1maps })); } catch (e) {} };
 const st = id => (v2state[id] && v2state[id].v) || {};
+/* done for list purposes: turned in OR marked submitted */
+const doneV2 = s => s.done === "turned_in" || !!s.submitted;
 function touch(id, fn) {
   if (!v2state[id]) v2state[id] = { v: {}, ts: 0, fts: {} };
   const e = v2state[id], now = Date.now();
@@ -402,8 +411,12 @@ function touch(id, fn) {
   e.ts = now;
   saveLocal(); pushSoon(600); render();
 }
-/* Manual due dates live in the v1 duedates map (frozen once v1 retires, but respected). */
-const manualDueK = id => (v1maps.duedates[id] && v1maps.duedates[id].v) || "";
+/* Manual due dates: v2's own field first, then the frozen v1 duedates map. */
+const manualDueK = id => {
+  const v = (v2state[id] && v2state[id].v) || {};
+  if (v.manual_due) return v.manual_due;
+  return (v1maps.duedates[id] && v1maps.duedates[id].v) || "";
+};
 function effDueKey(a) {
   const m = manualDueK(a.id);
   if (m) return m;
@@ -430,7 +443,7 @@ function migrateV1toV2() {
   };
   const iso = ts => new Date(ts).toISOString();
   for (const id in M.done) { const en = M.done[id]; if (en.v) { setF(id, "done", "turned_in", en.ts); setF(id, "done_at", iso(en.ts), en.ts); } }
-  for (const id in M.submitted) { const en = M.submitted[id]; if (en.v) { setF(id, "done", "turned_in", en.ts); setF(id, "done_at", iso(en.ts), en.ts); } }
+  for (const id in M.submitted) { const en = M.submitted[id]; if (en.v) setF(id, "submitted", true, en.ts); }
   for (const id in M.notes) { const en = M.notes[id]; if (en.v) setF(id, "note", en.v, en.ts); }
   for (const id in M.plan) {
     const en = M.plan[id];
@@ -540,7 +553,7 @@ function pastDue(ctx) {
     const dk = ctxDueKey(ctx, a), s = ctx.getState(a.id);
     if (!dk || dk >= ctx.today) continue;
     if (RESOLVED.has(a.status)) continue;
-    if (s.done === "turned_in" || s.parent_answer === "skip") continue;
+    if (doneV2(s) || s.parent_answer === "skip") continue;
     if (ctxSnoozed(ctx, a.id)) continue;
     out.push(a);
   }
@@ -605,7 +618,7 @@ function tonight(ctx) {
     else if (dk === ctx.today || dk === addDays(ctx.today, 1)) reason = "due";
     else if (dk && dk >= addDays(ctx.today, -2) && dk < ctx.today) reason = "late";
     else continue;
-    out.push({ a, reason, done: s.done === "turned_in", s });
+    out.push({ a, reason, done: doneV2(s), s });
   }
   // order: late first, then by due date, catch-up last
   const grp = r => r.reason === "catchup" ? 2 : (r.a && ctxDueKey(ctx, r.a) < ctx.today ? 0 : 1);
@@ -617,7 +630,7 @@ function bigStuff(ctx) {
   for (const a of ctx.items) {
     const dk = ctxDueKey(ctx, a), s = ctx.getState(a.id);
     if (!dk || dk < ctx.today || dk > end) continue;
-    if (s.done === "turned_in" || s.parent_answer === "skip" || RESOLVED.has(a.status)) continue;
+    if (doneV2(s) || s.parent_answer === "skip" || RESOLVED.has(a.status)) continue;
     if (ctxSnoozed(ctx, a.id)) continue;
     const t = String(a.type || "").toLowerCase();
     if (["test", "quiz", "project"].includes(t)) items.push({ a, dk });
@@ -699,16 +712,18 @@ function railHTML(active, ctx) {
   return `<nav class="rail" aria-label="Main">
     <div class="wordmark">Schoolwork</div>
     ${link("/tonight", ICONS.moon, "Tonight")}
+    ${link("/overdue", ICONS.warn, "Overdue" + (pastDue(ctx).length ? `<span class="navcount">${pastDue(ctx).length}</span>` : ""))}
     ${link("/week", ICONS.cal, "This week")}
     ${link("/classes", ICONS.bars, "Classes")}
     <div class="railfoot">${esc(upd)}<br><span data-syncstat>Syncing…</span></div>
   </nav>`;
 }
-function tabbarHTML(active) {
+function tabbarHTML(active, ctx) {
+  const odc = pastDue(ctx).length;
   const t = (path, icon, label) =>
     `<a class="${active === path ? "on" : ""}" href="#${path}">${icon}<span>${label}</span></a>`;
   return `<nav class="tabbar" aria-label="Main">
-    ${t("/tonight", ICONS.moon, "Tonight")}${t("/week", ICONS.cal, "This week")}${t("/classes", ICONS.bars, "Classes")}
+    ${t("/tonight", ICONS.moon, "Tonight")}${t("/overdue", ICONS.warn, "Overdue" + (odc ? ` (${odc})` : ""))}${t("/week", ICONS.cal, "This week")}${t("/classes", ICONS.bars, "Classes")}
   </nav>`;
 }
 function dueLine(ctx, a, reason, s) {
@@ -766,15 +781,40 @@ function viewTonight(ctx, classFilter) {
       <div class="tlist">${cards}</div>
       ${catchNote}
     </div>`;
+  return taskChrome(ctx, left);
+}
+/* Shared task pane (desktop) / bottom sheet (phone), used by every tab. */
+function taskChrome(ctx, inner) {
   const isDesktop = window.matchMedia("(min-width:901px)").matches;
   const pane = isDesktop
     ? `<aside class="taskwrap${selId ? "" : " empty"}" aria-label="Selected task">${selId ? taskHTML(ctx, byId(selId)) : ""}</aside>`
     : "";
-  const grid = isDesktop ? `<div class="tonight-grid">${left}${pane}</div>` : left;
-  const sheet = (!isDesktop && selId) ? `
-    <div class="sheetback" data-action="close-task"></div>
-    <div class="sheet" role="dialog" aria-label="Task"><div class="grab"></div>${taskHTML(ctx, byId(selId))}</div>` : "";
-  return grid + sheet;
+  return isDesktop ? `<div class="tonight-grid">${inner}${pane}</div>` : inner;
+}
+function taskSheetHTML(ctx) {
+  if (!selId || window.matchMedia("(min-width:901px)").matches) return "";
+  const a = byId(selId);
+  if (!a) return "";
+  return `<div class="sheetback" data-action="close-task"></div>
+    <div class="sheet" role="dialog" aria-label="Task"><div class="grab"></div>${taskHTML(ctx, a)}</div>`;
+}
+/* ---------- Overdue ---------- */
+function viewOverdue(ctx) {
+  const pd = pastDue(ctx), n = pd.length;
+  const head = `<div class="tonight-head"><div class="eyebrow">OVERDUE</div>
+    <h1>${n === 1 ? "1 overdue" : n + " overdue"}</h1>
+    <div class="weeksub">Past due and still open — not done, not snoozed, not skipped. Tap one for options.</div></div>`;
+  const list = pd.map(a => {
+    const dk = ctxDueKey(ctx, a), late = daysBetween(dk, ctx.today);
+    const sel = selId === a.id ? " sel" : "";
+    return `<div class="tcard${sel}" data-action="open-task" data-id="${a.id}" role="button" tabindex="0">
+      <button class="donecircle" data-action="toggle-done" data-id="${a.id}" aria-label="Mark done: ${esc(a.title)}"></button>
+      <div class="tbody">
+        <div class="trow1">${tagHTML(a.course)}<span class="when late">${late} ${late === 1 ? "day" : "days"} late &middot; due ${esc(fmtDay(dk))}</span></div>
+        <div class="ttitle">${esc(a.title)}</div>
+      </div></div>`;
+  }).join("") || `<div class="empty">Nothing overdue.</div>`;
+  return taskChrome(ctx, `<div>${head}<div class="tlist">${list}</div></div>`);
 }
 function taskHTML(ctx, a) {
   if (!a) return "";
@@ -784,6 +824,7 @@ function taskHTML(ctx, a) {
   const canPart = PLAN_TYPES.has(t) || (s.plan && (s.plan.nights || []).length);
   const ptag = s.plan && s.plan.set_by === "parent" ? `<span class="parenttag">Parent planned this</span>` : "";
   const asked = s.ask_parent && !s.parent_answer ? `<span class="askedbadge">asked</span>` : "";
+  const manual = s.manual_due || "";
   return `<div class="taskhead">
       <div class="trow1">${tagHTML(a.course)}<span class="when" style="color:var(--muted)">${esc(a.type || "")}</span>${asked}${ptag}</div>
       <h2>${esc(a.title)}</h2>
@@ -795,13 +836,32 @@ function taskHTML(ctx, a) {
         <span>Turned it in<span class="sub">Finished and submitted</span></span></button>
       ${canPart ? `<button class="abtn ghost" data-action="part-done" data-id="${a.id}">${ICONS.clock}
         <span>Did my part for today<span class="sub">Bigger job. It comes back tomorrow.</span></span></button>` : ""}
-      <div class="notnow"><h3>Not now</h3>
-        <p>"Ask a parent" is for things that aren't real work. It goes on their list, not off yours.</p>
+      <button class="abtn ghost" data-action="toggle-submitted" data-id="${a.id}">${ICONS.check}
+        <span>${s.submitted ? "Submitted &#10003;" : "Mark submitted"}<span class="sub">Teacher has it, even if Schoology doesn't show it yet</span></span></button>
+      <div class="notnow"><h3>Snooze</h3>
         <div class="chips">
           <button class="chip" data-action="snooze-tomorrow" data-id="${a.id}">Tomorrow</button>
-          <button class="chip" data-action="snooze-weekend" data-id="${a.id}">Weekend</button>
+          <button class="chip" data-action="snooze-3d" data-id="${a.id}">3 days</button>
+          <button class="chip" data-action="snooze-1w" data-id="${a.id}">1 week</button>
+          <button class="chip" data-action="snooze-2w" data-id="${a.id}">2 weeks</button>
+          <button class="chip" data-action="snooze-1m" data-id="${a.id}">1 month</button>
+          <button class="chip" data-action="snooze-indef" data-id="${a.id}">Indefinitely</button>
+        </div>
+        ${s.snoozed_until ? `<div class="snoozedline"><span>Snoozed until ${s.snoozed_until === "indef" ? "you bring it back" : esc(fmtDay(s.snoozed_until))}</span><button class="chip" data-action="unsnooze" data-id="${a.id}">Bring back</button></div>` : ""}</div>
+      <div class="notnow"><h3>Not real work?</h3>
+        <p>"Not real work" takes it off every list. "Ask a parent" puts it on their list instead.</p>
+        <div class="chips">
+          <button class="chip" data-action="mark-noise" data-id="${a.id}">Not real work</button>
+          ${s.parent_answer === "skip" ? `<button class="chip" data-action="unskip" data-id="${a.id}">It's real &mdash; put it back</button>` : ""}
           <button class="chip" data-action="ask-parent" data-id="${a.id}">Ask a parent</button>
         </div></div>
+      <div class="notnow"><h3>Due date</h3>
+        <div class="dueset">
+          <input type="date" id="tduedate" value="${esc(manual)}" aria-label="Due date">
+          <button class="chip" data-action="save-due" data-id="${a.id}">Set</button>
+          ${manual ? `<button class="chip" data-action="clear-due" data-id="${a.id}">Clear</button>` : ""}
+        </div>
+        ${manual ? `<p>Due date set by you.</p>` : ""}</div>
     </div>
     <div><label class="notelabel" for="tnote">Note for a parent (optional)</label>
       <input class="notein" id="tnote" data-note="${a.id}" value="${esc(s.note || "")}" placeholder="e.g. We finish it in class Friday"></div>`;
@@ -827,7 +887,7 @@ function weekDayItems(ctx, day) {
   const out = [];
   for (const a of ctx.items) {
     const s = st(a.id);
-    if (s.done === "turned_in" || s.parent_answer === "skip" || RESOLVED.has(a.status)) continue;
+    if (doneV2(s) || s.parent_answer === "skip" || RESOLVED.has(a.status)) continue;
     if (isSnoozed(a.id, ctx.today)) continue;
     if (hiddenInClass(ctx, a) && !showHiddenWeek) continue;
     const dk = ctxDueKey(ctx, a), nights = (s.plan || {}).nights || [];
@@ -846,7 +906,7 @@ function weekCardHTML(ctx, it, day, asParent) {
   const move = asParent
     ? `<button class="movebtn" data-action="move-open" data-id="${a.id}">Move</button>`
     : `<button class="movebtn" data-action="open-plan" data-id="${a.id}">Plan</button>`;
-  return `<div class="wcard ${cls}"${border} draggable="true" data-id="${a.id}">
+  return `<div class="wcard ${cls}"${border} draggable="true" data-id="${a.id}" data-action="open-task" role="button" tabindex="0" title="Open task options">
     <div class="trow1">${tagHTML(a.course)}${ptag}</div>
     <div class="wt">${esc(a.title)}${planned && !due ? `, part ${(s.plan.nights || []).indexOf(day) + 1} of ${(s.plan.nights || []).length}` : ""}</div>
     <div class="trow1"><span class="wm">${esc(weekMeta(ctx, a, day, s))}</span>${move}</div>
@@ -904,7 +964,7 @@ function viewWeek(ctx, asParent) {
     const label = day === ctx.today ? "TODAY" : day === addDays(ctx.today, 1) ? "TOMORROW" : fmtDay(day).toUpperCase();
     const rows = items.map(it => {
       const { a, s, due, planned } = it;
-      return `<div class="wrow${planned && !due ? " dashed" : ""}">
+      return `<div class="wrow${planned && !due ? " dashed" : ""}" data-action="open-task" data-id="${a.id}" role="button" tabindex="0">
         ${tagHTML(a.course)}
         <span class="wt">${esc(a.title)}${planned && !due ? `, part ${(s.plan.nights || []).indexOf(day) + 1} of ${(s.plan.nights || []).length}` : ""}</span>
         <span class="wm" style="font-size:12px;color:var(--muted);font-weight:600">${esc(weekMeta(ctx, a, day, s))}</span>
@@ -919,7 +979,7 @@ function viewWeek(ctx, asParent) {
     ${showHiddenWeek ? "Hide" : "Show " + hiddenCount + " in-class grades (nothing to do)"}</button>` : "";
   const mweek = `<div class="mweek">${stripHTML}${secs || `<div class="empty">Nothing planned this week.</div>`}${hidden}</div>`;
   const back = asParent ? `<a class="backlink" href="#/parent">← Back to parent check-in</a>` : "";
-  return back + head + banner + grid + mweek;
+  return taskChrome(ctx, back + head + banner + grid + mweek);
 }
 /* ---------- plan dialog ---------- */
 function planSummary(a, n, picked, dk) {
@@ -928,22 +988,23 @@ function planSummary(a, n, picked, dk) {
   if (picked.length < n) return "Pick " + (n - picked.length) + " more " + (n - picked.length === 1 ? "night." : "nights.");
   if (!dk) return n + (n === 1 ? " part." : " parts.") + " First part " + fmtDay(sorted[0]) + ".";
   const last = sorted[sorted.length - 1], gap = daysBetween(last, dk);
-  const when = gap <= 1 ? "the night before it's due" : gap < 7 ? gap + " days before it's due" : "about a week before it's due";
+  const when = gap <= 1 ? "the night before it's due" : gap < 14 ? gap + " days before it's due" : "about " + Math.round(gap / 7) + " weeks before it's due";
   return n + (n === 1 ? " part." : " parts.") + " Last one lands " + when + ".";
 }
 function planDialogHTML(ctx) {
   const a = byId(planDlg.id);
   if (!a) return "";
   const dk = effDueKey(a);
-  const strip = []; for (let i = 0; i < 7; i++) strip.push(addDays(ctx.today, i));
+  const strip = []; for (let i = 0; i < 28; i++) strip.push(addDays(ctx.today, i));
   const dows = ["S", "M", "T", "W", "T", "F", "S"];
   const cells = strip.map(d => {
     const dis = (dk && d >= dk) || planDlg.picked.length >= planDlg.n && !planDlg.picked.includes(d);
     const on = planDlg.picked.includes(d);
+    const isDue = dk && d === dk;
     const parts = st(a.id).plan && (st(a.id).plan.nights || []).includes(d) ? "·" : "";
-    return `<button class="pickbtn${on ? " on" : ""}" data-action="plan-toggle" data-day="${d}"${dis ? " disabled" : ""}>
+    return `<button class="pickbtn${on ? " on" : ""}${isDue ? " due" : ""}" data-action="plan-toggle" data-day="${d}"${dis ? " disabled" : ""}>
       <span class="pd">${dows[new Date(d + "T12:00:00Z").getUTCDay()]}</span><span class="pn">${parseInt(d.slice(8), 10)}</span>
-      <span class="pp">${on ? "✓" : parts}</span></button>`;
+      <span class="pp">${isDue ? "due" : on ? "✓" : parts}</span></button>`;
   }).join("");
   const counts = [1, 2, 3, 4].map(n =>
     `<button class="countbtn${planDlg.n === n ? " on" : ""}" data-action="plan-n" data-n="${n}">${n}</button>`).join("");
@@ -957,7 +1018,7 @@ function planDialogHTML(ctx) {
         <div class="weeksub">${dk ? "Due " + fmtDay(dk) : "No due date"}</div></div>
       <div class="plangrid">
         <div><div class="notelabel" style="margin-bottom:8px">How many nights?</div><div class="countgrid">${counts}</div></div>
-        <div><div class="notelabel" style="margin-bottom:8px">Which nights?</div><div class="pickgrid">${cells}</div></div>
+        <div><div class="notelabel" style="margin-bottom:8px">Which nights? <span style="font-weight:400">&mdash; next 4 weeks</span></div><div class="pickgrid">${cells}</div></div>
       </div>
       <div class="plansum">${esc(planSummary(a, planDlg.n, planDlg.picked, dk))}</div>
       ${who}
@@ -988,7 +1049,7 @@ function moveSheetHTML(ctx) {
   const a = byId(moveId);
   if (!a) return "";
   const dk = effDueKey(a);
-  const days = []; for (let i = 0; i < 7; i++) days.push(addDays(ctx.today, i));
+  const days = []; for (let i = 0; i < 14; i++) days.push(addDays(ctx.today, i));
   const cells = days.map(d => {
     const lbl = d === ctx.today ? "Tonight" : fmtDay(d);
     return `<button class="chip" style="height:52px;font-size:15px" data-action="move-to" data-day="${d}"${(dk && d >= dk) ? " disabled style='opacity:.35'" : ""}>${esc(lbl)}</button>`;
@@ -1008,7 +1069,7 @@ function viewClasses(ctx) {
   for (const a of ctx.items) {
     const s = st(a.id), dk = ctxDueKey(ctx, a);
     if (!dk || dk < ctx.today || dk > addDays(ctx.today, 14)) continue;
-    if (s.done === "turned_in" || s.parent_answer === "skip" || RESOLVED.has(a.status)) continue;
+    if (doneV2(s) || s.parent_answer === "skip" || RESOLVED.has(a.status)) continue;
     if (isSnoozed(a.id, ctx.today)) continue;
     const c = shortCourse(a.course);
     (upByCourse[c] = upByCourse[c] || []).push({ a, dk });
@@ -1183,7 +1244,7 @@ function doAction(action, id, el) {
   const ctx = mkCtx(DATA.assignments, todayKey());
   const s = st(id);
   switch (action) {
-    case "open-task": selId = id; break;
+    case "open-task": if (Date.now() - lastDropAt < 400) break; selId = id; break;
     case "close-task": selId = null; break;
     case "clear-filter": location.hash = "#/tonight"; return;
     case "toggle-done":
@@ -1206,6 +1267,25 @@ function doAction(action, id, el) {
     }
     case "snooze-tomorrow": selId = null; touch(id, v => { v.snoozed_until = addDays(todayKey(), 1); }); return;
     case "snooze-weekend": selId = null; touch(id, v => { v.snoozed_until = nextWeekday(todayKey(), 6); }); return;
+    case "snooze-3d": selId = null; touch(id, v => { v.snoozed_until = addDays(todayKey(), 3); }); return;
+    case "snooze-1w": selId = null; touch(id, v => { v.snoozed_until = addDays(todayKey(), 7); }); return;
+    case "snooze-2w": selId = null; touch(id, v => { v.snoozed_until = addDays(todayKey(), 14); }); return;
+    case "snooze-1m": selId = null; touch(id, v => { v.snoozed_until = addDays(todayKey(), 30); }); return;
+    case "snooze-indef": selId = null; touch(id, v => { v.snoozed_until = "indef"; }); return;
+    case "unsnooze": touch(id, v => { v.snoozed_until = null; }); return;
+    case "mark-noise": selId = null; touch(id, v => { v.parent_answer = "skip"; v.ask_parent = false; }); return;
+    case "unskip": touch(id, v => { v.parent_answer = null; }); return;
+    case "toggle-submitted":
+      selId = null;
+      touch(id, v => { v.submitted = !v.submitted; });
+      markNightDoneIfEmpty(mkCtx(DATA.assignments, todayKey()));
+      render(); return;
+    case "save-due": {
+      const inp = document.getElementById("tduedate");
+      touch(id, v => { v.manual_due = (inp && inp.value) || null; });
+      return;
+    }
+    case "clear-due": touch(id, v => { v.manual_due = null; }); return;
     case "ask-parent": selId = null; touch(id, v => { v.ask_parent = true; }); return;
     case "open-plan": { const asP = parseHash().params.get("as") === "parent"; openPlan(id, asP); return; }
     case "plan-n": planDlg.n = +el.dataset.n; planDlg.picked = planDlg.picked.slice(0, planDlg.n); render(); return;
@@ -1261,7 +1341,7 @@ document.addEventListener("keydown", e => {
   }
 });
 /* drag & drop: week columns + parent catch-up order */
-let dragId = null;
+let dragId = null, lastDropAt = 0;
 document.addEventListener("dragstart", e => {
   const c = e.target.closest && e.target.closest("[draggable]");
   if (c && c.dataset.id) { dragId = c.dataset.id; e.dataTransfer.effectAllowed = "move"; try { e.dataTransfer.setData("text/plain", dragId); } catch (x) {} }
@@ -1286,7 +1366,7 @@ document.addEventListener("drop", e => {
     order.splice(idx < 0 ? order.length : idx, 0, id);
     v2catchup = { v: order, ts: Date.now() }; saveLocal(); pushSoon(600); render();
   }
-  dragId = null;
+  dragId = null; lastDropAt = Date.now();
 });
 /* ================= router + init ================= */
 function parseHash() {
@@ -1305,14 +1385,16 @@ function render() {
   if (path === "/parent") {
     main = viewParent(ctx);
   } else {
-    chrome = railHTML(path, ctx) + tabbarHTML(path);
+    chrome = railHTML(path, ctx) + tabbarHTML(path, ctx);
     if (path === "/week") main = viewWeek(ctx, asParent);
     else if (path === "/classes") main = viewClasses(ctx);
+    else if (path === "/overdue") main = viewOverdue(ctx);
     else main = viewTonight(ctx, params.get("class"));
   }
   let overlays = "";
   if (planDlg) overlays += planDialogHTML(ctx);
   if (moveId) overlays += moveSheetHTML(ctx);
+  overlays += taskSheetHTML(ctx);
   $("app").innerHTML = chrome + `<main class="stagemain">${main}</main>` + overlays;
   setSyncStatus(syncStatus);
 }
