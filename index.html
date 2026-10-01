@@ -20,6 +20,7 @@
   header { background: var(--ink); color: #fff; padding: 18px 20px 0; position: sticky; top: 0; z-index: 5; }
   header h1 { margin: 0; font-size: 20px; font-weight: 700; }
   header p { margin: 4px 0 10px; font-size: 12px; color: #b6bdc9; }
+  .syncstat { font-size: 12px; }
   .tabs { display: flex; gap: 4px; overflow-x: auto; padding-bottom: 10px; }
   .tab { background: none; border: none; color: #b6bdc9; font: inherit; font-size: 14px; font-weight: 600;
          padding: 8px 14px; border-radius: 10px 10px 0 0; cursor: pointer; white-space: nowrap; }
@@ -144,7 +145,7 @@
 <body>
 <header>
   <h1>Schoolwork</h1>
-  <p id="fetched">Loading…</p>
+  <p><span id="fetched">Loading…</span> · <span id="syncstat" class="syncstat">Syncing…</span></p>
   <nav class="tabs" id="tabs">
     <button class="tab active" data-tab="today">Today</button>
     <button class="tab" data-tab="planner">Planner</button>
@@ -234,18 +235,47 @@ function mergeState(remote) {
   return changed;
 }
 
-let pushTimer = null;
-function pushState() {
+let pushTimer = null, pendingPush = false, syncStatus = "starting";
+function setSyncStatus(s) {
+  syncStatus = s;
+  const el = document.getElementById("syncstat");
+  if (!el) return;
+  const map = {
+    saving: ["Saving…", "var(--muted)"],
+    saved: ["Saved ✓", "var(--green)"],
+    offline: ["Offline — will retry", "var(--red)"],
+    starting: ["Syncing…", "var(--muted)"]
+  };
+  const [txt, col] = map[s] || map.starting;
+  el.textContent = txt;
+  el.style.color = col;
+}
+// Push with a real acknowledgement: HTTP ok AND a JSON body containing the
+// state maps. Anything else marks the write pending and retries it on the
+// next successful poll, on reconnect, or on page hide.
+function pushState(opts = {}) {
   clearTimeout(pushTimer); pushTimer = null;
-  fetch(SYNC_URL + "?action=write&data=" + encodeURIComponent(JSON.stringify({notes, done, submitted, plan, dropped, daily, duedates, noise, snoozed})))
-    .catch(() => {}); // offline: stays local, syncs on next change or poll
+  pendingPush = false;
+  setSyncStatus("saving");
+  fetch(SYNC_URL + "?action=write&data=" + encodeURIComponent(JSON.stringify(MAPREF())), opts.keepalive ? {keepalive: true} : {})
+    .then(r => { if (!r.ok) throw new Error("http " + r.status); return r.json(); })
+    .then(remote => {
+      if (!remote || typeof remote !== "object" || !("notes" in remote)) throw new Error("bad ack");
+      setSyncStatus("saved");
+    })
+    .catch(() => { pendingPush = true; setSyncStatus("offline"); });
 }
 const pushSoon = ms => { clearTimeout(pushTimer); pushTimer = setTimeout(pushState, ms); };
 function pullState(cb) {
   fetch(SYNC_URL + "?action=read").then(r => r.json()).then(remote => {
-    cb(mergeState(remote));
-  }).catch(() => cb(false));
+    const changed = mergeState(remote);
+    if (pendingPush) pushState(); // a write failed earlier — retry now
+    else if (syncStatus === "starting" || syncStatus === "offline") setSyncStatus("saved");
+    cb(changed);
+  }).catch(() => { setSyncStatus("offline"); cb(false); });
 }
+window.addEventListener("online", () => { if (pendingPush) pushState(); });
+window.addEventListener("pagehide", () => { if (pushTimer || pendingPush) pushState({keepalive: true}); });
 
 // One-time migration from the old per-browser format (course|title|due keys).
 function migrateLegacy() {
@@ -358,6 +388,16 @@ function activeOn(a, k) {
   if (!e) return k >= s && k <= addDaysK(s, 13); // no due date: 14-day window from start
   return k >= s && k <= e;
 }
+// A plan whose window ended without the work being finished. These vanish
+// from Today and the calendar but still carry a plan, so they don't appear in
+// the unplanned lists either — without this they become hard to find.
+function planExpired(a) {
+  const s = planOf(a.id);
+  if (!s || isDone(a.id) || isDropped(a.id) || isNoise(a.id) || isSnoozed(a.id)) return false;
+  const e = endK(a);
+  const lastK = e || addDaysK(s, 13); // mirrors activeOn's 14-day undated window
+  return lastK < todayKey();
+}
 function dayPos(a, k) {
   const days = workDays(a), i = days.indexOf(k);
   const e = endK(a);
@@ -393,15 +433,23 @@ function statusBadge(a) {
   return out;
 }
 
+// Red "late" styling is reserved for work someone still needs to do —
+// submitted, graded, exempt, or collected items never get it just because
+// their deadline passed.
+function needsAction(a) {
+  const ed = effDue(a);
+  return !!(ed && new Date(ed) < new Date() && !isDone(a.id) && !isSubmitted(a.id)
+    && !GRADED(a.status) && !RESOLVED_STATUS(a.status));
+}
 function card(a) {
   const ed = effDue(a);
-  const past = ed && new Date(ed) < new Date();
-  const dueCls = past && !isDone(a.id) ? "due late" : "due";
-  return `<div class="card ${past && !isDone(a.id) ? "overdue" : ""}">
+  const late = needsAction(a);
+  const dueCls = late ? "due late" : "due";
+  return `<div class="card ${late ? "overdue" : ""}">
     <div class="card-top"><p class="title">${esc(a.title)}</p><div>${statusBadge(a)}</div></div>
     <p class="course">${esc(a.course)}${sLink(a)}</p>
     <div class="meta"><span class="tag">${esc(a.type || "other")}</span>
-      ${a.points != null ? `<span class="tag">${a.points} pt${a.points === 1 ? "" : "s"}</span>` : ""}
+      ${hasPts(a) ? `<span class="tag">${esc(ptsTxt(a))}</span>` : ""}
       <span class="${dueCls}">${esc(relDay(ed))}${ed ? " · " + esc(dtFmt.format(new Date(ed))) : ""}</span>
       ${hasManualDue(a) ? `<span class="tag" title="You assigned this date; clear it in the Planner to go back to Schoology's">due date set by you</span>` : ""}
     </div>
@@ -416,6 +464,15 @@ let selectedId = null, deferFor = null, schedFor = null, snoozeFor = null;
 let triageSession = false, triagePos = 0, triageSummary = null;
 const MISSING = s => ["missing", "incomplete", "missing annotation"].includes((s || "").toLowerCase());
 const GRADED = s => ["graded", "submitted"].includes((s || "").toLowerCase());
+// Schoology statuses that mean "nothing to do". Absent is deliberately NOT
+// here — it stays in triage with its label until someone makes the call.
+const RESOLVED_STATUS = s => ["exempt", "collected"].includes((s || "").toLowerCase());
+// Points arrive as strings and are "" when Schoology has none — "" is not a value.
+const hasPts = a => a.points !== "" && a.points != null;
+const ptsTxt = a => `${a.points} pt${String(a.points) === "1" ? "" : "s"}`;
+// One definition of "nothing left to do": family-marked done/submitted, or
+// Schoology says graded, submitted, exempt, or collected.
+const isResolved = a => isDone(a.id) || isSubmitted(a.id) || GRADED(a.status) || RESOLVED_STATUS(a.status);
 const byId = id => DATA.assignments.find(a => a.id === id);
 
 function lists() {
@@ -426,18 +483,19 @@ function lists() {
   const L = {};
   L.overdue = list.filter(a => past(a) && MISSING(a.status) && !isDone(a.id) && !isDropped(a.id) && !isNoise(a.id) && !isSnoozed(a.id)).sort(byDue);
   L.triage = L.overdue.filter(a => !planOf(a.id) && !isSubmitted(a.id));
-  L.upcoming = list.filter(a => { const ed = effDue(a); return ed && new Date(ed) >= now && !isDone(a.id) && !GRADED(a.status) && !isNoise(a.id) && !isSnoozed(a.id); }).sort(byDue);
+  L.upcoming = list.filter(a => { const ed = effDue(a); return ed && new Date(ed) >= now && !isDone(a.id) && !isSubmitted(a.id) && !GRADED(a.status) && !RESOLVED_STATUS(a.status) && !isNoise(a.id) && !isSnoozed(a.id); }).sort(byDue);
   L.unplannedUpcoming = L.upcoming.filter(a => !planOf(a.id) && !isDropped(a.id));
   L.recent = list.filter(a => { const ed = effDue(a); return GRADED(a.status) && ed && new Date(ed) >= cutoff && !isDone(a.id); })
     .sort((x, y) => new Date(effDue(y)) - new Date(effDue(x)));
-  L.look = list.filter(a => past(a) && !MISSING(a.status) && !GRADED(a.status) && !isDone(a.id) && !isDropped(a.id) && !planOf(a.id) && !isSubmitted(a.id) && !isNoise(a.id) && !isSnoozed(a.id)).sort(byDue);
-  L.nodate = list.filter(a => !effDue(a) && !isDone(a.id) && !GRADED(a.status) && !isDropped(a.id) && !isNoise(a.id) && !isSnoozed(a.id));
+  L.look = list.filter(a => past(a) && !MISSING(a.status) && !GRADED(a.status) && !RESOLVED_STATUS(a.status) && !isDone(a.id) && !isDropped(a.id) && !planOf(a.id) && !isSubmitted(a.id) && !isNoise(a.id) && !isSnoozed(a.id)).sort(byDue);
+  L.nodate = list.filter(a => !effDue(a) && !isDone(a.id) && !GRADED(a.status) && !RESOLVED_STATUS(a.status) && !isDropped(a.id) && !isNoise(a.id) && !isSnoozed(a.id));
   L.unplannedNodate = L.nodate.filter(a => !planOf(a.id));
   L.dropped = list.filter(a => isDropped(a.id));
   L.noise = list.filter(a => isNoise(a.id));
   L.snoozed = list.filter(a => isSnoozed(a.id));
+  L.expired = list.filter(a => planExpired(a)).sort(byDue);
   const t = todayKey();
-  L.todayActive = list.filter(a => activeOn(a, t) && !isDone(a.id)).sort(byDue);
+  L.todayActive = list.filter(a => activeOn(a, t) && !isResolved(a)).sort(byDue);
   L.needsSubmit = list.filter(a => isDone(a.id) && !isSubmitted(a.id) && !isNoise(a.id) && !isSnoozed(a.id));
   const weekAgo = Date.now() - 7 * 864e5;
   L.submittedRecent = list.filter(a => isSubmitted(a.id) && (submitted[a.id].ts || 0) >= weekAgo);
@@ -451,7 +509,7 @@ function checkRow(a, L) {
   const state = rec ? rec.v : "pending";
   let inner = `<div class="card-top"><p class="title">${esc(a.title)}</p><div>${statusBadge(a)}</div></div>
     <p class="course">${esc(a.course)}</p>
-    <div class="dayline">${esc(dayPos(a, t))} · ${esc(relDay(effDue(a)))}${a.points != null ? ` · ${a.points} pts` : ""}${sLink(a)}</div>
+    <div class="dayline">${esc(dayPos(a, t))} · ${esc(relDay(effDue(a)))}${hasPts(a) ? ` · ${esc(ptsTxt(a))}` : ""}${sLink(a)}</div>
     ${a.teacher_comment ? `<div class="comment"><b>Teacher comment</b>${esc(a.teacher_comment)}</div>` : ""}`;
   if (state === "did") {
     inner += `<div class="actions"><span class="badge completed">Today's portion done ✓</span>
@@ -516,7 +574,7 @@ function renderToday(L) {
 /* ---------- Planner: 14-day calendar ---------- */
 function calChip(a, kind, k, L) {
   const label = kind === "due"
-    ? `<b>DUE</b> ${esc(a.title)}<span class="sub">${esc(a.course)}${a.points != null ? ` · ${a.points} pts` : ""}</span>`
+    ? `<b>DUE</b> ${esc(a.title)}<span class="sub">${esc(a.course)}${hasPts(a) ? ` · ${esc(ptsTxt(a))}` : ""}</span>`
     : `${esc(a.title)}<span class="sub">${esc(dayPos(a, k))} · ${esc(a.course)}</span>`;
   return `<button class="dchip ${kind}" data-sel="${a.id}">${label}</button>`;
 }
@@ -539,6 +597,23 @@ function renderPlanner(L) {
       <div class="traychips">${L.triage.map(a => `<button class="tchip" data-sel="${a.id}">${esc(a.title)} · ${esc(relDay(effDue(a)))}</button>`).join("")}</div></div>`;
   }
 
+  if (L.expired.length) {
+    h += `<h2>Needs rescheduling<span class="count">${L.expired.length}</span></h2>
+      <p class="hint">The plan for these ended before the work was finished. Pick a new start day, or close them out — they won't show on Today or the calendar until then.</p>`;
+    h += L.expired.map(a => { const s = planOf(a.id), e = endK(a), lastK = e || addDaysK(s, 13);
+      return `<div class="card"><div class="card-top"><p class="title">${esc(a.title)}</p><div>${statusBadge(a)}</div></div>
+      <p class="course">${esc(a.course)} · plan ran ${esc(planLabel(s))} → ${esc(planLabel(lastK))}, not finished${sLink(a)}</p>
+      <div class="decide">
+        <button class="btn small primary" data-look="done" data-id="${a.id}">Done ✓</button>
+        <button class="btn small blue" data-look="sched" data-id="${a.id}">Reschedule…</button>
+        <button class="btn small" data-look="drop" data-id="${a.id}">Set aside</button>
+      </div>
+      ${statusRow(a, {noDone: true})}
+      ${schedFor === a.id ? `<div class="pickrow"><input type="date" id="scheddate" min="${todayKey()}" value="${todayKey()}">
+        <button class="btn blue small" data-lookgo="${a.id}">Put on calendar</button></div>` : ""}
+    </div>`; }).join("");
+  }
+
   h += `<p class="hint">Assignments sit on the day they're <b>due</b>. Tap one to choose a <b>start day</b> — it then plots a work strip across every day in between, and those days land on the Today checklist.</p>`;
   if (L.unplannedUpcoming.length) {
     h += `<div class="controls"><button class="btn blue" id="autoplan">Auto-plan everything (${L.unplannedUpcoming.length})</button></div>`;
@@ -550,7 +625,7 @@ function renderPlanner(L) {
       const dueHere = DATA.assignments.filter(a => {
         const ed = effDue(a);
         return (!courseFilter || a.course === courseFilter) &&
-        ed && dayKey(new Date(ed)) === k && !isDone(a.id) && !isDropped(a.id) && !GRADED(a.status) && !isNoise(a.id) && !isSnoozed(a.id);
+        ed && dayKey(new Date(ed)) === k && !isDone(a.id) && !isSubmitted(a.id) && !isDropped(a.id) && !GRADED(a.status) && !RESOLVED_STATUS(a.status) && !isNoise(a.id) && !isSnoozed(a.id);
       });
       const workHere = DATA.assignments.filter(a => {
         const ed = effDue(a);
@@ -570,8 +645,8 @@ function renderPlanner(L) {
     const maxD = edK && edK >= t ? edK : dayKey(new Date(Date.now() + 13 * 864e5));
     h += `<div class="detail" id="detailpanel">
       <div class="card-top"><p class="title">${esc(a.title)}</p><div>${statusBadge(a)}</div></div>
-      <p class="course">${esc(a.course)} · ${esc(a.type || "")}${a.points != null ? ` · ${a.points} pts` : ""}${sLink(a)}</p>
-      <div class="meta"><span class="${ed0 && new Date(ed0) < new Date() ? "due late" : "due"}">${esc(relDay(ed0))}</span>
+      <p class="course">${esc(a.course)} · ${esc(a.type || "")}${hasPts(a) ? ` · ${esc(ptsTxt(a))}` : ""}${sLink(a)}</p>
+      <div class="meta"><span class="${needsAction(a) ? "due late" : "due"}">${esc(relDay(ed0))}</span>
         ${hasManualDue(a) ? `<span class="tag">due date set by you</span>` : ""}</div>
       ${a.teacher_comment ? `<div class="comment"><b>Teacher comment</b>${esc(a.teacher_comment)}</div>` : ""}
       ${s ? `<p class="hint">On the calendar: <b>${esc(planLabel(s))}</b>${e ? ` → <b>${esc(planLabel(e))}</b> (${workDays(a).length} work days)` : " → until completed"}.</p>`
@@ -643,7 +718,7 @@ function renderTackle(L) {
       <p class="title">${esc(a.title)}</p>
       <p class="course">${esc(a.course)}</p>
       <div class="meta"><span class="tag">${esc(a.type || "other")}</span>
-        ${a.points != null ? `<span class="tag">${a.points} pts</span>` : ""}
+        ${hasPts(a) ? `<span class="tag">${esc(ptsTxt(a))}</span>` : ""}
         <span class="due late">${esc(relDay(effDue(a)))}</span>${sLink(a)}</div>
       ${a.teacher_comment ? `<div class="comment"><b>Teacher comment</b>${esc(a.teacher_comment)}</div>` : ""}
       <div class="suggest">💡 ${esc(ageHint(a))}</div>
@@ -722,11 +797,29 @@ function renderTackle(L) {
 }
 
 /* ---------- Grades ---------- */
+// Course grades arrive as one string ("D 43.53%", "B", "94.59%", "-").
+// Parse it into letter + percent without inventing values from thin air.
+function parseCourseGrade(g) {
+  const out = {};
+  const s = (g == null ? "" : String(g)).trim();
+  if (!s || s === "-") return out;
+  const m = s.match(/^([A-F][+-]?)?\s*(\d+(?:\.\d+)?)?\s*%?\s*$/i);
+  if (!m) { out.raw = s; return out; }
+  if (m[1]) out.letter = m[1].toUpperCase();
+  if (m[2] !== undefined && m[2] !== "") out.pct = parseFloat(m[2]);
+  return out;
+}
 function renderGrades(L) {
   const el = document.getElementById("tab-grades");
   el.innerHTML = `<h2>Grades</h2><div class="grades">` + DATA.courses
-    .map(c => `<div class="grade-card"><div class="g-course">${esc(c.name)}</div>
-      <div class="g-val">${c.grade_letter ? esc(c.grade_letter) : "—"}${c.grade_pct != null ? ` <span style="font-size:14px;color:var(--muted)">${c.grade_pct}%</span>` : ""}</div></div>`).join("")
+    .map(c => {
+      const pg = parseCourseGrade(c.grade);
+      const letter = c.grade_letter || pg.letter;
+      const pct = c.grade_pct != null ? c.grade_pct : pg.pct;
+      const val = letter ? esc(letter) : (pg.raw ? esc(pg.raw) : "—");
+      return `<div class="grade-card"><div class="g-course">${esc(c.name)}</div>
+        <div class="g-val">${val}${pct != null ? ` <span style="font-size:14px;color:var(--muted)">${pct}%</span>` : ""}</div></div>`;
+    }).join("")
     + `</div><h2>Recently graded<span class="count">${L.recent.length}</span></h2>`
     + (L.recent.length ? L.recent.map(card).join("") : `<div class="empty">Nothing in the last 30 days.</div>`);
 }
