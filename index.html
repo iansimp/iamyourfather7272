@@ -171,21 +171,27 @@
 // propagate instead of resurrecting.
 const SYNC_URL = "https://script.google.com/macros/s/AKfycbxLyT8zIchjSUCOs2ZuBBh2ctCn6tsTE1DppVW-bfrzUM-hXUeXy60rmyGK9ZG3NwAb/exec";
 const LS_STATE = "sw_state_v2";
-const MAPS = ["notes", "done", "submitted", "plan", "dropped", "daily"];
-let notes = {}, done = {}, submitted = {}, plan = {}, dropped = {}, daily = {};
-const MAPREF = () => ({notes, done, submitted, plan, dropped, daily});
+const MAPS = ["notes", "done", "submitted", "plan", "dropped", "daily", "duedates"];
+let notes = {}, done = {}, submitted = {}, plan = {}, dropped = {}, daily = {}, duedates = {};
+const MAPREF = () => ({notes, done, submitted, plan, dropped, daily, duedates});
 try {
   const c = JSON.parse(localStorage.getItem(LS_STATE) || "{}");
   notes = c.notes || {}; done = c.done || {}; submitted = c.submitted || {};
-  plan = c.plan || {}; dropped = c.dropped || {}; daily = c.daily || {};
+  plan = c.plan || {}; dropped = c.dropped || {}; daily = c.daily || {}; duedates = c.duedates || {};
 } catch (e) { /* corrupted cache: start clean, remote will refill */ }
-const saveLocal = () => { try { localStorage.setItem(LS_STATE, JSON.stringify({notes, done, submitted, plan, dropped, daily})); } catch (e) {} };
+const saveLocal = () => { try { localStorage.setItem(LS_STATE, JSON.stringify({notes, done, submitted, plan, dropped, daily, duedates})); } catch (e) {} };
 const noteOf = id => (notes[id] && notes[id].v) || "";
 const isDone = id => !!(done[id] && done[id].v);
 const isSubmitted = id => !!(submitted[id] && submitted[id].v);
 const planOf = id => (plan[id] && plan[id].v) || "";
 const isDropped = id => !!(dropped[id] && dropped[id].v);
 const dayRecOf = (id, k) => daily[id + "||" + k] || null;
+/* Manual due dates: Ian/Luke can assign a due date to anything (mostly items
+   with no Schoology deadline). Stored as a day key "YYYY-MM-DD"; beats the
+   Schoology date everywhere until cleared. */
+const manualDueK = id => (duedates[id] && duedates[id].v) || "";
+const effDue = a => { const m = manualDueK(a.id); return m ? m + "T12:00:00" : (a.due_at || null); };
+const hasManualDue = a => !!manualDueK(a.id);
 
 function mergeState(remote) {
   let changed = false;
@@ -206,7 +212,7 @@ function mergeState(remote) {
 let pushTimer = null;
 function pushState() {
   clearTimeout(pushTimer); pushTimer = null;
-  fetch(SYNC_URL + "?action=write&data=" + encodeURIComponent(JSON.stringify({notes, done, submitted, plan, dropped, daily})))
+  fetch(SYNC_URL + "?action=write&data=" + encodeURIComponent(JSON.stringify({notes, done, submitted, plan, dropped, daily, duedates})))
     .catch(() => {}); // offline: stays local, syncs on next change or poll
 }
 const pushSoon = ms => { clearTimeout(pushTimer); pushTimer = setTimeout(pushState, ms); };
@@ -283,8 +289,9 @@ function relDay(iso) {
    overdue items, a 3-day catch-up window). Deferring a day extends the strip
    by a day so the work never silently vanishes. */
 function baseEndK(a, startK) {
-  if (!a.due_at) return null; // open-ended: every day from start until completed
-  const dueK = dayKey(new Date(a.due_at));
+  const ed = effDue(a);
+  if (!ed) return null; // open-ended: every day from start until completed
+  const dueK = dayKey(new Date(ed));
   return dueK >= startK ? dueK : addDaysK(startK, 2);
 }
 function maxDeferredK(id) {
@@ -334,8 +341,9 @@ function dayPos(a, k) {
 }
 function suggestStart(a) {
   const t = todayKey();
-  if (!a.due_at) return t;
-  const dueK = dayKey(new Date(a.due_at));
+  const ed = effDue(a);
+  if (!ed) return t;
+  const dueK = dayKey(new Date(ed));
   if (dueK <= t) return t; // overdue: start today, catch-up window applies
   const s = addDaysK(dueK, -3);
   return s < t ? t : s;
@@ -361,14 +369,16 @@ function statusBadge(a) {
 }
 
 function card(a) {
-  const past = a.due_at && new Date(a.due_at) < new Date();
+  const ed = effDue(a);
+  const past = ed && new Date(ed) < new Date();
   const dueCls = past && !isDone(a.id) ? "due late" : "due";
   return `<div class="card ${past && !isDone(a.id) ? "overdue" : ""}">
     <div class="card-top"><p class="title">${esc(a.title)}</p><div>${statusBadge(a)}</div></div>
     <p class="course">${esc(a.course)}${sLink(a)}</p>
     <div class="meta"><span class="tag">${esc(a.type || "other")}</span>
       ${a.points != null ? `<span class="tag">${a.points} pt${a.points === 1 ? "" : "s"}</span>` : ""}
-      <span class="${dueCls}">${esc(relDay(a.due_at))}${a.due_at ? " · " + esc(dtFmt.format(new Date(a.due_at))) : ""}</span>
+      <span class="${dueCls}">${esc(relDay(ed))}${ed ? " · " + esc(dtFmt.format(new Date(ed))) : ""}</span>
+      ${hasManualDue(a) ? `<span class="tag" title="You assigned this date; clear it in the Planner to go back to Schoology's">due date set by you</span>` : ""}
     </div>
     ${a.teacher_comment ? `<div class="comment"><b>Teacher comment</b>${esc(a.teacher_comment)}</div>` : ""}
     ${statusRow(a)}
@@ -386,17 +396,17 @@ const byId = id => DATA.assignments.find(a => a.id === id);
 function lists() {
   const list = DATA.assignments.filter(a => !courseFilter || a.course === courseFilter);
   const now = new Date(), cutoff = new Date(now - 30 * 864e5);
-  const past = a => a.due_at && new Date(a.due_at) < now;
-  const byDue = (x, y) => new Date(x.due_at) - new Date(y.due_at);
+  const past = a => { const ed = effDue(a); return ed && new Date(ed) < now; };
+  const byDue = (x, y) => new Date(effDue(x)) - new Date(effDue(y));
   const L = {};
   L.overdue = list.filter(a => past(a) && MISSING(a.status) && !isDone(a.id) && !isDropped(a.id)).sort(byDue);
   L.triage = L.overdue.filter(a => !planOf(a.id));
-  L.upcoming = list.filter(a => a.due_at && new Date(a.due_at) >= now && !isDone(a.id) && !GRADED(a.status)).sort(byDue);
+  L.upcoming = list.filter(a => { const ed = effDue(a); return ed && new Date(ed) >= now && !isDone(a.id) && !GRADED(a.status); }).sort(byDue);
   L.unplannedUpcoming = L.upcoming.filter(a => !planOf(a.id) && !isDropped(a.id));
-  L.recent = list.filter(a => GRADED(a.status) && a.due_at && new Date(a.due_at) >= cutoff && !isDone(a.id))
-    .sort((x, y) => new Date(y.due_at) - new Date(x.due_at));
+  L.recent = list.filter(a => { const ed = effDue(a); return GRADED(a.status) && ed && new Date(ed) >= cutoff && !isDone(a.id); })
+    .sort((x, y) => new Date(effDue(y)) - new Date(effDue(x)));
   L.look = list.filter(a => past(a) && !MISSING(a.status) && !GRADED(a.status) && !isDone(a.id) && !isDropped(a.id) && !planOf(a.id)).sort(byDue);
-  L.nodate = list.filter(a => !a.due_at && !isDone(a.id) && !GRADED(a.status) && !isDropped(a.id));
+  L.nodate = list.filter(a => !effDue(a) && !isDone(a.id) && !GRADED(a.status) && !isDropped(a.id));
   L.unplannedNodate = L.nodate.filter(a => !planOf(a.id));
   L.dropped = list.filter(a => isDropped(a.id));
   const t = todayKey();
@@ -404,7 +414,7 @@ function lists() {
   L.needsSubmit = list.filter(a => isDone(a.id) && !isSubmitted(a.id));
   const weekAgo = Date.now() - 7 * 864e5;
   L.submittedRecent = list.filter(a => isSubmitted(a.id) && (submitted[a.id].ts || 0) >= weekAgo);
-  L.dueWeek = L.upcoming.filter(a => new Date(a.due_at) < new Date(now.getTime() + 7 * 864e5));
+  L.dueWeek = L.upcoming.filter(a => new Date(effDue(a)) < new Date(now.getTime() + 7 * 864e5));
   return L;
 }
 
@@ -414,7 +424,7 @@ function checkRow(a, L) {
   const state = rec ? rec.v : "pending";
   let inner = `<div class="card-top"><p class="title">${esc(a.title)}</p><div>${statusBadge(a)}</div></div>
     <p class="course">${esc(a.course)}</p>
-    <div class="dayline">${esc(dayPos(a, t))} · ${esc(relDay(a.due_at))}${a.points != null ? ` · ${a.points} pts` : ""}${sLink(a)}</div>
+    <div class="dayline">${esc(dayPos(a, t))} · ${esc(relDay(effDue(a)))}${a.points != null ? ` · ${a.points} pts` : ""}${sLink(a)}</div>
     ${a.teacher_comment ? `<div class="comment"><b>Teacher comment</b>${esc(a.teacher_comment)}</div>` : ""}`;
   if (state === "did") {
     inner += `<div class="actions"><span class="badge completed">Today's portion done ✓</span>
@@ -498,7 +508,7 @@ function renderPlanner(L) {
   if (L.triage.length) {
     h += `<div class="tray"><h3>Overdue — needs a plan (${L.triage.length})</h3>
       <p class="hint" style="margin:0 0 8px">Tap one, pick a start day, and it gets a 3-day catch-up strip on the calendar.</p>
-      <div class="traychips">${L.triage.map(a => `<button class="tchip" data-sel="${a.id}">${esc(a.title)} · ${esc(relDay(a.due_at))}</button>`).join("")}</div></div>`;
+      <div class="traychips">${L.triage.map(a => `<button class="tchip" data-sel="${a.id}">${esc(a.title)} · ${esc(relDay(effDue(a)))}</button>`).join("")}</div></div>`;
   }
 
   h += `<p class="hint">Assignments sit on the day they're <b>due</b>. Tap one to choose a <b>start day</b> — it then plots a work strip across every day in between, and those days land on the Today checklist.</p>`;
@@ -509,12 +519,16 @@ function renderPlanner(L) {
   const weeks = [["This week", days.slice(0, 7)], ["Next week", days.slice(7, 14)]];
   h += weeks.map(([wlabel, wdays]) => `<div class="calweek"><h3>${wlabel}</h3><div class="cal">` +
     wdays.map(k => {
-      const dueHere = DATA.assignments.filter(a =>
-        (!courseFilter || a.course === courseFilter) &&
-        a.due_at && dayKey(new Date(a.due_at)) === k && !isDone(a.id) && !isDropped(a.id) && !GRADED(a.status));
-      const workHere = DATA.assignments.filter(a =>
-        (!courseFilter || a.course === courseFilter) &&
-        planOf(a.id) && activeOn(a, k) && !(a.due_at && dayKey(new Date(a.due_at)) === k));
+      const dueHere = DATA.assignments.filter(a => {
+        const ed = effDue(a);
+        return (!courseFilter || a.course === courseFilter) &&
+        ed && dayKey(new Date(ed)) === k && !isDone(a.id) && !isDropped(a.id) && !GRADED(a.status);
+      });
+      const workHere = DATA.assignments.filter(a => {
+        const ed = effDue(a);
+        return (!courseFilter || a.course === courseFilter) &&
+        planOf(a.id) && activeOn(a, k) && !(ed && dayKey(new Date(ed)) === k);
+      });
       return `<div class="daycell ${k === t ? "today" : ""}"><h4>${k === t ? "Today" : planLabel(k)}</h4>
         <div class="dsub">${dueHere.length + workHere.length || ""}</div>` +
         dueHere.map(a => calChip(a, "due", k, L)).join("") +
@@ -524,11 +538,13 @@ function renderPlanner(L) {
 
   if (selectedId && byId(selectedId)) {
     const a = byId(selectedId), s = planOf(a.id), e = endK(a);
-    const maxD = a.due_at && dayKey(new Date(a.due_at)) >= t ? dayKey(new Date(a.due_at)) : dayKey(new Date(Date.now() + 13 * 864e5));
+    const ed0 = effDue(a), edK = ed0 ? dayKey(new Date(ed0)) : null;
+    const maxD = edK && edK >= t ? edK : dayKey(new Date(Date.now() + 13 * 864e5));
     h += `<div class="detail" id="detailpanel">
       <div class="card-top"><p class="title">${esc(a.title)}</p><div>${statusBadge(a)}</div></div>
       <p class="course">${esc(a.course)} · ${esc(a.type || "")}${a.points != null ? ` · ${a.points} pts` : ""}${sLink(a)}</p>
-      <div class="meta"><span class="${a.due_at && new Date(a.due_at) < new Date() ? "due late" : "due"}">${esc(relDay(a.due_at))}</span></div>
+      <div class="meta"><span class="${ed0 && new Date(ed0) < new Date() ? "due late" : "due"}">${esc(relDay(ed0))}</span>
+        ${hasManualDue(a) ? `<span class="tag">due date set by you</span>` : ""}</div>
       ${a.teacher_comment ? `<div class="comment"><b>Teacher comment</b>${esc(a.teacher_comment)}</div>` : ""}
       ${s ? `<p class="hint">On the calendar: <b>${esc(planLabel(s))}</b>${e ? ` → <b>${esc(planLabel(e))}</b> (${workDays(a).length} work days)` : " → until completed"}.</p>`
           : `<p class="hint">Not on the calendar yet. Pick a start day and it will plot daily portions through the due date.</p>`}
@@ -537,17 +553,24 @@ function renderPlanner(L) {
         ${s ? `<button class="btn small quiet" data-unplan="${a.id}">Remove from calendar</button>` : ""}
         <button class="btn small quiet" data-sel="">Close</button>
       </div>
+      <div class="actions"><label style="font-size:13px;color:var(--muted)" for="duedate">Due date:</label>
+        <input type="date" id="duedate" min="${t}" value="${manualDueK(a.id)}">
+        <button class="btn small blue" data-ddset="${a.id}">Set due date</button>
+        ${manualDueK(a.id) ? `<button class="btn small quiet" data-ddclear="${a.id}">Clear</button>` : ""}
+      </div>
       ${statusRow(a)}
       <div class="note-row"><textarea placeholder="Add a note…" data-note="${a.id}">${esc(noteOf(a.id))}</textarea></div>
     </div>`;
   }
 
   if (L.unplannedNodate.length) {
-    h += `<h2>No due date — pick a start day<span class="count">${L.unplannedNodate.length}</span></h2>
-      <p class="hint">These show on the Today checklist each day for two weeks from the start day, until marked completed.</p>`;
+    h += `<h2>No due date — pick a start day or set one<span class="count">${L.unplannedNodate.length}</span></h2>
+      <p class="hint">Give one a due date and it joins the calendar like everything else — or pick a start day to work on it without a deadline.</p>`;
     h += L.unplannedNodate.map(a => `<div class="sugrow" style="display:flex;gap:10px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-bottom:8px;flex-wrap:wrap">
       <div><div style="font-weight:650;font-size:14px">${esc(a.title)}</div><div style="font-size:12px;color:var(--muted)">${esc(a.course)}${sLink(a)}</div></div>
       <div style="flex:1"></div>
+      <label style="font-size:12px;color:var(--muted)">Due <input type="date" data-dddate="${a.id}" min="${t}" aria-label="Set a due date"></label>
+      <button class="btn small blue" data-ddgo="${a.id}">Set due</button>
       <button class="btn small" data-planstart="${a.id}" data-day="${t}">Start today</button>
       <input type="date" data-nddate="${a.id}" min="${t}" value="${t}" aria-label="Choose a start day">
       <button class="btn small blue" data-ndgo="${a.id}">Set</button></div>`).join("");
@@ -557,7 +580,7 @@ function renderPlanner(L) {
 
 /* ---------- Tackle: the intake inbox for overdue ---------- */
 function ageHint(a) {
-  const days = Math.max(1, Math.round((Date.now() - new Date(a.due_at)) / 864e5));
+  const days = Math.max(1, Math.round((Date.now() - new Date(effDue(a))) / 864e5));
   if (days <= 3) return `Overdue ${days} day${days === 1 ? "" : "s"} — suggestion: start it today.`;
   if (days <= 14) return `Overdue ${days} days — suggestion: give it a start day this week.`;
   return `Overdue ${days} days — suggestion: schedule a 3-day catch-up, or set it aside if it's not going to happen.`;
@@ -575,7 +598,7 @@ function renderTackle(L) {
       <p class="course">${esc(a.course)}</p>
       <div class="meta"><span class="tag">${esc(a.type || "other")}</span>
         ${a.points != null ? `<span class="tag">${a.points} pts</span>` : ""}
-        <span class="due late">${esc(relDay(a.due_at))}</span>${sLink(a)}</div>
+        <span class="due late">${esc(relDay(effDue(a)))}</span>${sLink(a)}</div>
       ${a.teacher_comment ? `<div class="comment"><b>Teacher comment</b>${esc(a.teacher_comment)}</div>` : ""}
       <div class="suggest">💡 ${esc(ageHint(a))}</div>
       <div class="note-row"><textarea placeholder="Add a note…" data-note="${a.id}">${esc(noteOf(a.id))}</textarea></div>
@@ -617,7 +640,7 @@ function renderTackle(L) {
     h += `<h2>Needs a look — past due, unclear status<span class="count">${L.look.length}</span></h2>
       <p class="hint">Schoology shows no usable status for these. Give each the same treatment: done, scheduled, or set aside.</p>`;
     h += L.look.map(a => `<div class="card"><div class="card-top"><p class="title">${esc(a.title)}</p><div>${statusBadge(a)}</div></div>
-      <p class="course">${esc(a.course)} · ${esc(relDay(a.due_at))}${a.status ? ` · status: ${esc(a.status)}` : ""}${sLink(a)}</p>
+      <p class="course">${esc(a.course)} · ${esc(relDay(effDue(a)))}${a.status ? ` · status: ${esc(a.status)}` : ""}${sLink(a)}</p>
       <div class="decide">
         <button class="btn small primary" data-look="done" data-id="${a.id}">Done ✓</button>
         <button class="btn small blue" data-look="sched" data-id="${a.id}">Schedule…</button>
@@ -632,7 +655,7 @@ function renderTackle(L) {
     h += `<h2>Set aside<span class="count">${L.dropped.length}</span></h2>`;
     h += L.dropped.map(a => `<div class="card"><div class="card-top"><p class="title">${esc(a.title)}</p>
       <button class="btn small" data-bringback="${a.id}">Bring back</button></div>
-      <p class="course">${esc(a.course)} · ${esc(relDay(a.due_at))}${sLink(a)}</p>
+      <p class="course">${esc(a.course)} · ${esc(relDay(effDue(a)))}${sLink(a)}</p>
       ${statusRow(a)}</div>`).join("");
   }
   el.innerHTML = h;
@@ -711,6 +734,18 @@ function render() {
   document.querySelectorAll("[data-ndgo]").forEach(b => b.onclick = () => {
     const inp = document.querySelector(`[data-nddate="${b.dataset.ndgo}"]`);
     if (inp && inp.value) { plan[b.dataset.ndgo] = {v: inp.value, ts: Date.now()}; saveLocal(); pushSoon(400); render(); }
+  });
+  // Manual due dates (no-due-date rows + Planner detail panel)
+  document.querySelectorAll("[data-ddgo]").forEach(b => b.onclick = () => {
+    const inp = document.querySelector(`[data-dddate="${b.dataset.ddgo}"]`);
+    if (inp && inp.value) { duedates[b.dataset.ddgo] = {v: inp.value, ts: Date.now()}; saveLocal(); pushSoon(400); render(); }
+  });
+  document.querySelectorAll("[data-ddset]").forEach(b => b.onclick = () => {
+    const inp = document.getElementById("duedate");
+    if (inp && inp.value) { duedates[b.dataset.ddset] = {v: inp.value, ts: Date.now()}; saveLocal(); pushSoon(400); render(); }
+  });
+  document.querySelectorAll("[data-ddclear]").forEach(b => b.onclick = () => {
+    duedates[b.dataset.ddclear] = {v: "", ts: Date.now()}; saveLocal(); pushSoon(400); render();
   });
   const ap = document.getElementById("autoplan");
   if (ap) ap.onclick = () => {
