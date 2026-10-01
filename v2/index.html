@@ -46,6 +46,17 @@ a{color:var(--accent)}
   .tabbar a.on{color:var(--accent);font-weight:700}
   .stagemain{padding:28px 20px 120px}
 }
+/* ---------- undo toast ---------- */
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(16px);z-index:200;
+  display:flex;align-items:center;gap:14px;max-width:min(92vw,440px);
+  background:#1e2230;color:#fff;border-radius:14px;padding:12px 12px 12px 16px;
+  box-shadow:0 10px 28px rgba(10,12,20,.35);font-size:14px;font-weight:600;
+  opacity:0;pointer-events:none;transition:opacity .18s ease,transform .18s ease}
+.toast.show{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+.toast .tmsg{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.toast button{flex:none;background:#fff;color:#1e2230;border:0;border-radius:9px;
+  padding:9px 16px;font-size:14px;font-weight:800;cursor:pointer}
+@media(max-width:900px){.toast{bottom:calc(84px + env(safe-area-inset-bottom))}}
 /* ---------- tonight ---------- */
 .eyebrow{font-size:14px;font-weight:600;color:var(--muted);letter-spacing:.02em}
 .tonight-head{display:flex;flex-direction:column;gap:4px;margin-bottom:20px}
@@ -303,6 +314,7 @@ a{color:var(--accent)}
 </head>
 <body>
 <div id="app"></div>
+<div class="toast" id="undotoast" role="status" aria-live="polite"><span class="tmsg"></span><button type="button">Undo</button></div>
 <script>
 "use strict";
 /* ================= constants ================= */
@@ -410,6 +422,35 @@ function touch(id, fn) {
   fn(e.v);
   e.ts = now;
   saveLocal(); pushSoon(600); render();
+}
+/* Undo toast: 10 seconds to reverse an action that hides an item from the lists. */
+let toastTimer = null;
+function dismissToast() {
+  clearTimeout(toastTimer); toastTimer = null;
+  const t = document.getElementById("undotoast");
+  if (t) t.classList.remove("show");
+}
+function showUndo(msg, undoFn) {
+  dismissToast();
+  const t = document.getElementById("undotoast");
+  if (!t) { undoFn(); return; }
+  t.querySelector(".tmsg").textContent = msg;
+  t.querySelector("button").onclick = () => { dismissToast(); undoFn(); };
+  t.classList.add("show");
+  toastTimer = setTimeout(dismissToast, 10000);
+}
+/* Run a list-hiding action with a 10s Undo. Captures the exact prior state so
+   undo restores it, then reopens the task so the item is visibly back. */
+function vanishing(id, label, mutate) {
+  const a = byId(id);
+  const prev = JSON.parse(JSON.stringify(st(id)));
+  const title = a ? a.title : "assignment";
+  selId = null;
+  touch(id, mutate);
+  showUndo(label + " \u2014 " + title, () => {
+    touch(id, v => { for (const k of Object.keys(v)) delete v[k]; Object.assign(v, prev); });
+    location.hash = "#/tonight"; selId = id; render();
+  });
 }
 /* Manual due dates: v2's own field first, then the frozen v1 duedates map. */
 const manualDueK = id => {
@@ -832,8 +873,8 @@ function taskHTML(ctx, a) {
       ${a.url ? `<a href="${esc(sAbs(a.url))}" target="_blank" rel="noopener">Open in Schoology</a>` : ""}</div>
     </div>
     <div class="taskactions">
-      <button class="abtn primary" data-action="turned-in" data-id="${a.id}">${ICONS.check}
-        <span>Turned it in<span class="sub">Finished and submitted</span></span></button>
+      <button class="abtn ghost" data-action="turned-in" data-id="${a.id}">${ICONS.check}
+        <span>Mark turned in<span class="sub">Finished and submitted</span></span></button>
       ${canPart ? `<button class="abtn ghost" data-action="part-done" data-id="${a.id}">${ICONS.clock}
         <span>Did my part for today<span class="sub">Bigger job. It comes back tomorrow.</span></span></button>` : ""}
       <button class="abtn ghost" data-action="toggle-submitted" data-id="${a.id}">${ICONS.check}
@@ -1255,31 +1296,35 @@ function doAction(action, id, el) {
       markNightDoneIfEmpty(mkCtx(DATA.assignments, todayKey()));
       render(); return;
     case "turned-in":
-      selId = null;
-      touch(id, v => { v.done = "turned_in"; v.done_at = new Date().toISOString(); });
+      vanishing(id, "Marked turned in", v => { v.done = "turned_in"; v.done_at = new Date().toISOString(); });
       markNightDoneIfEmpty(mkCtx(DATA.assignments, todayKey()));
-      render(); return;
+      return;
     case "part-done": {
       const t = todayKey(); selId = null;
       touch(id, v => { v.part_done_days = [...new Set([...(v.part_done_days || []), t])]; });
       markNightDoneIfEmpty(mkCtx(DATA.assignments, todayKey()));
       render(); return;
     }
-    case "snooze-tomorrow": selId = null; touch(id, v => { v.snoozed_until = addDays(todayKey(), 1); }); return;
-    case "snooze-weekend": selId = null; touch(id, v => { v.snoozed_until = nextWeekday(todayKey(), 6); }); return;
-    case "snooze-3d": selId = null; touch(id, v => { v.snoozed_until = addDays(todayKey(), 3); }); return;
-    case "snooze-1w": selId = null; touch(id, v => { v.snoozed_until = addDays(todayKey(), 7); }); return;
-    case "snooze-2w": selId = null; touch(id, v => { v.snoozed_until = addDays(todayKey(), 14); }); return;
-    case "snooze-1m": selId = null; touch(id, v => { v.snoozed_until = addDays(todayKey(), 30); }); return;
-    case "snooze-indef": selId = null; touch(id, v => { v.snoozed_until = "indef"; }); return;
+    case "snooze-tomorrow": vanishing(id, "Snoozed until tomorrow", v => { v.snoozed_until = addDays(todayKey(), 1); }); return;
+    case "snooze-weekend": vanishing(id, "Snoozed until weekend", v => { v.snoozed_until = nextWeekday(todayKey(), 6); }); return;
+    case "snooze-3d": vanishing(id, "Snoozed 3 days", v => { v.snoozed_until = addDays(todayKey(), 3); }); return;
+    case "snooze-1w": vanishing(id, "Snoozed 1 week", v => { v.snoozed_until = addDays(todayKey(), 7); }); return;
+    case "snooze-2w": vanishing(id, "Snoozed 2 weeks", v => { v.snoozed_until = addDays(todayKey(), 14); }); return;
+    case "snooze-1m": vanishing(id, "Snoozed 1 month", v => { v.snoozed_until = addDays(todayKey(), 30); }); return;
+    case "snooze-indef": vanishing(id, "Snoozed indefinitely", v => { v.snoozed_until = "indef"; }); return;
     case "unsnooze": touch(id, v => { v.snoozed_until = null; }); return;
-    case "mark-noise": selId = null; touch(id, v => { v.parent_answer = "skip"; v.ask_parent = false; }); return;
+    case "mark-noise": vanishing(id, "Marked not real work", v => { v.parent_answer = "skip"; v.ask_parent = false; }); return;
     case "unskip": touch(id, v => { v.parent_answer = null; }); return;
     case "toggle-submitted":
-      selId = null;
-      touch(id, v => { v.submitted = !v.submitted; });
+      if (st(id).submitted) {
+        selId = null;
+        touch(id, v => { v.submitted = false; });
+        markNightDoneIfEmpty(mkCtx(DATA.assignments, todayKey()));
+        render(); return;
+      }
+      vanishing(id, "Marked submitted", v => { v.submitted = true; });
       markNightDoneIfEmpty(mkCtx(DATA.assignments, todayKey()));
-      render(); return;
+      return;
     case "save-due": {
       const inp = document.getElementById("tduedate");
       touch(id, v => { v.manual_due = (inp && inp.value) || null; });
