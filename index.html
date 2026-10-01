@@ -246,6 +246,15 @@ const dtFmt = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric",
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const sAbs = u => u && u.startsWith("/") ? "https://lausd.schoology.com" + u : u;
 const sLink = a => a.url ? ` <a class="schlink" href="${esc(sAbs(a.url))}" target="_blank" rel="noopener">Schoology ↗</a>` : "";
+/* Same status buttons on every card, everywhere. noDone/noSub hide one side
+   where the card already has that action (e.g. triage decisions). */
+function statusRow(a, opts = {}) {
+  const d = isDone(a.id), s = isSubmitted(a.id);
+  let h = `<div class="decide" style="margin-top:8px">`;
+  if (!opts.noDone) h += `<button class="btn small ${d ? "primary" : ""}" data-mdone="${a.id}">${d ? "Done ✓" : "Mark done"}</button>`;
+  if (!opts.noSub) h += `<button class="btn small ${s ? "blue" : ""}" data-msub="${a.id}">${s ? "Submitted ✓" : "Mark submitted"}</button>`;
+  return h + `</div>`;
+}
 const dayKey = d => new Date(d).toLocaleString("en-CA", { timeZone: TZ }).slice(0, 10);
 const todayKey = () => dayKey(new Date());
 const parseK = k => new Date(k + "T12:00:00");
@@ -362,6 +371,7 @@ function card(a) {
       <span class="${dueCls}">${esc(relDay(a.due_at))}${a.due_at ? " · " + esc(dtFmt.format(new Date(a.due_at))) : ""}</span>
     </div>
     ${a.teacher_comment ? `<div class="comment"><b>Teacher comment</b>${esc(a.teacher_comment)}</div>` : ""}
+    ${statusRow(a)}
     <div class="note-row"><textarea placeholder="Add a note…" data-note="${a.id}">${esc(noteOf(a.id))}</textarea></div>
   </div>`;
 }
@@ -527,6 +537,7 @@ function renderPlanner(L) {
         ${s ? `<button class="btn small quiet" data-unplan="${a.id}">Remove from calendar</button>` : ""}
         <button class="btn small quiet" data-sel="">Close</button>
       </div>
+      ${statusRow(a)}
       <div class="note-row"><textarea placeholder="Add a note…" data-note="${a.id}">${esc(noteOf(a.id))}</textarea></div>
     </div>`;
   }
@@ -574,6 +585,7 @@ function renderTackle(L) {
         <button class="btn" data-tdec="drop" data-id="${a.id}">Set aside</button>
         <button class="btn quiet" data-tdec="skip">Skip →</button>
       </div>
+      ${statusRow(a, {noDone: true})}
       ${schedFor === a.id ? `<div class="pickrow"><input type="date" id="scheddate" min="${todayKey()}" value="${todayKey()}">
         <button class="btn blue" data-tdec="schedgo" data-id="${a.id}">Put on calendar</button></div>` : ""}
     </div>`;
@@ -598,7 +610,8 @@ function renderTackle(L) {
       return `<div class="card"><div class="card-top"><p class="title">${esc(a.title)}</p><div>${statusBadge(a)}</div></div>
       <p class="course">${esc(a.course)} · catch-up strip ${esc(planLabel(s))}${e ? " → " + esc(planLabel(e)) : ""}${sLink(a)}</p>
       <div class="actions" style="display:flex;gap:8px;margin-top:6px"><button class="btn small" data-goto="planner">See on calendar</button>
-      <button class="btn small quiet" data-unplan="${a.id}">Unschedule</button></div></div>`; }).join("");
+      <button class="btn small quiet" data-unplan="${a.id}">Unschedule</button></div>
+      ${statusRow(a)}</div>`; }).join("");
   }
   if (L.look.length) {
     h += `<h2>Needs a look — past due, unclear status<span class="count">${L.look.length}</span></h2>
@@ -610,6 +623,7 @@ function renderTackle(L) {
         <button class="btn small blue" data-look="sched" data-id="${a.id}">Schedule…</button>
         <button class="btn small" data-look="drop" data-id="${a.id}">Set aside</button>
       </div>
+      ${statusRow(a, {noDone: true})}
       ${schedFor === a.id ? `<div class="pickrow"><input type="date" id="scheddate" min="${todayKey()}" value="${todayKey()}">
         <button class="btn blue small" data-lookgo="${a.id}">Put on calendar</button></div>` : ""}
     </div>`).join("");
@@ -618,7 +632,8 @@ function renderTackle(L) {
     h += `<h2>Set aside<span class="count">${L.dropped.length}</span></h2>`;
     h += L.dropped.map(a => `<div class="card"><div class="card-top"><p class="title">${esc(a.title)}</p>
       <button class="btn small" data-bringback="${a.id}">Bring back</button></div>
-      <p class="course">${esc(a.course)} · ${esc(relDay(a.due_at))}${sLink(a)}</p></div>`).join("");
+      <p class="course">${esc(a.course)} · ${esc(relDay(a.due_at))}${sLink(a)}</p>
+      ${statusRow(a)}</div>`).join("");
   }
   el.innerHTML = h;
 }
@@ -705,7 +720,16 @@ function render() {
     saveLocal(); pushSoon(500); render();
   };
   // Tackle
-  document.querySelectorAll("[data-tdec]").forEach(b => b.onclick = () => tdecide(b.dataset.dec, b.dataset.id));
+  document.querySelectorAll("[data-tdec]").forEach(b => b.onclick = () => tdecide(b.dataset.tdec, b.dataset.id));
+  // Unified status buttons (every card, every tab)
+  document.querySelectorAll("[data-mdone]").forEach(b => b.onclick = () => {
+    const id = b.dataset.mdone, t = Date.now();
+    done[id] = {v: !isDone(id), ts: t}; saveLocal(); pushSoon(400); render();
+  });
+  document.querySelectorAll("[data-msub]").forEach(b => b.onclick = () => {
+    const id = b.dataset.msub, t = Date.now();
+    submitted[id] = {v: !isSubmitted(id), ts: t}; saveLocal(); pushSoon(400); render();
+  });
   document.querySelectorAll("[data-tsel]").forEach(b => b.onclick = () => {
     const id = b.dataset.tsel;
     triageSession = true; schedFor = null;
