@@ -1,0 +1,1339 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Schoolwork</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --ground:#F3F4F8; --card:#FFFFFF; --ink:#12141C; --muted:#5B6070;
+  --border:#E3E5EE; --border2:#D3D6E0;
+  --accent:#3355FF; --accent-soft:#EEF1FF; --accent-dark:#2442D9;
+  --green:#0F7B55; --green-soft:#D2F2E5;
+  --orange:#C2410C; --orange-deep:#9A3412; --orange-bg:#FFF4EC; --orange-border:#FBD3BC;
+  --ring:#B8BDCC; --track:#DFE2EC; --allclear:#3355FF; --allclear-deep:#2442D9; --allclear-soft:#DCE3FF;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--ground);color:var(--ink);font-family:'Figtree',sans-serif;font-size:16px;-webkit-font-smoothing:antialiased}
+h1,h2,.disp{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-0.02em;margin:0}
+button{font:inherit;cursor:pointer}
+a{color:var(--accent)}
+#app{min-height:100vh}
+/* ---------- desktop rail ---------- */
+.rail{display:none}
+@media(min-width:901px){
+  .rail{display:flex;position:fixed;left:0;top:0;bottom:0;width:220px;background:var(--card);
+    border-right:1px solid var(--border);flex-direction:column;gap:6px;padding:28px 16px;z-index:20}
+  .wordmark{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;padding:0 12px 20px}
+  .navlink{display:flex;align-items:center;gap:12px;height:44px;padding:0 12px;border-radius:12px;
+    color:var(--muted);text-decoration:none;font-size:15px;font-weight:600}
+  .navlink.on{background:var(--accent-soft);color:var(--accent);font-weight:700}
+  .railfoot{margin-top:auto;padding:12px;border-radius:12px;background:var(--ground);font-size:12px;color:var(--muted);line-height:1.5}
+  .stagemain{margin-left:220px;padding:36px 40px 60px;max-width:1240px}
+}
+/* ---------- phone tab bar ---------- */
+.tabbar{display:none}
+@media(max-width:900px){
+  .tabbar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));position:fixed;left:0;right:0;bottom:0;
+    background:var(--card);border-top:1px solid var(--border);padding:8px 12px calc(8px + env(safe-area-inset-bottom));z-index:20}
+  .tabbar a{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 0;text-decoration:none;
+    color:var(--muted);font-size:12px;font-weight:600}
+  .tabbar a.on{color:var(--accent);font-weight:700}
+  .stagemain{padding:28px 20px 120px}
+}
+/* ---------- tonight ---------- */
+.eyebrow{font-size:14px;font-weight:600;color:var(--muted);letter-spacing:.02em}
+.tonight-head{display:flex;flex-direction:column;gap:4px;margin-bottom:20px}
+.tonight-head h1{font-size:40px;line-height:1.05}
+@media(max-width:900px){.tonight-head h1{font-size:34px}}
+.progress{display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
+.ptrack{height:12px;border-radius:999px;background:var(--track);overflow:hidden}
+.pfill{height:100%;border-radius:999px;background:var(--accent)}
+.plabel{font-size:13px;font-weight:600;color:var(--muted);display:flex;justify-content:space-between}
+.tlist{display:flex;flex-direction:column;gap:10px}
+.tcard{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--card);border-radius:16px;
+  box-shadow:0 1px 2px rgba(18,20,28,.06);cursor:pointer;border:2px solid transparent}
+.tcard.sel{border-color:var(--accent)}
+.tcard.isdone{opacity:.6}
+.donecircle{flex-shrink:0;width:44px;height:44px;border-radius:999px;border:2.5px solid var(--ring);background:#fff;
+  display:flex;align-items:center;justify-content:center;padding:0}
+@media(min-width:901px){.donecircle{width:40px;height:40px}}
+.donecircle.on{background:var(--green);border-color:var(--green)}
+.tbody{flex-grow:1;min-width:0;display:flex;flex-direction:column;gap:5px}
+.trow1{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ttitle{font-size:16px;font-weight:600;line-height:1.3}
+.tcard.isdone .ttitle{text-decoration:line-through}
+.when{font-size:13px;font-weight:600;color:var(--muted)}
+.when.late{color:var(--orange)}
+.tag{font-size:12px;font-weight:700;padding:3px 8px;border-radius:6px;white-space:nowrap}
+.askedbadge{font-size:11px;font-weight:700;padding:2px 7px;border-radius:6px;background:var(--accent-soft);color:var(--accent)}
+.catchnote{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:14px;background:#E9EBF2;
+  font-size:13px;color:var(--muted);line-height:1.4;margin-top:6px}
+/* ---------- task pane / sheet ---------- */
+.taskwrap{display:none}
+@media(min-width:901px){
+  .tonight-grid{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:32px;align-items:start}
+  .taskwrap{display:block;position:sticky;top:36px;background:var(--card);border-radius:20px;padding:24px;
+    box-shadow:0 1px 3px rgba(18,20,28,.08)}
+  .taskwrap.empty{display:none}
+}
+.sheetback{display:none}
+@media(max-width:900px){
+  .sheetback{display:block;position:fixed;inset:0;background:rgba(18,20,28,.45);z-index:40}
+  .sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;background:#fff;border-radius:28px 28px 0 0;
+    padding:12px 20px calc(32px + env(safe-area-inset-bottom));max-height:88vh;overflow-y:auto}
+  .grab{width:40px;height:5px;border-radius:999px;background:var(--border2);margin:0 auto 14px}
+}
+.taskhead{display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
+.taskhead h2{font-size:24px;line-height:1.15}
+@media(max-width:900px){.taskhead h2{font-size:28px}}
+.taskmeta{display:flex;gap:14px;font-size:14px;color:var(--muted);font-weight:500;flex-wrap:wrap;align-items:center}
+.taskactions{display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
+.abtn{display:flex;align-items:center;gap:12px;min-height:56px;padding:10px 16px;border-radius:14px;text-align:left;font-size:16px;font-weight:700}
+@media(max-width:900px){.abtn{min-height:64px;border-radius:16px}}
+.abtn.primary{background:var(--green);color:#fff;border:0}
+.abtn.ghost{background:#fff;color:var(--ink);border:2px solid var(--border2)}
+.abtn .sub{display:block;font-size:13px;font-weight:500}
+.abtn.primary .sub{color:var(--green-soft)}
+.abtn.ghost .sub{color:var(--muted)}
+.notnow{background:var(--ground);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+@media(max-width:900px){.notnow{border-radius:16px;padding:12px 16px 14px}}
+.notnow h3{margin:0;font-size:15px;font-family:'Figtree',sans-serif;font-weight:700;letter-spacing:0}
+.notnow p{margin:0;font-size:13px;color:var(--muted);line-height:1.4}
+.chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.chip{height:40px;border-radius:10px;border:1.5px solid var(--border2);background:#fff;font-size:13px;font-weight:600}
+@media(max-width:900px){.chip{height:44px;border-radius:12px;font-size:14px}}
+.notelabel{font-size:13px;font-weight:600;color:var(--muted);margin-bottom:6px;display:block}
+.notein{width:100%;height:44px;padding:0 14px;border-radius:12px;border:1.5px solid var(--border2);font-size:14px;font-family:inherit;background:#fff}
+@media(max-width:900px){.notein{height:46px;font-size:15px}}
+.parenttag{font-size:12px;font-weight:700;color:var(--accent);background:var(--accent-soft);padding:2px 8px;border-radius:6px}
+/* ---------- week ---------- */
+.weekhead{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+.weekhead h1{font-size:40px}
+@media(max-width:900px){.weekhead h1{font-size:34px}}
+.weeksub{font-size:15px;color:var(--muted)}
+.weeknav{display:flex;gap:8px}
+.wbtn{height:40px;padding:0 14px;border-radius:10px;border:1.5px solid var(--border2);background:#fff;font-size:14px;font-weight:600}
+.bigbanner{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:14px;background:var(--orange-bg);
+  border:1.5px solid var(--orange-border);margin-bottom:18px;flex-wrap:wrap}
+.bigbanner .btxt{flex-grow:1;font-size:14px;color:#7C2D12;min-width:200px}
+.bigbanner .btxt b{font-weight:700}
+.planbtn{height:36px;padding:0 14px;border-radius:10px;border:0;background:var(--ink);color:#fff;font-size:13px;font-weight:700;white-space:nowrap}
+.daygrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px}
+@media(max-width:900px){.daygrid{display:none}}
+.daycol{display:flex;flex-direction:column;gap:8px;padding:10px;border-radius:16px;min-height:180px}
+.daycol.today{background:#fff;border:1.5px solid var(--accent)}
+.daycol.other{background:#E9EBF2;border:1.5px solid #E9EBF2}
+.daytop{display:flex;align-items:baseline;justify-content:space-between;padding:0 4px}
+.daytop .dow{font-size:13px;font-weight:700}
+.daytop .num{font-size:18px;font-weight:800;font-family:'Bricolage Grotesque',sans-serif}
+.daycol.today .dow,.daycol.today .num{color:var(--accent)}
+.daycol.other .dow,.daycol.other .num{color:var(--muted)}
+.wcard{display:flex;flex-direction:column;gap:5px;padding:10px;border-radius:12px;background:#fff;cursor:grab}
+.wcard.solid{border:1.5px solid var(--border)}
+.wcard.dashed{border:1.5px dashed #9AA0B2}
+.wcard .wt{font-size:13px;font-weight:600;line-height:1.3}
+.wcard .wm{font-size:11px;font-weight:600;color:var(--muted)}
+.wcard .wm.late{color:var(--orange)}
+.free{padding:14px 8px;border-radius:12px;border:1.5px dashed var(--border2);font-size:12px;color:#9AA0B2;text-align:center}
+.daycol.drop{outline:2px dashed var(--accent);outline-offset:-2px}
+/* phone week */
+.mweek{display:none}
+@media(max-width:900px){.mweek{display:block}}
+.daystrip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-bottom:18px}
+.dcell{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 0;border-radius:14px;background:#fff}
+.dcell.today{background:var(--ink);color:#fff}
+.dcell .dd{font-size:12px;font-weight:600;color:var(--muted)}
+.dcell.today .dd{color:#B9BED0}
+.dcell .dn{font-size:20px;font-weight:700}
+.dcell .dc{font-size:11px;font-weight:600;color:var(--muted)}
+.dcell.today .dc{color:#B9BED0}
+.wsec{margin-bottom:18px}
+.wsec h2{font-size:15px;font-weight:700;color:var(--muted);margin:0 0 8px;font-family:'Figtree',sans-serif;letter-spacing:0}
+.wrow{display:flex;align-items:center;gap:10px;padding:14px 16px;background:#fff;border-radius:16px;margin-bottom:8px}
+.wrow .wt{flex-grow:1;font-size:15px;font-weight:600;min-width:0}
+.wrow.dashed{border:1.5px dashed var(--ring)}
+.movebtn{font-size:13px;font-weight:600;padding:8px 10px;border-radius:8px;background:var(--ground);border:0;color:var(--ink);white-space:nowrap}
+.showhidden{align-self:flex-start;height:44px;padding:0 4px;border:0;background:transparent;color:var(--accent);font-size:14px;font-weight:600}
+/* plan dialog */
+.overlay{position:fixed;inset:0;background:rgba(18,20,28,.45);z-index:50;display:flex;align-items:center;justify-content:center;padding:20px}
+@media(max-width:900px){.overlay{align-items:flex-end;padding:0}}
+.dialog{background:#fff;border-radius:20px;padding:28px;width:640px;max-width:100%;max-height:92vh;overflow-y:auto;
+  display:flex;flex-direction:column;gap:20px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+@media(max-width:900px){.dialog{border-radius:28px 28px 0 0;padding:12px 20px 32px;width:100%}}
+.dialog h2{font-size:26px;line-height:1.1}
+.plangrid{display:grid;grid-template-columns:180px minmax(0,1fr);gap:24px}
+@media(max-width:900px){.plangrid{grid-template-columns:1fr}}
+.countgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+@media(max-width:900px){.countgrid{gap:8px}}
+.countbtn{height:44px;border-radius:10px;border:2px solid var(--border2);background:#fff;font-size:16px;font-weight:700}
+@media(max-width:900px){.countbtn{height:48px;border-radius:12px;font-size:17px}}
+.countbtn.on{border-color:var(--accent);background:var(--accent);color:#fff}
+.pickgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+@media(max-width:900px){.pickgrid{gap:5px}}
+.pickbtn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0;border-radius:10px;border:2px solid var(--border);background:#fff}
+.pickbtn .pd{font-size:11px;font-weight:600}
+.pickbtn .pn{font-size:16px;font-weight:700}
+.pickbtn .pp{font-size:10px;font-weight:700;min-height:12px}
+.pickbtn.on{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.pickbtn:disabled{opacity:.35;cursor:not-allowed}
+.plansum{font-size:13px;color:var(--muted)}
+.planfoot{display:flex;justify-content:flex-end;gap:10px}
+.saveplan{height:44px;padding:0 22px;border-radius:12px;border:0;background:var(--accent);color:#fff;font-size:15px;font-weight:700}
+@media(max-width:900px){.saveplan{height:52px;border-radius:14px;font-size:16px;width:100%}}
+.cancelplan{height:44px;padding:0 18px;border-radius:12px;border:1.5px solid var(--border2);background:#fff;font-size:15px;font-weight:600}
+@media(max-width:900px){.cancelplan{display:none}}
+.planwho{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted)}
+.planwho button{border:1.5px solid var(--border2);background:#fff;border-radius:8px;padding:6px 10px;font-size:13px;font-weight:600}
+.planwho button.on{border-color:var(--accent);color:var(--accent);font-weight:700}
+/* ---------- classes ---------- */
+.classgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media(max-width:1100px) and (min-width:901px){.classgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:900px){.classgrid{grid-template-columns:1fr;gap:14px}}
+.ccard{display:flex;flex-direction:column;gap:14px;padding:20px;background:#fff;border-radius:20px;text-decoration:none;color:var(--ink);border-top:6px solid var(--border)}
+@media(max-width:900px){.ccard{flex-direction:row;align-items:center;gap:14px;padding:14px 16px;border-radius:18px;border-top:0}}
+.crow1{display:flex;align-items:center;justify-content:space-between;gap:12px}
+@media(max-width:900px){.crow1{display:contents}}
+.cname{font-size:18px;font-weight:700}
+@media(max-width:900px){.cname{font-size:16px}}
+.gtile{width:52px;height:52px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
+@media(max-width:900px){.gtile{width:56px;height:56px}}
+.gtile .gl{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;line-height:1}
+@media(max-width:900px){.gtile .gl{font-size:26px}}
+.gtile .gp{font-size:10px;font-weight:700}
+@media(max-width:900px){.gtile .gp{font-size:11px}}
+.cbody{flex-grow:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.dothis{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.02em}
+@media(max-width:900px){.dothis{display:none}}
+.cfix{font-size:15px;font-weight:600;line-height:1.35}
+@media(max-width:900px){.cfix{font-size:13px}}
+.ccounts{display:flex;gap:14px;font-size:13px;color:var(--muted);font-weight:500}
+@media(max-width:900px){.ccounts{display:none}}
+.chev{color:#9AA0B2;flex-shrink:0}
+/* ---------- all clear ---------- */
+.allclear{background:var(--allclear);color:#fff;border-radius:28px;padding:56px;display:grid;
+  grid-template-columns:minmax(0,1fr) 360px;gap:48px;align-items:center;min-height:70vh}
+@media(max-width:900px){.allclear{display:flex;flex-direction:column;justify-content:center;gap:28px;border-radius:0;
+  margin:-28px -20px -120px;padding:28px 24px 140px;min-height:calc(100vh - 0px)}}
+.acleft{display:flex;flex-direction:column;gap:28px}
+.acbadge{width:96px;height:96px;border-radius:999px;background:#fff;display:flex;align-items:center;justify-content:center}
+.allclear h1{font-size:64px;line-height:1;color:#fff}
+@media(max-width:900px){.allclear h1{font-size:48px}}
+.acsub{font-size:20px;color:var(--allclear-soft)}
+@media(max-width:900px){.acsub{font-size:18px}}
+.acbtns{display:flex;gap:12px;flex-wrap:wrap}
+.acbtn{height:52px;padding:0 24px;border-radius:14px;font-size:16px;font-weight:700;display:flex;align-items:center;text-decoration:none}
+.acbtn.solid{background:#fff;color:var(--ink);border:0}
+.acbtn.line{border:2px solid #8FA3FF;color:#fff;background:transparent;font-weight:600}
+.acweek{background:var(--allclear-deep);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:14px}
+@media(max-width:900px){.acweek{border-radius:18px;padding:16px}}
+.acweek .awt{font-size:14px;font-weight:600;color:var(--allclear-soft)}
+@media(max-width:900px){.acweek .awt{font-size:13px}}
+.nightdots{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.ndot{display:flex;flex-direction:column;align-items:center;gap:6px}
+.ndot .c{width:44px;height:44px;border-radius:999px;display:flex;align-items:center;justify-content:center}
+@media(max-width:900px){.ndot .c{width:36px;height:36px}}
+.ndot .c.done{background:#fff}
+.ndot .c.future{border:2px dashed #8FA3FF}
+.ndot .c.missed{border:2px solid #8FA3FF}
+.ndot span{font-size:12px;font-weight:600;color:var(--allclear-soft)}
+.acweek .awn{font-size:14px;color:var(--allclear-soft)}
+@media(max-width:900px){.acweek .awn{font-size:13px}}
+.acdiv{height:1px;background:#4A66F0}
+.acrow{display:flex;justify-content:space-between;font-size:14px}
+.acrow span:first-child{color:var(--allclear-soft)}
+.acrow span:last-child{font-weight:700}
+/* ---------- parent ---------- */
+.phead{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.phead h1{font-size:40px}
+@media(max-width:900px){.phead h1{font-size:34px}}
+.ptiles{display:flex;gap:10px;flex-wrap:wrap}
+.ptile{display:flex;flex-direction:column;gap:2px;padding:12px 18px;border-radius:14px;background:#fff;min-width:96px}
+@media(max-width:900px){.ptile{padding:12px;flex:1;min-width:0}}
+.ptile .n{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px}
+@media(max-width:900px){.ptile .n{font-size:26px}}
+.ptile .l{font-size:12px;font-weight:600;color:var(--muted)}
+.ptile.alert{background:var(--orange-bg)}
+.ptile.alert .n,.ptile.alert .l{color:var(--orange-deep)}
+.pcols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;align-items:start}
+@media(max-width:900px){.pcols{grid-template-columns:1fr}}
+.pcol h2{font-size:14px;font-weight:700;color:var(--muted);letter-spacing:.02em;margin:0 0 10px;font-family:'Figtree',sans-serif}
+@media(max-width:900px){.pcol h2{font-size:15px}}
+.pcard{background:#fff;border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+@media(max-width:900px){.pcard{padding:14px 16px}}
+.pkicker{font-size:12px;font-weight:700;color:var(--orange-deep)}
+.ptitle{font-size:15px;font-weight:600}
+.psub{font-size:13px;color:var(--muted)}
+.prow{display:flex;gap:8px;flex-wrap:wrap}
+.pbtn{height:38px;padding:0 14px;border-radius:10px;border:1.5px solid var(--border2);background:#fff;font-size:13px;font-weight:600}
+@media(max-width:900px){.pbtn{height:40px;font-size:14px}}
+.pbtn.dark{background:var(--ink);color:#fff;border:0}
+.curow{display:flex;align-items:center;gap:10px;padding:12px 14px;background:#fff;border-radius:12px;margin-bottom:6px;cursor:grab}
+.curow.pick{border:2px solid var(--accent)}
+.curow .ord{font-size:12px;font-weight:700;color:#9AA0B2;min-width:18px}
+.curow.pick .ord{color:var(--accent)}
+.curow .ct{font-size:14px;font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.showall{background:none;border:0;color:var(--accent);font-size:14px;font-weight:600;text-align:left;padding:4px;height:40px}
+.gline{display:flex;justify-content:space-between;font-size:14px;padding:3px 0}
+.gline .gn{font-weight:600}
+.gline .gg{font-weight:700}
+.backlink{display:inline-block;margin-bottom:14px;font-size:14px;font-weight:600;text-decoration:none}
+.notecard{background:#fff;border-radius:16px;padding:14px 16px;margin-bottom:8px;display:flex;flex-direction:column;gap:4px}
+.notecard .nk{font-size:13px;font-weight:600;color:#6D28D9}
+.notecard .nv{font-size:15px}
+.filterbar{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.fchip{display:inline-flex;align-items:center;gap:8px;background:var(--accent-soft);color:var(--accent);
+  border-radius:999px;padding:8px 8px 8px 14px;font-size:14px;font-weight:700}
+.fchip button{border:0;background:var(--accent);color:#fff;border-radius:999px;width:24px;height:24px;font-size:13px;line-height:1}
+.syncnote{font-size:12px;color:var(--muted)}
+.empty{padding:40px 20px;text-align:center;color:var(--muted);font-size:15px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+"use strict";
+/* ================= constants ================= */
+const SYNC_URL = "https://script.google.com/macros/s/AKfycbxLyT8zIchjSUCOs2ZuBBh2ctCn6tsTE1DppVW-bfrzUM-hXUeXy60rmyGK9ZG3NwAb/exec";
+const LS_V2 = "sw_v2";
+const TZ = "America/Los_Angeles";
+const RESOLVED = new Set(["graded", "submitted", "exempt", "collected", "absent"]);
+const COURSE_SHORT = {
+  "H US HIST G&C A": "History", "MATH 8A": "Math", "H ENGLISH 8A": "English",
+  "INT PE A": "PE", "HOMEROOM": "Homeroom", "H INTEG SCIENCE 8A": "Science", "ADV BAND MS A": "Band"
+};
+const TAGC = {
+  English: ["#6D28D9", "#EFE7FF"], Math: ["#1D4ED8", "#E4ECFF"], Science: ["#0F766E", "#DDF5F1"],
+  History: ["#B45309", "#FEF0C7"], PE: ["#0F6B4A", "#DCF3E8"], Band: ["#9D174D", "#FCE7F3"]
+};
+const GRADEC = { A: ["#DCF3E8", "#0F6B4A"], B: ["#E4ECFF", "#1D4ED8"], C: ["#FEF0C7", "#854D0E"], D: ["#FFE6D9", "#9A3412"], F: ["#FFE6D9", "#9A3412"] };
+const PLAN_TYPES = new Set(["project", "writing", "research", "presentation", "test", "quiz"]);
+
+/* ================= utils ================= */
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", "&gt;": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
+const $ = id => document.getElementById(id);
+const dayFmtPT = new Intl.DateTimeFormat("en-CA", { timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit" });
+const dayKey = d => dayFmtPT.format(d instanceof Date ? d : new Date(d));
+const todayKey = () => dayKey(new Date());
+function addDays(key, n) {
+  const [y, m, d] = key.split("-").map(Number);
+  return new Date(Date.UTC(y, m - 1, d) + n * 864e5).toISOString().slice(0, 10);
+}
+function fmtDay(key) { // "Thu, Oct 1"
+  const [y, m, d] = key.split("-").map(Number);
+  return new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric", timeZone: "UTC" }).format(new Date(Date.UTC(y, m - 1, d)));
+}
+function fmtDayLong(key) { // "Thursday, Oct 1"
+  const [y, m, d] = key.split("-").map(Number);
+  return new Intl.DateTimeFormat("en-US", { weekday: "long", month: "short", day: "numeric", timeZone: "UTC" }).format(new Date(Date.UTC(y, m - 1, d)));
+}
+function daysBetween(a, b) { // b - a in days, day keys
+  return Math.round((Date.parse(b) - Date.parse(a)) / 864e5);
+}
+function nextWeekday(key, targetDow) { // next date strictly after key with getUTCDay()==targetDow; 6=Saturday
+  let k = addDays(key, 1), guard = 0;
+  while (new Date(k + "T12:00:00Z").getUTCDay() !== targetDow && guard++ < 10) k = addDays(k, 1);
+  return k;
+}
+function shortCourse(name) {
+  const head = String(name || "").split(":")[0].trim();
+  return COURSE_SHORT[head] || head;
+}
+function tagHTML(course) {
+  const s = shortCourse(course);
+  if (s === "Homeroom" || !TAGC[s]) return "";
+  const [ink, bg] = TAGC[s];
+  return `<span class="tag" style="color:${ink};background:${bg}">${esc(s)}</span>`;
+}
+function parseCourseGrade(g) { // "D 43.53%" -> {letter:'D', pct:43.53}
+  const s = String(g || "").trim();
+  if (!s || s === "-") return { letter: "", pct: null };
+  const lm = s.match(/\b([A-F])\b/);
+  const pm = s.match(/([\d.]+)\s*%/);
+  let letter = lm ? lm[1] : "", pct = pm ? parseFloat(pm[1]) : null;
+  if (!letter && pct != null) letter = pct >= 90 ? "A" : pct >= 80 ? "B" : pct >= 70 ? "C" : pct >= 60 ? "D" : "F";
+  return { letter, pct };
+}
+function assignPct(a) { // graded assignment -> percent or null ("C 2.28/4" -> 57)
+  const m = String(a.grade || "").match(/([\d.]+)\s*\/\s*([\d.]+)/);
+  if (m && +m[2] > 0) return (+m[1] / +m[2]) * 100;
+  return null;
+}
+function pointsOf(a) {
+  const p = parseFloat(a.points);
+  return isNaN(p) ? 0 : p;
+}
+const sAbs = u => u && u.startsWith("/") ? "https://lausd.schoology.com" + u : u;
+const ICONS = {
+  moon: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg>',
+  cal: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="3"></rect><path d="M3.5 10h17M8 3v4M16 3v4"></path></svg>',
+  bars: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20V12M12 20V5M19 20v-6"></path></svg>',
+  check: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>',
+  clock: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3355FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 9 9"></path><path d="M12 7v5l3 2"></path></svg>',
+  warn: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C2410C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 16H3z"></path><path d="M12 10v4M12 17v.5"></path></svg>',
+  chev: '<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>'
+};
+
+/* ================= v2 state store ================= */
+// v2state: id -> {v:{done,done_at,part_done_days[],snoozed_until,ask_parent,parent_answer,plan:{nights[],set_by},note,parent_asked_at}, ts, fts:{field:ts}}
+// v2catchup/v2nights/v2extra/v2pick: {v, ts}. v1 maps are read for migration + manual due dates.
+// v2pick pins tonight's catch-up pick for the day: {d: dayKey, id} — so finishing
+// it shows all-clear instead of auto-promoting the next old item.
+let v2state = {}, v2catchup = { v: [], ts: 0 }, v2nights = { v: {}, ts: 0 }, v2extra = { v: [], ts: 0 }, v2pick = { v: null, ts: 0 };
+let v1maps = { notes: {}, done: {}, submitted: {}, plan: {}, dropped: {}, duedates: {}, noise: {}, snoozed: {} };
+const V1MAPS = ["notes", "done", "submitted", "plan", "dropped", "duedates", "noise", "snoozed"];
+try {
+  const c = JSON.parse(localStorage.getItem(LS_V2) || "{}");
+  v2state = c.v2state || {}; v2catchup = c.v2catchup || v2catchup;
+  v2nights = c.v2nights || v2nights; v2extra = c.v2extra || v2extra; v2pick = c.v2pick || v2pick;
+  v1maps = Object.assign(v1maps, c.v1maps || {});
+} catch (e) { /* start clean; remote refills */ }
+const saveLocal = () => { try { localStorage.setItem(LS_V2, JSON.stringify({ v2state, v2catchup, v2nights, v2extra, v2pick, v1maps })); } catch (e) {} };
+const st = id => (v2state[id] && v2state[id].v) || {};
+function touch(id, fn) {
+  if (!v2state[id]) v2state[id] = { v: {}, ts: 0, fts: {} };
+  const e = v2state[id], now = Date.now();
+  fn(e.v);
+  e.ts = now;
+  saveLocal(); pushSoon(600); render();
+}
+/* Manual due dates live in the v1 duedates map (frozen once v1 retires, but respected). */
+const manualDueK = id => (v1maps.duedates[id] && v1maps.duedates[id].v) || "";
+function effDueKey(a) {
+  const m = manualDueK(a.id);
+  if (m) return m;
+  return a.due_at ? dayKey(new Date(a.due_at)) : null;
+}
+function isSnoozed(id, today) {
+  const s = st(id).snoozed_until;
+  if (!s) return false;
+  return s === "indef" || s > today;
+}
+/* One-way v1 -> v2 migration. Runs on every load; only fills v2 fields that are
+   empty and only when the v1 entry is newer, so v2 edits always win. */
+function migrateV1toV2() {
+  let changed = false;
+  const M = v1maps;
+  const ensure = id => (v2state[id] = v2state[id] || { v: {}, ts: 0, fts: {} });
+  const setF = (id, field, val, ts) => {
+    const e = ensure(id);
+    const cur = e.v[field];
+    const empty = cur == null || cur === "" || (Array.isArray(cur) && !cur.length);
+    if (empty && ts > ((e.fts || {})[field] || 0)) {
+      e.v[field] = val; e.fts[field] = ts; e.ts = Math.max(e.ts || 0, ts); changed = true;
+    }
+  };
+  const iso = ts => new Date(ts).toISOString();
+  for (const id in M.done) { const en = M.done[id]; if (en.v) { setF(id, "done", "turned_in", en.ts); setF(id, "done_at", iso(en.ts), en.ts); } }
+  for (const id in M.submitted) { const en = M.submitted[id]; if (en.v) { setF(id, "done", "turned_in", en.ts); setF(id, "done_at", iso(en.ts), en.ts); } }
+  for (const id in M.notes) { const en = M.notes[id]; if (en.v) setF(id, "note", en.v, en.ts); }
+  for (const id in M.plan) {
+    const en = M.plan[id];
+    if (en.v && /^\d{4}-\d{2}-\d{2}$/.test(en.v)) setF(id, "plan", { nights: [en.v], set_by: null }, en.ts);
+  }
+  for (const id in M.dropped) { const en = M.dropped[id]; if (en.v) setF(id, "parent_answer", "skip", en.ts); }
+  for (const id in M.noise) { const en = M.noise[id]; if (en.v) setF(id, "parent_answer", "skip", en.ts); }
+  for (const id in M.snoozed) {
+    const en = M.snoozed[id];
+    if (en.v) setF(id, "snoozed_until", en.until || "indef", en.ts);
+  }
+  if (changed) { saveLocal(); pushSoon(800); }
+  return changed;
+}
+/* ================= sync transport (GET, ack-checked, retried) ================= */
+let pushTimer = null, pendingPush = false, syncStatus = "starting";
+function setSyncStatus(s) {
+  syncStatus = s;
+  document.querySelectorAll("[data-syncstat]").forEach(el => {
+    const map = {
+      saving: ["Saving…", "var(--muted)"], saved: ["Saved", "var(--green)"],
+      offline: ["Offline — will retry", "var(--orange-deep)"], starting: ["Syncing…", "var(--muted)"]
+    };
+    const [txt, col] = map[s] || map.starting;
+    el.textContent = txt; el.style.color = col;
+  });
+}
+const v2payload = () => ({ v2state, v2catchup, v2nights, v2extra, v2pick });
+function pushState(opts = {}) {
+  clearTimeout(pushTimer); pushTimer = null; pendingPush = false;
+  setSyncStatus("saving");
+  fetch(SYNC_URL + "?action=write&data=" + encodeURIComponent(JSON.stringify(v2payload())), opts.keepalive ? { keepalive: true } : {})
+    .then(r => { if (!r.ok) throw new Error("http " + r.status); return r.json(); })
+    .then(remote => {
+      if (!remote || typeof remote !== "object" || !("v2state" in remote)) throw new Error("bad ack");
+      setSyncStatus("saved");
+    })
+    .catch(() => { pendingPush = true; setSyncStatus("offline"); });
+}
+const pushSoon = ms => { clearTimeout(pushTimer); pushTimer = setTimeout(pushState, ms); };
+function mergeState(remote) {
+  let changed = false;
+  // v2state: per-id last-write-wins
+  const rs = (remote && remote.v2state) || {};
+  for (const k in rs) {
+    const cur = v2state[k], inc = rs[k];
+    if (!cur || (inc.ts || 0) >= (cur.ts || 0)) {
+      if (!cur || JSON.stringify(cur) !== JSON.stringify(inc)) { v2state[k] = inc; changed = true; }
+    }
+  }
+  for (const key of ["v2catchup", "v2nights", "v2extra", "v2pick"]) {
+    const inc = remote && remote[key];
+    const cur = key === "v2catchup" ? v2catchup : key === "v2nights" ? v2nights : key === "v2extra" ? v2extra : v2pick;
+    if (inc && (inc.ts || 0) > (cur.ts || 0)) {
+      if (key === "v2catchup") v2catchup = inc; else if (key === "v2nights") v2nights = inc; else if (key === "v2extra") v2extra = inc; else v2pick = inc;
+      changed = true;
+    }
+  }
+  // v1 maps: read-only source for migration + manual due dates
+  for (const m of V1MAPS) {
+    const r = (remote && remote[m]) || {}, l = v1maps[m];
+    for (const k in r) {
+      const cur = l[k], inc = r[k];
+      if (!cur || (inc.ts || 0) >= (cur.ts || 0)) {
+        if (!cur || cur.v !== inc.v || cur.ts !== inc.ts) { l[k] = inc; changed = true; }
+      }
+    }
+  }
+  if (changed) saveLocal();
+  return changed;
+}
+function pullState(cb) {
+  fetch(SYNC_URL + "?action=read").then(r => r.json()).then(remote => {
+    const changed = mergeState(remote);
+    if (changed) migrateV1toV2();
+    if (pendingPush) pushState();
+    else if (syncStatus === "starting" || syncStatus === "offline") setSyncStatus("saved");
+    cb(changed);
+  }).catch(() => { setSyncStatus("offline"); cb(false); });
+}
+window.addEventListener("online", () => { if (pendingPush) pushState(); });
+window.addEventListener("pagehide", () => { if (pushTimer || pendingPush) pushState({ keepalive: true }); });
+/* ================= derived lists (pure) ================= */
+// ctx: {items, today, getState, catchupOrder, extraIds, manualDue(id)->daykey|null}
+function mkCtx(items, today) {
+  return {
+    items, today,
+    getState: id => st(id),
+    catchupOrder: v2catchup.v || [],
+    extraIds: v2extra.v || [],
+    manualDue: id => manualDueK(id)
+  };
+}
+function ctxDueKey(ctx, a) {
+  const m = ctx.manualDue(a.id);
+  if (m) return m;
+  return a.due_at ? dayKey(new Date(a.due_at)) : null;
+}
+function ctxSnoozed(ctx, id) {
+  const s = ctx.getState(id).snoozed_until;
+  if (!s) return false;
+  return s === "indef" || s > ctx.today;
+}
+function pastDue(ctx) {
+  const out = [];
+  for (const a of ctx.items) {
+    const dk = ctxDueKey(ctx, a), s = ctx.getState(a.id);
+    if (!dk || dk >= ctx.today) continue;
+    if (RESOLVED.has(a.status)) continue;
+    if (s.done === "turned_in" || s.parent_answer === "skip") continue;
+    if (ctxSnoozed(ctx, a.id)) continue;
+    out.push(a);
+  }
+  out.sort((x, y) => (pointsOf(y) - pointsOf(x)) || (ctxDueKey(ctx, x) < ctxDueKey(ctx, y) ? -1 : 1));
+  return out;
+}
+function catchupPick(ctx) {
+  const pd = pastDue(ctx), ids = new Set(pd.map(a => a.id));
+  for (const id of ctx.catchupOrder) if (ids.has(id)) return pd.find(a => a.id === id);
+  if (!pd.length) return null;
+  // default: highest points, ties -> most recent due date
+  let best = pd[0];
+  for (const a of pd) {
+    if (pointsOf(a) > pointsOf(best)) best = a;
+    else if (pointsOf(a) === pointsOf(best) && ctxDueKey(ctx, a) > ctxDueKey(ctx, best)) best = a;
+  }
+  return best;
+}
+// Tonight's catch-up pick, pinned for the day. Without the pin, finishing the
+// pick would auto-promote the next old item and the all-clear screen (plus the
+// weeknight circle) could never trigger while any catch-up remains.
+function tonightPick(ctx) {
+  const pin = v2pick.v;
+  if (pin && pin.d === ctx.today) {
+    const a = byId(pin.id);
+    if (a) {
+      const s = ctx.getState(a.id);
+      if (s.parent_answer !== "skip" && !ctxSnoozed(ctx, a.id)) return a;
+    }
+  }
+  const pick = catchupPick(ctx);
+  v2pick = { v: pick ? { d: ctx.today, id: pick.id } : null, ts: Date.now() };
+  saveLocal(); pushSoon(600);
+  return pick;
+}
+function orderedCatchup(ctx) {
+  // parent order first, then anything new appended by points
+  const pd = pastDue(ctx), ids = new Set(pd.map(a => a.id));
+  const seen = new Set(), out = [];
+  for (const id of ctx.catchupOrder) if (ids.has(id) && !seen.has(id)) { seen.add(id); out.push(pd.find(a => a.id === id)); }
+  for (const a of pd) if (!seen.has(a.id)) out.push(a);
+  return out;
+}
+function tonight(ctx) {
+  // candidates includes turned_in (for parent stats); student view filters them out
+  const pick = tonightPick(ctx);
+  const extras = new Set(ctx.extraIds);
+  const out = [];
+  for (const a of ctx.items) {
+    const s = ctx.getState(a.id);
+    if (s.parent_answer === "skip") continue;
+    if (ctxSnoozed(ctx, a.id)) continue;
+    if ((s.part_done_days || []).includes(ctx.today)) continue;
+    if (RESOLVED.has(a.status)) continue;
+    const dk = ctxDueKey(ctx, a);
+    const isPick = pick && a.id === pick.id;
+    const isExtra = extras.has(a.id);
+    let reason = null;
+    if (isPick || isExtra) reason = "catchup";
+    else if (s.snoozed_until === ctx.today) reason = "snoozed";
+    else if (s.plan && (s.plan.nights || []).includes(ctx.today)) reason = "plan";
+    else if (dk === ctx.today || dk === addDays(ctx.today, 1)) reason = "due";
+    else if (dk && dk >= addDays(ctx.today, -2) && dk < ctx.today) reason = "late";
+    else continue;
+    out.push({ a, reason, done: s.done === "turned_in", s });
+  }
+  // order: late first, then by due date, catch-up last
+  const grp = r => r.reason === "catchup" ? 2 : (r.a && ctxDueKey(ctx, r.a) < ctx.today ? 0 : 1);
+  out.sort((x, y) => (grp(x) - grp(y)) || ((ctxDueKey(ctx, x.a) || "9999") < (ctxDueKey(ctx, y.a) || "9999") ? -1 : 1));
+  return out;
+}
+function bigStuff(ctx) {
+  const end = addDays(ctx.today, 14), items = [], groups = {};
+  for (const a of ctx.items) {
+    const dk = ctxDueKey(ctx, a), s = ctx.getState(a.id);
+    if (!dk || dk < ctx.today || dk > end) continue;
+    if (s.done === "turned_in" || s.parent_answer === "skip" || RESOLVED.has(a.status)) continue;
+    if (ctxSnoozed(ctx, a.id)) continue;
+    const t = String(a.type || "").toLowerCase();
+    if (["test", "quiz", "project"].includes(t)) items.push({ a, dk });
+    const k = dk + "||" + a.course;
+    (groups[k] = groups[k] || []).push(a);
+  }
+  const glist = [];
+  for (const k in groups) {
+    if (groups[k].length >= 3) {
+      const [dk, course] = k.split("||");
+      glist.push({ dk, course, items: groups[k] });
+    }
+  }
+  items.sort((x, y) => (x.dk < y.dk ? -1 : 1));
+  glist.sort((x, y) => (x.dk < y.dk ? -1 : 1));
+  return { items, groups: glist };
+}
+function needsParent(ctx) {
+  const out = [], twoAgo = addDays(ctx.today, -2);
+  for (const a of ctx.items) {
+    const s = ctx.getState(a.id);
+    if (s.done === "turned_in" && a.status === "missing" && s.done_at) {
+      if (dayKey(new Date(s.done_at)) <= twoAgo) { out.push({ a, kind: "missing_claim", s }); continue; }
+    }
+    if (s.ask_parent && !s.parent_answer) { out.push({ a, kind: "ask", s }); continue; }
+    if (a.status === "graded") {
+      const p = assignPct(a);
+      if (p != null && p < 60) out.push({ a, kind: "low", s, pct: p });
+    }
+  }
+  return out;
+}
+function hiddenInClass(ctx, a) {
+  // in-class participation and classwork with no points, already graded: nothing to do
+  if (a.status !== "graded") return false;
+  const t = String(a.type || "").toLowerCase();
+  return t === "participation" || (t === "classwork" && !pointsOf(a));
+}
+function whenLine(ctx, a, reason, s) {
+  const dk = ctxDueKey(ctx, a);
+  if (reason === "catchup") {
+    const since = dk ? fmtDay(dk).split(", ")[1] || fmtDay(dk) : "no date";
+    return { text: "Catch-up · missing since " + since.replace(/^(\w+), /, ""), late: true };
+  }
+  if (dk && dk < ctx.today) {
+    const n = daysBetween(dk, ctx.today);
+    return { text: n + (n === 1 ? " day late" : " days late"), late: true };
+  }
+  if (dk === ctx.today) return { text: "Due today", late: false };
+  if (dk === addDays(ctx.today, 1)) return { text: "Due tomorrow", late: false };
+  if (s && s.plan && (s.plan.nights || []).includes(ctx.today)) {
+    const nights = s.plan.nights, k = nights.indexOf(ctx.today) + 1;
+    return { text: "Part " + k + " of " + nights.length, late: false };
+  }
+  return { text: dk ? "Due " + fmtDay(dk) : "", late: false };
+}
+function titleFor(a, ctx, reason) {
+  if (reason === "plan") {
+    const nights = (ctx.getState(a.id).plan || {}).nights || [];
+    const k = nights.indexOf(ctx.today) + 1;
+    if (k > 0) return a.title + ", part " + k + " of " + nights.length;
+  }
+  return a.title;
+}
+/* ================= app shell + views ================= */
+let DATA = null;
+let selId = null;            // selected task (tonight)
+let planDlg = null;          // {id, n, picked:[], asParent}
+let moveId = null;           // phone: move picker for assignment
+let showHiddenWeek = false;
+let showAllCatchup = false;
+let weekOffset = 0;
+const byId = id => DATA.assignments.find(a => a.id === id);
+
+function railHTML(active, ctx) {
+  const upd = DATA.fetched_at ? "Updated " + fmtDay(dayKey(new Date(DATA.fetched_at))) : "";
+  const link = (path, icon, label) =>
+    `<a class="navlink${active === path ? " on" : ""}" href="#${path}">${icon}${label}</a>`;
+  return `<nav class="rail" aria-label="Main">
+    <div class="wordmark">Schoolwork</div>
+    ${link("/tonight", ICONS.moon, "Tonight")}
+    ${link("/week", ICONS.cal, "This week")}
+    ${link("/classes", ICONS.bars, "Classes")}
+    <div class="railfoot">${esc(upd)}<br><span data-syncstat>Syncing…</span></div>
+  </nav>`;
+}
+function tabbarHTML(active) {
+  const t = (path, icon, label) =>
+    `<a class="${active === path ? "on" : ""}" href="#${path}">${icon}<span>${label}</span></a>`;
+  return `<nav class="tabbar" aria-label="Main">
+    ${t("/tonight", ICONS.moon, "Tonight")}${t("/week", ICONS.cal, "This week")}${t("/classes", ICONS.bars, "Classes")}
+  </nav>`;
+}
+function dueLine(ctx, a, reason, s) {
+  const dk = ctxDueKey(ctx, a);
+  if (reason === "catchup") return whenLine(ctx, a, reason, s).text;
+  if (s && s.plan && (s.plan.nights || []).includes(ctx.today)) {
+    const nights = s.plan.nights, k = nights.indexOf(ctx.today) + 1;
+    return "Part " + k + " of " + nights.length + (dk ? ", due " + fmtDay(dk) : "");
+  }
+  if (!dk) return "No due date";
+  if (dk < ctx.today) { const n = daysBetween(dk, ctx.today); return n + (n === 1 ? " day late" : " days late") + ", due " + fmtDay(dk); }
+  if (dk === ctx.today) return "Due today";
+  if (dk === addDays(ctx.today, 1)) return "Due tomorrow, " + fmtDay(dk);
+  return "Due " + fmtDay(dk);
+}
+/* ---------- Tonight ---------- */
+function tonightCard(ctx, r) {
+  const { a, reason, done, s } = r;
+  const w = whenLine(ctx, a, reason, s);
+  const sel = selId === a.id ? " sel" : "";
+  const dn = done ? " isdone" : "";
+  const asked = s.ask_parent && !s.parent_answer ? `<span class="askedbadge">asked</span>` : "";
+  return `<div class="tcard${sel}${dn}" data-action="open-task" data-id="${a.id}" role="button" tabindex="0">
+    <button class="donecircle${done ? " on" : ""}" data-action="toggle-done" data-id="${a.id}"
+      aria-label="${done ? "Mark not done" : "Mark done"}: ${esc(a.title)}">${done ? ICONS.check : ""}</button>
+    <div class="tbody">
+      <div class="trow1">${tagHTML(a.course)}<span class="when${w.late ? " late" : ""}">${esc(w.text)}</span>${asked}</div>
+      <div class="ttitle">${esc(titleFor(a, ctx, reason))}</div>
+    </div>
+  </div>`;
+}
+function viewTonight(ctx, classFilter) {
+  const all = tonight(ctx);
+  const list = classFilter ? all.filter(r => shortCourse(r.a.course) === classFilter) : all;
+  const active = list.filter(r => !r.done);
+  const n = active.length;
+  if (n === 0 && !classFilter) return viewAllClear(ctx, all.length);
+  const doneCount = list.length - n;
+  const pct = list.length ? Math.round(doneCount / list.length * 100) : 0;
+  const eyebrow = fmtDayLong(ctx.today).toUpperCase();
+  const head = n === 1 ? "1 thing tonight" : n + " things tonight";
+  const pd = pastDue(ctx), pick = tonightPick(ctx);
+  const leftAfter = pick ? pd.filter(a => a.id !== pick.id && !(v2extra.v || []).includes(a.id)).length : 0;
+  const catchNote = pick && !classFilter
+    ? `<div class="catchnote">${ICONS.clock}<span>The last one is tonight's catch-up pick. ${leftAfter} old ${leftAfter === 1 ? "one" : "ones"} left after it. A parent sets the order.</span></div>` : "";
+  const filterBar = classFilter
+    ? `<div class="filterbar"><span class="fchip">${esc(classFilter)}<button data-action="clear-filter" aria-label="Clear class filter">✕</button></span></div>` : "";
+  const cards = active.map(r => tonightCard(ctx, r)).join("") ||
+    `<div class="empty">Nothing for ${esc(classFilter)} tonight.</div>`;
+  const left = `<div>
+      <div class="tonight-head"><div class="eyebrow">${esc(eyebrow)}</div><h1>${esc(head)}</h1></div>
+      <div class="progress"><div class="ptrack"><div class="pfill" style="width:${pct}%"></div></div>
+        <div class="plabel"><span>${doneCount} of ${list.length} done</span><span>Tap the circle when it's done</span></div></div>
+      ${filterBar}
+      <div class="tlist">${cards}</div>
+      ${catchNote}
+    </div>`;
+  const isDesktop = window.matchMedia("(min-width:901px)").matches;
+  const pane = isDesktop
+    ? `<aside class="taskwrap${selId ? "" : " empty"}" aria-label="Selected task">${selId ? taskHTML(ctx, byId(selId)) : ""}</aside>`
+    : "";
+  const grid = isDesktop ? `<div class="tonight-grid">${left}${pane}</div>` : left;
+  const sheet = (!isDesktop && selId) ? `
+    <div class="sheetback" data-action="close-task"></div>
+    <div class="sheet" role="dialog" aria-label="Task"><div class="grab"></div>${taskHTML(ctx, byId(selId))}</div>` : "";
+  return grid + sheet;
+}
+function taskHTML(ctx, a) {
+  if (!a) return "";
+  const s = st(a.id);
+  const reason = (tonightPick(ctx) || {}).id === a.id ? "catchup" : null;
+  const t = String(a.type || "").toLowerCase();
+  const canPart = PLAN_TYPES.has(t) || (s.plan && (s.plan.nights || []).length);
+  const ptag = s.plan && s.plan.set_by === "parent" ? `<span class="parenttag">Parent planned this</span>` : "";
+  const asked = s.ask_parent && !s.parent_answer ? `<span class="askedbadge">asked</span>` : "";
+  return `<div class="taskhead">
+      <div class="trow1">${tagHTML(a.course)}<span class="when" style="color:var(--muted)">${esc(a.type || "")}</span>${asked}${ptag}</div>
+      <h2>${esc(a.title)}</h2>
+      <div class="taskmeta"><span>${esc(dueLine(ctx, a, reason, s))}</span>
+      ${a.url ? `<a href="${esc(sAbs(a.url))}" target="_blank" rel="noopener">Open in Schoology</a>` : ""}</div>
+    </div>
+    <div class="taskactions">
+      <button class="abtn primary" data-action="turned-in" data-id="${a.id}">${ICONS.check}
+        <span>Turned it in<span class="sub">Finished and submitted</span></span></button>
+      ${canPart ? `<button class="abtn ghost" data-action="part-done" data-id="${a.id}">${ICONS.clock}
+        <span>Did my part for today<span class="sub">Bigger job. It comes back tomorrow.</span></span></button>` : ""}
+      <div class="notnow"><h3>Not now</h3>
+        <p>"Ask a parent" is for things that aren't real work. It goes on their list, not off yours.</p>
+        <div class="chips">
+          <button class="chip" data-action="snooze-tomorrow" data-id="${a.id}">Tomorrow</button>
+          <button class="chip" data-action="snooze-weekend" data-id="${a.id}">Weekend</button>
+          <button class="chip" data-action="ask-parent" data-id="${a.id}">Ask a parent</button>
+        </div></div>
+    </div>
+    <div><label class="notelabel" for="tnote">Note for a parent (optional)</label>
+      <input class="notein" id="tnote" data-note="${a.id}" value="${esc(s.note || "")}" placeholder="e.g. We finish it in class Friday"></div>`;
+}
+/* ---------- This week ---------- */
+function weekMeta(ctx, a, day, s) {
+  const dk = ctxDueKey(ctx, a);
+  const nights = (s.plan || {}).nights || [];
+  if (nights.includes(day) && dk && dk !== day) {
+    const k = nights.indexOf(day) + 1;
+    return "part " + k + " of " + nights.length + " · due " + fmtDay(dk);
+  }
+  if (dk === day) {
+    const t = String(a.type || "").toLowerCase();
+    if (t === "test" || t === "quiz") return t + " " + fmtDay(dk);
+    if (dk === ctx.today) return "due today";
+    if (dk === addDays(ctx.today, 1)) return "due tomorrow";
+    return "due " + fmtDay(dk);
+  }
+  return "";
+}
+function weekDayItems(ctx, day) {
+  const out = [];
+  for (const a of ctx.items) {
+    const s = st(a.id);
+    if (s.done === "turned_in" || s.parent_answer === "skip" || RESOLVED.has(a.status)) continue;
+    if (isSnoozed(a.id, ctx.today)) continue;
+    if (hiddenInClass(ctx, a) && !showHiddenWeek) continue;
+    const dk = ctxDueKey(ctx, a), nights = (s.plan || {}).nights || [];
+    const isDue = dk === day, isPlanned = nights.includes(day);
+    if (!isDue && !isPlanned) continue;
+    out.push({ a, s, due: isDue, planned: isPlanned, hidden: hiddenInClass(ctx, a) });
+  }
+  out.sort((x, y) => (pointsOf(y.a) - pointsOf(x.a)) || (x.a.title < y.a.title ? -1 : 1));
+  return out;
+}
+function weekCardHTML(ctx, it, day, asParent) {
+  const { a, s, due, planned } = it;
+  const cls = due ? "solid" : "dashed";
+  const border = planned && !due ? ` style="border-color:${TAGC[shortCourse(a.course)] ? TAGC[shortCourse(a.course)][0] : "#9AA0B2"}"` : "";
+  const ptag = s.plan && s.plan.set_by === "parent" && planned ? `<span class="parenttag">Parent</span>` : "";
+  const move = asParent
+    ? `<button class="movebtn" data-action="move-open" data-id="${a.id}">Move</button>`
+    : `<button class="movebtn" data-action="open-plan" data-id="${a.id}">Plan</button>`;
+  return `<div class="wcard ${cls}"${border} draggable="true" data-id="${a.id}">
+    <div class="trow1">${tagHTML(a.course)}${ptag}</div>
+    <div class="wt">${esc(a.title)}${planned && !due ? `, part ${(s.plan.nights || []).indexOf(day) + 1} of ${(s.plan.nights || []).length}` : ""}</div>
+    <div class="trow1"><span class="wm">${esc(weekMeta(ctx, a, day, s))}</span>${move}</div>
+  </div>`;
+}
+function viewWeek(ctx, asParent) {
+  const start = addDays(ctx.today, weekOffset * 7);
+  const days = []; for (let i = 0; i < 7; i++) days.push(addDays(start, i));
+  const bs = bigStuff(ctx);
+  // big banner: pick the nearest big item without a plan to nudge
+  let nudge = bs.items.find(x => !(st(x.a.id).plan || {}).nights);
+  if (!nudge && bs.groups.length) nudge = { a: bs.groups[0].items[0], group: bs.groups[0] };
+  let banner = "";
+  if (nudge && nudge.a) {
+    const what = nudge.group
+      ? `${nudge.group.items.length} ${shortCourse(nudge.group.course)} pieces due ${fmtDay(nudge.group.dk)}`
+      : `The ${nudge.a.type} on ${fmtDay(nudge.dk)}`;
+    banner = `<div class="bigbanner">${ICONS.warn}<span class="btxt"><b>Big stuff coming:</b> ${esc(what)}.</span>
+      <button class="planbtn" data-action="open-plan" data-id="${nudge.a.id}">Plan the ${esc(shortCourse(nudge.a.course))} ${esc((nudge.a.type || "work").toLowerCase())}</button></div>`;
+  }
+  const head = `<div class="weekhead"><div>
+      <div class="eyebrow">THIS WEEK</div><h1>Plan it out</h1>
+      <div class="weeksub">${asParent ? "Parent view — plans you make are tagged." : "Tap Plan on anything big, or drag a card onto a night."}</div>
+    </div>
+    <div class="weeknav">
+      <button class="wbtn" data-action="week-prev">← Last week</button>
+      ${weekOffset ? `<button class="wbtn" data-action="week-this">This week</button>` : ""}
+      <button class="wbtn" data-action="week-next">Next week →</button>
+    </div></div>`;
+  // desktop grid
+  const dows = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const cols = days.map(day => {
+    const items = weekDayItems(ctx, day);
+    const num = parseInt(day.slice(8), 10), dow = dows[new Date(day + "T12:00:00Z").getUTCDay()];
+    const isT = day === ctx.today;
+    let cards = items.map(it => weekCardHTML(ctx, it, day, asParent)).join("");
+    if (!cards && day >= ctx.today) cards = `<div class="free">Free night</div>`;
+    return `<div class="daycol${isT ? " today" : " other"}" data-day="${day}">
+      <div class="daytop"><span class="dow">${dow}${isT ? " · today" : ""}</span><span class="num">${num}</span></div>
+      ${cards}</div>`;
+  }).join("");
+  const grid = `<div class="daygrid">${cols}</div>`;
+  // phone: day strip (5 weekdays) + stacked sections
+  const strip = [];
+  const stripHTML = `<div class="daystrip">${days.map(d => {
+    const dow = new Date(d + "T12:00:00Z").getUTCDay();
+    const names = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const items = weekDayItems(ctx, d);
+    return `<div class="dcell${d === ctx.today ? " today" : ""}"><span class="dd">${names[dow]}</span>
+      <span class="dn">${parseInt(d.slice(8), 10)}</span><span class="dc">${items.length || ""}</span></div>`;
+  }).join("")}</div>`;
+  const secs = days.map(day => {
+    const items = weekDayItems(ctx, day);
+    if (!items.length) return "";
+    const label = day === ctx.today ? "TODAY" : day === addDays(ctx.today, 1) ? "TOMORROW" : fmtDay(day).toUpperCase();
+    const rows = items.map(it => {
+      const { a, s, due, planned } = it;
+      return `<div class="wrow${planned && !due ? " dashed" : ""}">
+        ${tagHTML(a.course)}
+        <span class="wt">${esc(a.title)}${planned && !due ? `, part ${(s.plan.nights || []).indexOf(day) + 1} of ${(s.plan.nights || []).length}` : ""}</span>
+        <span class="wm" style="font-size:12px;color:var(--muted);font-weight:600">${esc(weekMeta(ctx, a, day, s))}</span>
+        <button class="movebtn" data-action="move-open" data-id="${a.id}">Move</button></div>`;
+    }).join("");
+    return `<div class="wsec"><h2>${esc(label)} · ${esc(fmtDay(day))}${day >= ctx.today ? "" : " · past"}</h2>${rows}</div>`;
+  }).join("");
+  // hidden in-class grades
+  let hiddenCount = 0;
+  for (const a of ctx.items) if (hiddenInClass(ctx, a)) hiddenCount++;
+  const hidden = hiddenCount ? `<button class="showhidden" data-action="toggle-hidden">
+    ${showHiddenWeek ? "Hide" : "Show " + hiddenCount + " in-class grades (nothing to do)"}</button>` : "";
+  const mweek = `<div class="mweek">${stripHTML}${secs || `<div class="empty">Nothing planned this week.</div>`}${hidden}</div>`;
+  const back = asParent ? `<a class="backlink" href="#/parent">← Back to parent check-in</a>` : "";
+  return back + head + banner + grid + mweek;
+}
+/* ---------- plan dialog ---------- */
+function planSummary(a, n, picked, dk) {
+  if (!picked.length) return "Pick " + n + (n === 1 ? " night." : " nights.");
+  const sorted = [...picked].sort();
+  if (picked.length < n) return "Pick " + (n - picked.length) + " more " + (n - picked.length === 1 ? "night." : "nights.");
+  if (!dk) return n + (n === 1 ? " part." : " parts.") + " First part " + fmtDay(sorted[0]) + ".";
+  const last = sorted[sorted.length - 1], gap = daysBetween(last, dk);
+  const when = gap <= 1 ? "the night before it's due" : gap < 7 ? gap + " days before it's due" : "about a week before it's due";
+  return n + (n === 1 ? " part." : " parts.") + " Last one lands " + when + ".";
+}
+function planDialogHTML(ctx) {
+  const a = byId(planDlg.id);
+  if (!a) return "";
+  const dk = effDueKey(a);
+  const strip = []; for (let i = 0; i < 7; i++) strip.push(addDays(ctx.today, i));
+  const dows = ["S", "M", "T", "W", "T", "F", "S"];
+  const cells = strip.map(d => {
+    const dis = (dk && d >= dk) || planDlg.picked.length >= planDlg.n && !planDlg.picked.includes(d);
+    const on = planDlg.picked.includes(d);
+    const parts = st(a.id).plan && (st(a.id).plan.nights || []).includes(d) ? "·" : "";
+    return `<button class="pickbtn${on ? " on" : ""}" data-action="plan-toggle" data-day="${d}"${dis ? " disabled" : ""}>
+      <span class="pd">${dows[new Date(d + "T12:00:00Z").getUTCDay()]}</span><span class="pn">${parseInt(d.slice(8), 10)}</span>
+      <span class="pp">${on ? "✓" : parts}</span></button>`;
+  }).join("");
+  const counts = [1, 2, 3, 4].map(n =>
+    `<button class="countbtn${planDlg.n === n ? " on" : ""}" data-action="plan-n" data-n="${n}">${n}</button>`).join("");
+  const who = `<div class="planwho">Planning as:
+    <button class="${planDlg.asParent ? "" : "on"}" data-action="plan-as" data-v="0">Student</button>
+    <button class="${planDlg.asParent ? "on" : ""}" data-action="plan-as" data-v="1">Parent</button></div>`;
+  return `<div class="overlay" data-action="plan-cancel">
+    <div class="dialog" role="dialog" aria-label="Plan assignment">
+      <div class="grab"></div>
+      <div><div class="eyebrow">PLAN THIS</div><h2>${esc(a.title)}</h2>
+        <div class="weeksub">${dk ? "Due " + fmtDay(dk) : "No due date"}</div></div>
+      <div class="plangrid">
+        <div><div class="notelabel" style="margin-bottom:8px">How many nights?</div><div class="countgrid">${counts}</div></div>
+        <div><div class="notelabel" style="margin-bottom:8px">Which nights?</div><div class="pickgrid">${cells}</div></div>
+      </div>
+      <div class="plansum">${esc(planSummary(a, planDlg.n, planDlg.picked, dk))}</div>
+      ${who}
+      <div class="planfoot">
+        <button class="cancelplan" data-action="plan-cancel">Cancel</button>
+        <button class="saveplan" data-action="plan-save" ${planDlg.picked.length === planDlg.n ? "" : "disabled style='opacity:.4'"}>Save plan</button>
+      </div>
+    </div></div>`;
+}
+function openPlan(id, asParent) {
+  const a = byId(id), s = st(id);
+  const existing = (s.plan || {}).nights || [];
+  planDlg = { id, n: Math.min(4, Math.max(1, existing.length || 1)), picked: existing.slice(0, 4), asParent: !!asParent };
+  render();
+}
+function dropOnDay(id, day) {
+  const a = byId(id); if (!a || day < todayKey()) return;
+  const dk = effDueKey(a);
+  const asP = (planDlg && planDlg.asParent) || (typeof parseHash === "function" && parseHash().params.get("as") === "parent");
+  touch(id, v => {
+    if (dk && day === dk) { v.plan = null; v.snoozed_until = null; }
+    else if (dk && day > dk) { v.snoozed_until = day; v.plan = null; }
+    else { v.plan = { nights: [day], set_by: asP ? "parent" : "student" }; v.snoozed_until = null; }
+  });
+}
+/* ---------- phone move picker ---------- */
+function moveSheetHTML(ctx) {
+  const a = byId(moveId);
+  if (!a) return "";
+  const dk = effDueKey(a);
+  const days = []; for (let i = 0; i < 7; i++) days.push(addDays(ctx.today, i));
+  const cells = days.map(d => {
+    const lbl = d === ctx.today ? "Tonight" : fmtDay(d);
+    return `<button class="chip" style="height:52px;font-size:15px" data-action="move-to" data-day="${d}"${(dk && d >= dk) ? " disabled style='opacity:.35'" : ""}>${esc(lbl)}</button>`;
+  }).join("");
+  return `<div class="sheetback" data-action="move-cancel"></div>
+    <div class="sheet" role="dialog" aria-label="Move assignment"><div class="grab"></div>
+      <div class="taskhead"><h2>Move this</h2><div class="taskmeta">${esc(a.title)}${dk ? " · due " + fmtDay(dk) : ""}</div>
+      <div class="weeksub">Dropping it on its due date clears the plan. After the due date snoozes it there.</div></div>
+      <div style="display:flex;flex-direction:column;gap:8px">${cells}</div></div>`;
+}
+/* ---------- Classes ---------- */
+function viewClasses(ctx) {
+  const pd = pastDue(ctx);
+  const pdByCourse = {};
+  for (const a of pd) { const c = shortCourse(a.course); (pdByCourse[c] = pdByCourse[c] || []).push(a); }
+  const upByCourse = {};
+  for (const a of ctx.items) {
+    const s = st(a.id), dk = ctxDueKey(ctx, a);
+    if (!dk || dk < ctx.today || dk > addDays(ctx.today, 14)) continue;
+    if (s.done === "turned_in" || s.parent_answer === "skip" || RESOLVED.has(a.status)) continue;
+    if (isSnoozed(a.id, ctx.today)) continue;
+    const c = shortCourse(a.course);
+    (upByCourse[c] = upByCourse[c] || []).push({ a, dk });
+  }
+  const rank = l => ({ F: 0, D: 1, C: 2, B: 3, A: 4 }[l] ?? 5);
+  const cards = DATA.courses.map(c => {
+    const short = shortCourse(c.name);
+    const g = parseCourseGrade(c.grade);
+    const miss = pdByCourse[short] || [], up = (upByCourse[short] || []).sort((x, y) => (x.dk < y.dk ? -1 : 1));
+    let fix;
+    if (miss.length) {
+      const names = miss.slice(0, 2).map(a => a.title.replace(/\s*[-–:].*$/, ""));
+      fix = "Turn in the " + names.join(" and the ") + (miss.length > 2 ? ", plus " + (miss.length - 2) + " more" : "");
+    } else if (up.length && ["test", "quiz"].includes(String(up[0].a.type || "").toLowerCase())) {
+      fix = "Nothing missing. " + String(up[0].a.type).toLowerCase() + " " + fmtDay(up[0].dk);
+    } else if (up.length) {
+      fix = "Nothing missing. " + up[0].a.title.replace(/\s*[-–:].*$/, "") + " due " + fmtDay(up[0].dk);
+    } else fix = "Nothing missing. All clear.";
+    const urgent = (g.letter === "D" || g.letter === "F") || miss.length > 0;
+    const [tbg, tink] = GRADEC[g.letter] || ["#E9EBF2", "#5B6070"];
+    const borderC = TAGC[short] ? TAGC[short][0] : "#E3E5EE";
+    return { short, g, miss: miss.length, up: up.length, fix, urgent, tbg, tink, borderC,
+      gl: g.letter || "–", gp: g.pct != null ? Math.round(g.pct) + "%" : (g.letter ? "" : "no grade") };
+  }).sort((x, y) => (rank(x.g.letter) - rank(y.g.letter)) || (y.miss - x.miss));
+  return `<div class="weekhead"><div><div class="eyebrow">GRADES</div><h1>Classes</h1>
+    <div class="weeksub">Lowest first. Tap a class to see just its work tonight.</div></div></div>
+  <div class="classgrid">${cards.map(c => `
+    <a class="ccard" style="border-top-color:${c.borderC}" href="#/tonight?class=${encodeURIComponent(c.short)}">
+      <div class="crow1"><span class="cname">${esc(c.short)}</span>
+        <span class="gtile" style="background:${c.tbg};color:${c.tink}"><span class="gl">${esc(c.gl)}</span><span class="gp">${esc(c.gp)}</span></span></div>
+      <div class="cbody"><div class="dothis">DO THIS FIRST</div>
+        <div class="cfix" style="color:${c.urgent ? "#9A3412" : "#5B6070"}">${esc(c.fix)}</div>
+        <div class="ccounts"><span>${c.miss} missing</span><span>·</span><span>${c.up} coming up</span></div></div>
+      ${ICONS.chev}
+    </a>`).join("")}</div>`;
+}
+/* ---------- All clear ---------- */
+function viewAllClear(ctx, totalCount) {
+  const doneN = totalCount;
+  const sub = doneN === 0 ? "Nothing was on the list." : doneN + " of " + doneN + " finished, catch-up included. Go do something else.";
+  // this week's nights: Mon..today
+  const dow = new Date(ctx.today + "T12:00:00Z").getUTCDay();
+  const mon = addDays(ctx.today, -((dow + 6) % 7));
+  const days = []; for (let i = 0; i < 5; i++) days.push(addDays(mon, i));
+  const dots = days.map(d => {
+    const done = (v2nights.v || {})[d];
+    const future = d > ctx.today;
+    const cls = done ? "done" : future ? "future" : "missed";
+    const inner = done ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0F7B55" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>' : "";
+    return `<div class="ndot"><div class="c ${cls}">${inner}</div><span>${["M", "T", "W", "T", "F"][new Date(d + "T12:00:00Z").getUTCDay() - 1] || ""}</span></div>`;
+  }).join("");
+  const soFar = days.filter(d => d <= ctx.today), doneSoFar = soFar.filter(d => (v2nights.v || {})[d]).length;
+  const weekLine = doneSoFar + " of " + soFar.length + " nights so far. Tuesday doesn't erase the others.";
+  // old ones cleared this week: turned_in with done_at this week and was past due when done
+  let cleared = 0;
+  for (const id in v2state) {
+    const v = v2state[id].v || {};
+    if (v.done === "turned_in" && v.done_at) {
+      const dd = dayKey(new Date(v.done_at));
+      if (dd >= mon && dd <= ctx.today) {
+        const a = byId(id);
+        if (a) { const dk = ctxDueKey(ctx, a); if (dk && dk < dd) cleared++; }
+      }
+    }
+  }
+  const pd = pastDue(ctx), pick = catchupPick(ctx);
+  const nextOld = pick && !(v2extra.v || []).includes(pick.id) ? pick : orderedCatchup(ctx).find(a => !(v2extra.v || []).includes(a.id) && (!pick || a.id !== pick.id));
+  const oneMore = nextOld
+    ? `<button class="acbtn line" data-action="one-more" data-id="${nextOld.id}">Feeling it? Do one more old one</button>` : "";
+  return `<div class="allclear">
+    <div class="acleft">
+      <div class="acbadge"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#0F7B55" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></div>
+      <div><h1>Done for tonight.</h1><div class="acsub" style="margin-top:12px">${esc(sub)}</div></div>
+      <div class="acbtns">${oneMore}<a class="acbtn line" href="#/week">Peek at tomorrow</a></div>
+    </div>
+    <div class="acweek">
+      <div class="awt">This week</div>
+      <div class="nightdots">${dots}</div>
+      <div class="awn">${esc(weekLine)}</div>
+      <div class="acdiv"></div>
+      <div class="acrow"><span>Old ones cleared this week</span><span>${cleared}</span></div>
+      <div class="acrow"><span>Catch-up left</span><span>${pd.length}</span></div>
+    </div>
+  </div>`;
+}
+/* ---------- Parent check-in ---------- */
+function viewParent(ctx) {
+  const all = tonight(ctx);
+  const doneT = all.filter(r => r.done).length, nT = all.length;
+  const pd = orderedCatchup(ctx), pick = tonightPick(ctx);
+  const np = needsParent(ctx);
+  const dow = new Date(ctx.today + "T12:00:00Z").getUTCDay();
+  const mon = addDays(ctx.today, -((dow + 6) % 7));
+  const wkDays = []; for (let i = 0; i < 5; i++) wkDays.push(addDays(mon, i));
+  const nightsWk = wkDays.filter(d => (v2nights.v || {})[d]).length;
+  const tiles = `
+    <div class="ptile"><span class="n">${doneT}/${nT}</span><span class="l">tonight done</span></div>
+    <div class="ptile"><span class="n">${pd.length}</span><span class="l">catch-up left</span></div>
+    <div class="ptile"><span class="n">${nightsWk}/5</span><span class="l">nights this week</span></div>
+    <div class="ptile${np.length ? " alert" : ""}"><span class="n">${np.length}</span><span class="l">needs you</span></div>`;
+  // needs you column
+  const needCards = np.map(({ a, kind, s, pct }) => {
+    if (kind === "missing_claim") {
+      const askedLine = s.parent_asked_at ? `<div class="psub">You asked him ${fmtDay(dayKey(new Date(s.parent_asked_at)))} — waiting to hear back.</div>` : "";
+      return `<div class="pcard"><div class="pkicker">Says turned in, Schoology still missing</div>
+        <div class="trow1">${tagHTML(a.course)}</div><div class="ptitle">${esc(a.title)}</div>
+        ${askedLine}
+        <div class="prow">
+          ${s.parent_asked_at ? "" : `<button class="pbtn dark" data-action="pa-asked" data-id="${a.id}">Ask him</button>`}
+          <a class="pbtn dark" style="display:inline-flex;align-items:center;text-decoration:none"
+            href="mailto:?subject=${encodeURIComponent("Question about " + a.title + " (" + shortCourse(a.course) + ")")}&body=${encodeURIComponent("Hi,\n\n" + shortCourse(a.course) + " — " + a.title + " (due " + (ctxDueKey(ctx, a) ? fmtDay(ctxDueKey(ctx, a)) : "no date") + ") shows as missing in Schoology, but it was turned in on " + (s.done_at ? fmtDay(dayKey(new Date(s.done_at))) : "?") + ".\n\nCan you confirm it was received?\n\nThanks")}">Email teacher</a>
+        </div></div>`;
+    }
+    if (kind === "ask") {
+      return `<div class="pcard"><div class="pkicker">He asked: is this real work?</div>
+        <div class="trow1">${tagHTML(a.course)}</div><div class="ptitle">${esc(a.title)}</div>
+        ${s.note ? `<div class="psub">His note: ${esc(s.note)}</div>` : ""}
+        <div class="prow">
+          <button class="pbtn dark" data-action="pa-do" data-id="${a.id}">Yes, do it</button>
+          <button class="pbtn" data-action="pa-skip" data-id="${a.id}">Skip it</button>
+        </div></div>`;
+    }
+    return `<div class="pcard"><div class="pkicker">Low score</div>
+      <div class="trow1">${tagHTML(a.course)}</div><div class="ptitle">${esc(a.title)}</div>
+      <div class="psub">${pct != null ? Math.round(pct) + "%" : esc(a.grade || "")} — worth a look before the next one.</div></div>`;
+  }).join("") || `<div class="pcard"><div class="ptitle">Nothing needs you.</div><div class="psub">Everything's either done or on his list.</div></div>`;
+  // catch-up column
+  const shown = showAllCatchup ? pd : pd.slice(0, 5);
+  const cuRows = shown.map((a, i) => `
+    <div class="curow${pick && a.id === pick.id ? " pick" : ""}" draggable="true" data-id="${a.id}">
+      <span class="ord">${pick && a.id === pick.id ? "→" : (orderedCatchup(ctx).indexOf(a) + 1)}</span>
+      <span class="ct">${esc(a.title)}</span>${tagHTML(a.course)}
+    </div>`).join("");
+  const cuMore = pd.length > 5 ? `<button class="showall" data-action="show-catchup">${showAllCatchup ? "Show less" : "Show all " + pd.length}</button>` : "";
+  // grades + notes column
+  const grades = DATA.courses.map(c => {
+    const g = parseCourseGrade(c.grade), short = shortCourse(c.name);
+    const [tbg, tink] = GRADEC[g.letter] || ["#E9EBF2", "#5B6070"];
+    return `<div class="gline"><span class="gn">${esc(short)}</span>
+      <span class="gg" style="color:${tink}">${esc(g.letter || "–")}${g.pct != null ? " " + Math.round(g.pct) + "%" : ""}</span></div>`;
+  }).join("");
+  const notes = [];
+  for (const a of ctx.items) {
+    const s = st(a.id);
+    if (s.note) notes.push({ a, note: s.note });
+  }
+  const notesHTML = notes.slice(0, 12).map(({ a, note }) =>
+    `<div class="notecard"><div class="nk">${esc(shortCourse(a.course))} · ${esc(a.title.slice(0, 40))}</div><div class="nv">${esc(note)}</div></div>`).join("");
+  return `<a class="backlink" href="#/tonight">← Back to tonight</a>
+  <div class="phead"><div><div class="eyebrow">PARENT</div><h1>Check-in</h1>
+    <div class="weeksub">${esc(fmtDayLong(ctx.today))} · <a href="#/week?as=parent">Plan the week →</a></div></div>
+    <div class="ptiles">${tiles}</div></div>
+  <div class="pcols">
+    <div class="pcol"><h2>NEEDS YOU</h2>${needCards}</div>
+    <div class="pcol"><h2>CATCH-UP ORDER</h2><div class="weeksub" style="margin-bottom:8px">Drag to reorder. Top item is tonight's pick.</div>${cuRows}${cuMore}</div>
+    <div class="pcol"><h2>GRADES</h2><div class="pcard">${grades}<a href="#/classes" style="font-size:13px;font-weight:600;margin-top:6px">See all classes →</a></div>
+      <h2 style="margin-top:16px">NOTES FROM HIM</h2>${notesHTML || `<div class="pcard"><div class="psub">No notes yet.</div></div>`}</div>
+  </div>`;
+}
+/* ================= actions ================= */
+function markNightDoneIfEmpty(ctx) {
+  const active = tonight(ctx).filter(r => !r.done);
+  if (active.length === 0) {
+    const now = Date.now();
+    if ((v2nights.ts || 0) < now - 1000 || !(v2nights.v || {})[ctx.today]) {
+      v2nights.v = Object.assign({}, v2nights.v, { [ctx.today]: true });
+      v2nights.ts = now; saveLocal(); pushSoon(600);
+    }
+  }
+}
+function doAction(action, id, el) {
+  const ctx = mkCtx(DATA.assignments, todayKey());
+  const s = st(id);
+  switch (action) {
+    case "open-task": selId = id; break;
+    case "close-task": selId = null; break;
+    case "clear-filter": location.hash = "#/tonight"; return;
+    case "toggle-done":
+      touch(id, v => {
+        if (v.done === "turned_in") { v.done = null; v.done_at = null; }
+        else { v.done = "turned_in"; v.done_at = new Date().toISOString(); }
+      });
+      markNightDoneIfEmpty(mkCtx(DATA.assignments, todayKey()));
+      render(); return;
+    case "turned-in":
+      selId = null;
+      touch(id, v => { v.done = "turned_in"; v.done_at = new Date().toISOString(); });
+      markNightDoneIfEmpty(mkCtx(DATA.assignments, todayKey()));
+      render(); return;
+    case "part-done": {
+      const t = todayKey(); selId = null;
+      touch(id, v => { v.part_done_days = [...new Set([...(v.part_done_days || []), t])]; });
+      markNightDoneIfEmpty(mkCtx(DATA.assignments, todayKey()));
+      render(); return;
+    }
+    case "snooze-tomorrow": selId = null; touch(id, v => { v.snoozed_until = addDays(todayKey(), 1); }); return;
+    case "snooze-weekend": selId = null; touch(id, v => { v.snoozed_until = nextWeekday(todayKey(), 6); }); return;
+    case "ask-parent": selId = null; touch(id, v => { v.ask_parent = true; }); return;
+    case "open-plan": { const asP = parseHash().params.get("as") === "parent"; openPlan(id, asP); return; }
+    case "plan-n": planDlg.n = +el.dataset.n; planDlg.picked = planDlg.picked.slice(0, planDlg.n); render(); return;
+    case "plan-toggle": {
+      const d = el.dataset.day;
+      const i = planDlg.picked.indexOf(d);
+      if (i >= 0) planDlg.picked.splice(i, 1);
+      else if (planDlg.picked.length < planDlg.n) planDlg.picked.push(d);
+      render(); return;
+    }
+    case "plan-as": planDlg.asParent = el.dataset.v === "1"; render(); return;
+    case "plan-cancel": planDlg = null; render(); return;
+    case "plan-save": {
+      const nights = [...planDlg.picked].sort(), asP = planDlg.asParent, pid = planDlg.id;
+      planDlg = null;
+      touch(pid, v => { v.plan = { nights, set_by: asP ? "parent" : "student" }; v.snoozed_until = null; });
+      return;
+    }
+    case "move-open": moveId = id; render(); return;
+    case "move-cancel": moveId = null; render(); return;
+    case "move-to": { const d = el.dataset.day; moveId = null; dropOnDay(id, d); return; }
+    case "week-prev": weekOffset--; render(); return;
+    case "week-next": weekOffset++; render(); return;
+    case "week-this": weekOffset = 0; render(); return;
+    case "toggle-hidden": showHiddenWeek = !showHiddenWeek; render(); return;
+    case "one-more": {
+      const extra = [...new Set([...(v2extra.v || []), id])];
+      v2extra = { v: extra, ts: Date.now() }; saveLocal(); pushSoon(600);
+      location.hash = "#/tonight"; render(); return;
+    }
+    case "show-catchup": showAllCatchup = !showAllCatchup; render(); return;
+    case "pa-do": touch(id, v => { v.parent_answer = "do_it"; v.ask_parent = false; }); return;
+    case "pa-skip": touch(id, v => { v.parent_answer = "skip"; v.ask_parent = false; }); return;
+    case "pa-asked": touch(id, v => { v.parent_asked_at = new Date().toISOString(); }); return;
+  }
+  render();
+}
+document.addEventListener("click", e => {
+  const el = e.target.closest("[data-action]");
+  if (!el) return;
+  // backdrop clicks: the plan overlay covers the dialog, so ignore clicks that land inside it
+  if (el.classList.contains("overlay") && e.target.closest(".dialog")) return;
+  doAction(el.dataset.action, el.dataset.id, el);
+});
+document.addEventListener("change", e => {
+  const n = e.target.closest("[data-note]");
+  if (n) touch(n.dataset.note, v => { v.note = n.value.trim(); });
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") { selId = null; planDlg = null; moveId = null; render(); }
+  if (e.key === "Enter" && e.target.matches && e.target.matches('[data-action="open-task"]')) {
+    selId = e.target.dataset.id; render();
+  }
+});
+/* drag & drop: week columns + parent catch-up order */
+let dragId = null;
+document.addEventListener("dragstart", e => {
+  const c = e.target.closest && e.target.closest("[draggable]");
+  if (c && c.dataset.id) { dragId = c.dataset.id; e.dataTransfer.effectAllowed = "move"; try { e.dataTransfer.setData("text/plain", dragId); } catch (x) {} }
+});
+document.addEventListener("dragover", e => {
+  const col = e.target.closest && e.target.closest(".daycol");
+  const row = e.target.closest && e.target.closest(".curow");
+  if (col || row) { e.preventDefault(); e.dataTransfer.dropEffect = "move"; }
+});
+document.addEventListener("drop", e => {
+  const col = e.target.closest && e.target.closest(".daycol");
+  const row = e.target.closest && e.target.closest(".curow");
+  const id = dragId || (e.dataTransfer && e.dataTransfer.getData("text/plain"));
+  if (col && id) {
+    e.preventDefault();
+    const day = col.dataset.day;
+    if (day >= todayKey()) dropOnDay(id, day);
+  } else if (row && id && row.dataset.id !== id) {
+    e.preventDefault();
+    const order = orderedCatchup(mkCtx(DATA.assignments, todayKey())).map(a => a.id).filter(x => x !== id);
+    const idx = order.indexOf(row.dataset.id);
+    order.splice(idx < 0 ? order.length : idx, 0, id);
+    v2catchup = { v: order, ts: Date.now() }; saveLocal(); pushSoon(600); render();
+  }
+  dragId = null;
+});
+/* ================= router + init ================= */
+function parseHash() {
+  const h = location.hash || "#/tonight";
+  const qi = h.indexOf("?");
+  const path = qi >= 0 ? h.slice(1, qi) : h.slice(1);
+  const params = new URLSearchParams(qi >= 0 ? h.slice(qi + 1) : "");
+  return { path: path || "/tonight", params };
+}
+function render() {
+  if (!DATA) return;
+  const { path, params } = parseHash();
+  const ctx = mkCtx(DATA.assignments, todayKey());
+  const asParent = params.get("as") === "parent";
+  let main = "", chrome = "";
+  if (path === "/parent") {
+    main = viewParent(ctx);
+  } else {
+    chrome = railHTML(path, ctx) + tabbarHTML(path);
+    if (path === "/week") main = viewWeek(ctx, asParent);
+    else if (path === "/classes") main = viewClasses(ctx);
+    else main = viewTonight(ctx, params.get("class"));
+  }
+  let overlays = "";
+  if (planDlg) overlays += planDialogHTML(ctx);
+  if (moveId) overlays += moveSheetHTML(ctx);
+  $("app").innerHTML = chrome + `<main class="stagemain">${main}</main>` + overlays;
+  setSyncStatus(syncStatus);
+}
+window.addEventListener("hashchange", () => { selId = null; render(); });
+async function init() {
+  setSyncStatus("starting");
+  try {
+    // Under /v2/ (preview) use the parent dir's schoology.json so the preview
+    // always reads the latest daily refresh; at root (or local dev) use ./schoology.json.
+    const dataURL = /\/v2\/$/.test(location.pathname.replace(/\/[^/]*$/, "/")) ? "../schoology.json" : "schoology.json";
+    const r = await fetch(dataURL, { cache: "no-store" });
+    DATA = await r.json();
+  } catch (e) {
+    $("app").innerHTML = `<main class="stagemain"><div class="empty">Couldn't load schoology.json.</div></main>`;
+    return;
+  }
+  render();
+  pullState(() => { migrateV1toV2(); render(); });
+  setInterval(() => pullState(changed => { if (changed) render(); }), 60000);
+}
+document.addEventListener("DOMContentLoaded", init);
+</script>
+</body>
+</html>
