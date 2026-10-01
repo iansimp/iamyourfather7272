@@ -187,7 +187,29 @@ const isSubmitted = id => !!(submitted[id] && submitted[id].v);
 const planOf = id => (plan[id] && plan[id].v) || "";
 const isDropped = id => !!(dropped[id] && dropped[id].v);
 const isNoise = id => !!(noise[id] && noise[id].v);
-const isSnoozed = id => !!(snoozed[id] && snoozed[id].v);
+// Snoozed items auto-wake on their `until` day (stored as a YYYY-MM-DD dayKey);
+// no `until` means snoozed indefinitely until brought back by hand.
+const isSnoozed = id => {
+  const s = snoozed[id];
+  if (!s || !s.v) return false;
+  return !s.until || s.until > todayKey();
+};
+const snoozeUntil = days => {
+  const d = new Date(); d.setDate(d.getDate() + days);
+  return dayKey(d);
+};
+const wakeLabel = id => {
+  const s = snoozed[id];
+  return (s && s.until) ? "wakes " + planLabel(s.until) : "snoozed indefinitely";
+};
+// Duration picker shown inline wherever a Snooze button lives.
+const SNOOZE_DURS = [["3", "3 days"], ["7", "1 week"], ["14", "2 weeks"], ["30", "1 month"], ["", "Indefinitely"]];
+const snoozeChips = (a, tdec) => SNOOZE_DURS.map(([d, label]) =>
+  tdec ? `<button class="btn small" data-tdec="snoozego" data-id="${a.id}" data-days="${d}">${label}</button>`
+       : `<button class="btn small" data-snoozego="${a.id}" data-days="${d}">${label}</button>`).join("");
+const snoozePickerRow = (a, tdec) =>
+  `<div class="decide"><span style="font-size:13px;color:var(--muted)">Snooze for:</span>${snoozeChips(a, tdec)}
+   <button class="btn small quiet" data-snoozecancel title="Cancel">✕</button></div>`;
 const dayRecOf = (id, k) => daily[id + "||" + k] || null;
 /* Manual due dates: Ian/Luke can assign a due date to anything (mostly items
    with no Schoology deadline). Stored as a day key "YYYY-MM-DD"; beats the
@@ -390,7 +412,7 @@ function card(a) {
 }
 
 let DATA = null, courseFilter = "", activeTab = "today";
-let selectedId = null, deferFor = null, schedFor = null;
+let selectedId = null, deferFor = null, schedFor = null, snoozeFor = null;
 let triageSession = false, triagePos = 0, triageSummary = null;
 const MISSING = s => ["missing", "incomplete", "missing annotation"].includes((s || "").toLowerCase());
 const GRADED = s => ["graded", "submitted"].includes((s || "").toLowerCase());
@@ -566,7 +588,8 @@ function renderPlanner(L) {
       </div>
       <div class="actions">
         <button class="btn small quiet" data-noise="${a.id}" title="Not real work — hides it from every task list">Noise</button>
-        <button class="btn small quiet" data-snooze="${a.id}" title="Not now — hides it until you bring it back">Snooze</button>
+        ${snoozeFor === a.id ? snoozePickerRow(a, false)
+          : `<button class="btn small quiet" data-snooze="${a.id}" title="Not now — hides it until you bring it back">Snooze</button>`}
       </div>
       ${statusRow(a)}
       <div class="note-row"><textarea placeholder="Add a note…" data-note="${a.id}">${esc(noteOf(a.id))}</textarea></div>
@@ -585,7 +608,9 @@ function renderPlanner(L) {
       <input type="date" data-nddate="${a.id}" min="${t}" value="${t}" aria-label="Choose a start day">
       <button class="btn small blue" data-ndgo="${a.id}">Set</button>
       <button class="btn small quiet" data-noise="${a.id}" title="Not real work — hides it from every task list">Noise</button>
-      <button class="btn small quiet" data-snooze="${a.id}" title="Not now — hides it until you bring it back">Snooze</button></div>`).join("");
+      ${snoozeFor === a.id
+        ? `<span style="display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap"><span style="font-size:12px;color:var(--muted)">Snooze for:</span>${snoozeChips(a, false)}<button class="btn small quiet" data-snoozecancel title="Cancel">✕</button></span>`
+        : `<button class="btn small quiet" data-snooze="${a.id}" title="Not now — hides it until you bring it back">Snooze</button>`}</div>`).join("");
   }
 
   if (L.snoozed.length) {
@@ -593,7 +618,8 @@ function renderPlanner(L) {
       <p class="hint">Hidden from every task list until you bring one back.</p>`;
     h += L.snoozed.map(a => `<div class="card"><div class="card-top"><p class="title">${esc(a.title)}</p>
       <button class="btn small" data-unsnooze="${a.id}">Bring back</button></div>
-      <p class="course">${esc(a.course)} · ${esc(relDay(effDue(a)))}${sLink(a)}</p></div>`).join("");
+      <p class="course">${esc(a.course)} · ${esc(relDay(effDue(a)))}${sLink(a)}</p>
+      <p class="hint">${esc(wakeLabel(a.id))}</p></div>`).join("");
   }
   el.innerHTML = h;
 }
@@ -628,7 +654,8 @@ function renderTackle(L) {
         <button class="btn blue" data-tdec="sched" data-id="${a.id}">Schedule…</button>
         <button class="btn" data-tdec="drop" data-id="${a.id}">Set aside</button>
         <button class="btn quiet" data-tdec="noise" data-id="${a.id}" title="Not real work — removes it from every task list">Noise</button>
-        <button class="btn quiet" data-tdec="snooze" data-id="${a.id}" title="Not now — hides it until you bring it back">Snooze</button>
+        ${snoozeFor === a.id ? snoozePickerRow(a, true)
+          : `<button class="btn quiet" data-tdec="snooze" data-id="${a.id}" title="Not now — hides it until you bring it back">Snooze</button>`}
         <button class="btn quiet" data-tdec="skip">Skip →</button>
         <button class="btn quiet" data-tdec="exit">← All pills</button>
       </div>
@@ -669,7 +696,8 @@ function renderTackle(L) {
         <button class="btn small blue" data-look="sched" data-id="${a.id}">Schedule…</button>
         <button class="btn small" data-look="drop" data-id="${a.id}">Set aside</button>
         <button class="btn small quiet" data-look="noise" data-id="${a.id}" title="Not real work — removes it from every task list">Noise</button>
-        <button class="btn small quiet" data-look="snooze" data-id="${a.id}" title="Not now — hides it until you bring it back">Snooze</button>
+        ${snoozeFor === a.id ? snoozePickerRow(a, false)
+          : `<button class="btn small quiet" data-look="snooze" data-id="${a.id}" title="Not now — hides it until you bring it back">Snooze</button>`}
       </div>
       ${statusRow(a, {noDone: true})}
       ${schedFor === a.id ? `<div class="pickrow"><input type="date" id="scheddate" min="${todayKey()}" value="${todayKey()}">
@@ -704,12 +732,17 @@ function renderGrades(L) {
 }
 
 /* ---------- render + events ---------- */
-function tdecide(action, id) {
+function tdecide(action, id, days) {
   const t = Date.now();
+  if (action === "snooze") { snoozeFor = (snoozeFor === id ? null : id); render(); return; }
+  snoozeFor = null;
   if (action === "done") { done[id] = {v: true, ts: t}; triageSummary.done++; }
   else if (action === "sub") { submitted[id] = {v: true, ts: t}; triageSummary.submitted++; }
   else if (action === "noise") { noise[id] = {v: true, ts: t}; triageSummary.noise++; }
-  else if (action === "snooze") { snoozed[id] = {v: true, ts: t}; triageSummary.snoozed++; }
+  else if (action === "snoozego") {
+    snoozed[id] = {v: true, ts: t, until: days ? snoozeUntil(parseInt(days, 10)) : null};
+    triageSummary.snoozed++;
+  }
   else if (action === "exit") { triageSession = false; schedFor = null; render(); return; }
   else if (action === "schedgo") {
     const inp = document.getElementById("scheddate");
@@ -791,7 +824,7 @@ function render() {
     saveLocal(); pushSoon(500); render();
   };
   // Tackle
-  document.querySelectorAll("[data-tdec]").forEach(b => b.onclick = () => tdecide(b.dataset.tdec, b.dataset.id));
+  document.querySelectorAll("[data-tdec]").forEach(b => b.onclick = () => tdecide(b.dataset.tdec, b.dataset.id, b.dataset.days));
   // Noise + snooze: one-way marks; restore lives in the Tackle/Planner sections
   document.querySelectorAll("[data-noise]").forEach(b => b.onclick = () => {
     const id = b.dataset.noise;
@@ -805,9 +838,18 @@ function render() {
   });
   document.querySelectorAll("[data-snooze]").forEach(b => b.onclick = () => {
     const id = b.dataset.snooze;
-    snoozed[id] = {v: true, ts: Date.now()};
+    snoozeFor = (snoozeFor === id ? null : id);
+    render();
+  });
+  document.querySelectorAll("[data-snoozego]").forEach(b => b.onclick = () => {
+    const id = b.dataset.snoozego, d = b.dataset.days ? parseInt(b.dataset.days, 10) : 0;
+    snoozed[id] = {v: true, ts: Date.now(), until: d ? snoozeUntil(d) : null};
     if (selectedId === id) selectedId = null;
+    snoozeFor = null;
     saveLocal(); pushSoon(400); render();
+  });
+  document.querySelectorAll("[data-snoozecancel]").forEach(b => b.onclick = () => {
+    snoozeFor = null; render();
   });
   document.querySelectorAll("[data-unsnooze]").forEach(b => b.onclick = () => {
     snoozed[b.dataset.unsnooze] = {v: false, ts: Date.now()};
@@ -834,7 +876,7 @@ function render() {
     if (act === "done") { done[id] = {v: true, ts: t}; }
     else if (act === "drop") { dropped[id] = {v: true, ts: t}; }
     else if (act === "noise") { noise[id] = {v: true, ts: t}; }
-    else if (act === "snooze") { snoozed[id] = {v: true, ts: t}; }
+    else if (act === "snooze") { snoozeFor = (snoozeFor === id ? null : id); render(); return; }
     else if (act === "sched") { schedFor = (schedFor === id ? null : id); render(); return; }
     schedFor = null; saveLocal(); pushSoon(400); render();
   });
