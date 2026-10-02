@@ -816,10 +816,11 @@ function viewTonight(ctx, classFilter) {
 /* Shared task pane (desktop) / bottom sheet (phone), used by every tab. */
 function taskChrome(ctx, inner) {
   const isDesktop = window.matchMedia("(min-width:901px)").matches;
-  const pane = isDesktop
-    ? `<aside class="taskwrap${selId ? "" : " empty"}" aria-label="Selected task">${selId ? taskHTML(ctx, byId(selId)) : ""}</aside>`
-    : "";
-  return isDesktop ? `<div class="tonight-grid">${inner}${pane}</div>` : inner;
+  /* Only reserve the 400px pane track when a task is actually open — otherwise
+     the week grid gets squeezed by an empty track on normal-size windows. */
+  const a = selId ? byId(selId) : null;
+  if (!isDesktop || !a) return inner;
+  return `<div class="tonight-grid">${inner}<aside class="taskwrap" aria-label="Selected task">${taskHTML(ctx, a)}</aside></div>`;
 }
 function taskSheetHTML(ctx) {
   if (!selId || window.matchMedia("(min-width:901px)").matches) return "";
