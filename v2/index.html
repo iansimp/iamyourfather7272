@@ -121,6 +121,11 @@ a{color:var(--accent)}
 .notnow p{margin:0;font-size:13px;color:var(--muted);line-height:1.4}
 .chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .chip{height:40px;border-radius:10px;border:1.5px solid var(--border2);background:#fff;font-size:13px;font-weight:600}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+a.chip{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;color:var(--ink)}
+a.chip.on{color:#fff}
+.schchip{display:inline-block;margin-left:10px;padding:7px 14px;border-radius:999px;background:#EAF0FF;color:#2456D6;font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap;vertical-align:middle}
+.schchip:active{transform:scale(.97)}
 @media(max-width:900px){.chip{height:44px;border-radius:12px;font-size:14px}}
 .notelabel{font-size:13px;font-weight:600;color:var(--muted);margin-bottom:6px;display:block}
 .notein{width:100%;height:44px;padding:0 14px;border-radius:12px;border:1.5px solid var(--border2);font-size:14px;font-family:inherit;background:#fff}
@@ -480,6 +485,25 @@ function isSnoozed(id, today) {
   if (!s) return false;
   return s === "indef" || s > today;
 }
+/* Schoology dash = the teacher has the work but hasn't graded it (per Luke:
+   if it were truly missing, Schoology would show "missing"). Not actionable,
+   but stays visible for follow-up in its own section — never silently hidden. */
+const awaitingGrade = a => {
+  const s = String(a.status || "").trim().toLowerCase();
+  return s === "dash" || s === "—";
+};
+function waitingGrade(ctx) {
+  const out = [];
+  for (const a of ctx.items) {
+    if (!awaitingGrade(a)) continue;
+    const s = ctx.getState(a.id);
+    if (doneV2(s) || s.parent_answer === "skip") continue;
+    if (ctxSnoozed(ctx, a.id)) continue;
+    out.push(a);
+  }
+  out.sort((x, y) => ((ctxDueKey(ctx, x) || "9999") < (ctxDueKey(ctx, y) || "9999") ? -1 : 1));
+  return out;
+}
 /* One-way v1 -> v2 migration. Runs on every load; only fills v2 fields that are
    empty and only when the v1 entry is newer, so v2 edits always win. */
 function migrateV1toV2() {
@@ -606,6 +630,7 @@ function pastDue(ctx) {
     const dk = ctxDueKey(ctx, a), s = ctx.getState(a.id);
     if (!dk || dk >= ctx.today) continue;
     if (RESOLVED.has(a.status)) continue;
+    if (awaitingGrade(a)) continue;
     if (doneV2(s) || s.parent_answer === "skip") continue;
     if (ctxSnoozed(ctx, a.id)) continue;
     out.push(a);
@@ -661,6 +686,7 @@ function tonight(ctx) {
     if (ctxSnoozed(ctx, a.id)) continue;
     if ((s.part_done_days || []).includes(ctx.today)) continue;
     if (RESOLVED.has(a.status)) continue;
+    if (awaitingGrade(a)) continue;
     const dk = ctxDueKey(ctx, a);
     const isPick = pick && a.id === pick.id;
     const isExtra = extras.has(a.id);
@@ -736,6 +762,7 @@ let weekOffset = 0;
 const byId = id => DATA.assignments.find(a => a.id === id);
 
 function railHTML(active, ctx) {
+  active = active.startsWith("/class/") ? "/classes" : active;
   const upd = DATA.fetched_at ? "Updated " + fmtDay(dayKey(new Date(DATA.fetched_at))) : "";
   const link = (path, icon, label) =>
     `<a class="navlink${active === path ? " on" : ""}" href="#${path}">${icon}${label}</a>`;
@@ -749,6 +776,7 @@ function railHTML(active, ctx) {
   </nav>`;
 }
 function tabbarHTML(active, ctx) {
+  active = active.startsWith("/class/") ? "/classes" : active;
   const odc = pastDue(ctx).length;
   const t = (path, icon, label) =>
     `<a class="${active === path ? "on" : ""}" href="#${path}">${icon}<span>${label}</span></a>`;
@@ -758,16 +786,19 @@ function tabbarHTML(active, ctx) {
 }
 function dueLine(ctx, a, reason, s) {
   const dk = ctxDueKey(ctx, a);
-  if (reason === "catchup") return whenLine(ctx, a, reason, s).text;
+  // If the due date was set by hand and differs from Schoology's, show both.
+  const orig = a.due_at ? dayKey(new Date(a.due_at)) : null;
+  const was = (s && s.manual_due && orig && s.manual_due !== orig) ? " · was due " + fmtDay(orig) : "";
+  if (reason === "catchup") return whenLine(ctx, a, reason, s).text + was;
   if (s && s.plan && (s.plan.nights || []).includes(ctx.today)) {
     const nights = s.plan.nights, k = nights.indexOf(ctx.today) + 1;
-    return "Part " + k + " of " + nights.length + (dk ? ", due " + fmtDay(dk) : "");
+    return "Part " + k + " of " + nights.length + (dk ? ", due " + fmtDay(dk) : "") + was;
   }
   if (!dk) return "No due date";
-  if (dk < ctx.today) { const n = daysBetween(dk, ctx.today); return n + (n === 1 ? " day late" : " days late") + ", due " + fmtDay(dk); }
-  if (dk === ctx.today) return "Due today";
-  if (dk === addDays(ctx.today, 1)) return "Due tomorrow, " + fmtDay(dk);
-  return "Due " + fmtDay(dk);
+  if (dk < ctx.today) { const n = daysBetween(dk, ctx.today); return n + (n === 1 ? " day late" : " days late") + ", due " + fmtDay(dk) + was; }
+  if (dk === ctx.today) return "Due today" + was;
+  if (dk === addDays(ctx.today, 1)) return "Due tomorrow, " + fmtDay(dk) + was;
+  return "Due " + fmtDay(dk) + was;
 }
 /* ---------- Tonight ---------- */
 function tonightCard(ctx, r) {
@@ -830,22 +861,47 @@ function taskSheetHTML(ctx) {
     <div class="sheet" role="dialog" aria-label="Task"><div class="grab"></div>${taskHTML(ctx, a)}</div>`;
 }
 /* ---------- Overdue ---------- */
+/* Shared open-task row (overdue list, class view). */
+function openTaskRow(ctx, a, metaHTML) {
+  const sel = selId === a.id ? " sel" : "";
+  return `<div class="tcard${sel}" data-action="open-task" data-id="${a.id}" role="button" tabindex="0">
+    <button class="donecircle" data-action="toggle-done" data-id="${a.id}" aria-label="Mark done: ${esc(a.title)}"></button>
+    <div class="tbody">
+      <div class="trow1">${tagHTML(a.course)}${metaHTML}</div>
+      <div class="ttitle">${esc(a.title)}</div>
+    </div></div>`;
+}
+function waitingRow(ctx, a) {
+  const dk = ctxDueKey(ctx, a);
+  return openTaskRow(ctx, a, `<span class="when">waiting on teacher${dk ? " &middot; due " + esc(fmtDay(dk)) : ""}</span>`);
+}
+let overdueSort = "late"; // late | due | class | points
+function sortOverdue(ctx, arr) {
+  const a = [...arr], dk = x => ctxDueKey(ctx, x) || "9999";
+  if (overdueSort === "due") a.sort((x, y) => (dk(x) < dk(y) ? -1 : 1));
+  else if (overdueSort === "class") a.sort((x, y) => (shortCourse(x.course) < shortCourse(y.course) ? -1 : 1) || (dk(x) < dk(y) ? -1 : 1));
+  else if (overdueSort === "points") a.sort((x, y) => pointsOf(y) - pointsOf(x));
+  else a.sort((x, y) => (daysBetween(dk(y), ctx.today) - daysBetween(dk(x), ctx.today)) || (pointsOf(y) - pointsOf(x)));
+  return a;
+}
 function viewOverdue(ctx) {
-  const pd = pastDue(ctx), n = pd.length;
+  const pd = sortOverdue(ctx, pastDue(ctx)), n = pd.length;
   const head = `<div class="tonight-head"><div class="eyebrow">OVERDUE</div>
     <h1>${n === 1 ? "1 overdue" : n + " overdue"}</h1>
     <div class="weeksub">Past due and still open — not done, not snoozed, not skipped. Tap one for options.</div></div>`;
+  const sorts = [["late", "Days late"], ["due", "Due date"], ["class", "Class"], ["points", "Points"]];
+  const sortbar = `<div class="chips" style="margin-bottom:14px">${sorts.map(([v, l]) =>
+    `<button class="chip${overdueSort === v ? " on" : ""}" data-action="sort-overdue" data-v="${v}">${l}</button>`).join("")}</div>`;
   const list = pd.map(a => {
     const dk = ctxDueKey(ctx, a), late = daysBetween(dk, ctx.today);
-    const sel = selId === a.id ? " sel" : "";
-    return `<div class="tcard${sel}" data-action="open-task" data-id="${a.id}" role="button" tabindex="0">
-      <button class="donecircle" data-action="toggle-done" data-id="${a.id}" aria-label="Mark done: ${esc(a.title)}"></button>
-      <div class="tbody">
-        <div class="trow1">${tagHTML(a.course)}<span class="when late">${late} ${late === 1 ? "day" : "days"} late &middot; due ${esc(fmtDay(dk))}</span></div>
-        <div class="ttitle">${esc(a.title)}</div>
-      </div></div>`;
+    return openTaskRow(ctx, a, `<span class="when late">${late} ${late === 1 ? "day" : "days"} late &middot; due ${esc(fmtDay(dk))}</span>`);
   }).join("") || `<div class="empty">Nothing overdue.</div>`;
-  return taskChrome(ctx, `<div>${head}<div class="tlist">${list}</div></div>`);
+  const wg = waitingGrade(ctx);
+  const waitSec = wg.length ? `<div class="weekhead" style="margin-top:26px"><div><div class="eyebrow">WAITING ON TEACHER</div>
+    <h1 style="font-size:28px">${wg.length === 1 ? "1 waiting" : wg.length + " waiting"}</h1>
+    <div class="weeksub">Schoology shows a dash — the teacher has it, just no grade yet. Not overdue.</div></div></div>
+    <div class="tlist">${wg.map(a => waitingRow(ctx, a)).join("")}</div>` : "";
+  return taskChrome(ctx, `<div>${head}${sortbar}<div class="tlist">${list}</div>${waitSec}</div>`);
 }
 function taskHTML(ctx, a) {
   if (!a) return "";
@@ -861,7 +917,7 @@ function taskHTML(ctx, a) {
       <div class="trow1">${tagHTML(a.course)}<span class="when" style="color:var(--muted)">${esc(a.type || "")}</span>${asked}${ptag}</div>
       <h2>${esc(a.title)}</h2>
       <div class="taskmeta"><span>${esc(dueLine(ctx, a, reason, s))}</span>
-      ${a.url ? `<a href="${esc(sAbs(a.url))}" target="_blank" rel="noopener">Open in Schoology</a>` : ""}</div>
+      ${a.url ? `<a class="schchip" href="${esc(sAbs(a.url))}" target="_blank" rel="noopener">Schoology ↗</a>` : ""}</div>
     </div>
     <div class="taskactions">
       <button class="abtn ghost" data-action="turned-in" data-id="${a.id}">${ICONS.check}
@@ -926,7 +982,7 @@ function weekDayItems(ctx, day) {
   const out = [];
   for (const a of ctx.items) {
     const s = st(a.id);
-    if (doneV2(s) || s.parent_answer === "skip" || RESOLVED.has(a.status)) continue;
+    if (doneV2(s) || s.parent_answer === "skip" || RESOLVED.has(a.status) || awaitingGrade(a)) continue;
     if (isSnoozed(a.id, ctx.today)) continue;
     if (hiddenInClass(ctx, a) && !showHiddenWeek) continue;
     const dk = ctxDueKey(ctx, a), nights = (s.plan || {}).nights || [];
@@ -1101,7 +1157,7 @@ function viewClasses(ctx) {
   for (const a of ctx.items) {
     const s = st(a.id), dk = ctxDueKey(ctx, a);
     if (!dk || dk < ctx.today || dk > addDays(ctx.today, 14)) continue;
-    if (doneV2(s) || s.parent_answer === "skip" || RESOLVED.has(a.status)) continue;
+    if (doneV2(s) || s.parent_answer === "skip" || RESOLVED.has(a.status) || awaitingGrade(a)) continue;
     if (isSnoozed(a.id, ctx.today)) continue;
     const c = shortCourse(a.course);
     (upByCourse[c] = upByCourse[c] || []).push({ a, dk });
@@ -1127,9 +1183,9 @@ function viewClasses(ctx) {
       gl: g.letter || "–", gp: g.pct != null ? Math.round(g.pct) + "%" : (g.letter ? "" : "no grade") };
   }).sort((x, y) => (rank(x.g.letter) - rank(y.g.letter)) || (y.miss - x.miss));
   return `<div class="weekhead"><div><div class="eyebrow">GRADES</div><h1>Classes</h1>
-    <div class="weeksub">Lowest first. Tap a class to see just its work tonight.</div></div></div>
+    <div class="weeksub">Lowest first. Tap a class to see all of its work.</div></div></div>
   <div class="classgrid">${cards.map(c => `
-    <a class="ccard" style="border-top-color:${c.borderC}" href="#/tonight?class=${encodeURIComponent(c.short)}">
+    <a class="ccard" style="border-top-color:${c.borderC}" href="#/class/${encodeURIComponent(c.short)}">
       <div class="crow1"><span class="cname">${esc(c.short)}</span>
         <span class="gtile" style="background:${c.tbg};color:${c.tink}"><span class="gl">${esc(c.gl)}</span><span class="gp">${esc(c.gp)}</span></span></div>
       <div class="cbody"><div class="dothis">DO THIS FIRST</div>
@@ -1137,6 +1193,74 @@ function viewClasses(ctx) {
         <div class="ccounts"><span>${c.miss} missing</span><span>·</span><span>${c.up} coming up</span></div></div>
       ${ICONS.chev}
     </a>`).join("")}</div>`;
+}
+/* ---------- Class detail ---------- */
+function classTurnin(ctx, short) {
+  const open = [], waiting = [], done = [];
+  for (const a of ctx.items) {
+    if (shortCourse(a.course) !== short) continue;
+    const s = ctx.getState(a.id);
+    if (doneV2(s) || s.parent_answer === "skip" || RESOLVED.has(a.status)) { done.push(a); continue; }
+    if (awaitingGrade(a)) { waiting.push(a); continue; }
+    if (ctxSnoozed(ctx, a.id)) continue;
+    open.push(a);
+  }
+  const byDue = (x, y) => ((ctxDueKey(ctx, x) || "9999") < (ctxDueKey(ctx, y) || "9999") ? -1 : 1);
+  open.sort(byDue); waiting.sort(byDue); done.sort(byDue);
+  const openRows = open.map(a => {
+    const s = ctx.getState(a.id);
+    return openTaskRow(ctx, a, `<span class="when">${esc(dueLine(ctx, a, null, s))}</span>`);
+  }).join("");
+  let h = `<div class="weekhead"><div><div class="eyebrow">TO TURN IN</div>
+    <h1 style="font-size:28px">${open.length === 1 ? "1 thing" : open.length + " things"}</h1></div></div>
+    <div class="tlist">${openRows || `<div class="empty">Nothing to turn in.</div>`}</div>`;
+  if (waiting.length) h += `<div class="weekhead" style="margin-top:26px"><div><div class="eyebrow">WAITING ON TEACHER</div>
+    <h1 style="font-size:28px">${waiting.length}</h1>
+    <div class="weeksub">Schoology shows a dash — the teacher has it, just no grade yet.</div></div></div>
+    <div class="tlist">${waiting.map(a => waitingRow(ctx, a)).join("")}</div>`;
+  if (done.length) h += `<div class="weekhead" style="margin-top:26px"><div><div class="eyebrow">DONE</div>
+    <h1 style="font-size:28px">${done.length}</h1></div></div>
+    <div class="tlist">${done.map(a => openTaskRow(ctx, a, `<span class="when">done</span>`)).join("")}</div>`;
+  return h;
+}
+function classWeek(ctx, short) {
+  let h = "", first = true;
+  for (let i = 0; i < 7; i++) {
+    const day = addDays(ctx.today, i);
+    const items = weekDayItems(ctx, day).filter(it => shortCourse(it.a.course) === short);
+    if (!items.length) continue;
+    const label = day === ctx.today ? "Today" : day === addDays(ctx.today, 1) ? "Tomorrow" : fmtDayLong(day);
+    h += `<div class="weekhead" style="margin-top:${first ? "0" : "22px"}"><div><div class="eyebrow">${esc(label.toUpperCase())}</div>
+      <h1 style="font-size:22px">${esc(fmtDay(day))}</h1></div></div>
+      <div class="tlist">${items.map(it => openTaskRow(ctx, it.a, `<span class="when">${esc(weekMeta(ctx, it.a, day, it.s))}</span>`)).join("")}</div>`;
+    first = false;
+  }
+  return h || `<div class="empty">Nothing for ${esc(short)} this week.</div>`;
+}
+function classOverdue(ctx, short) {
+  const pd = sortOverdue(ctx, pastDue(ctx).filter(a => shortCourse(a.course) === short));
+  const list = pd.map(a => {
+    const dk = ctxDueKey(ctx, a), late = daysBetween(dk, ctx.today);
+    return openTaskRow(ctx, a, `<span class="when late">${late} ${late === 1 ? "day" : "days"} late &middot; due ${esc(fmtDay(dk))}</span>`);
+  }).join("");
+  return list ? `<div class="tlist">${list}</div>` : `<div class="empty">Nothing overdue for ${esc(short)}.</div>`;
+}
+function viewClass(ctx, short, tab) {
+  const enc = encodeURIComponent(short);
+  const course = (DATA.courses || []).find(c => shortCourse(c.name) === short);
+  const g = course ? parseCourseGrade(course.grade) : {};
+  const head = `<div style="margin-bottom:6px"><a class="backlink" href="#/classes">← All classes</a></div>
+    <div class="tonight-head"><div class="eyebrow">CLASS</div>
+    <h1>${esc(short)}</h1>
+    <div class="weeksub">${g.letter ? "Grade " + esc(g.letter) + (g.pct != null ? " " + Math.round(g.pct) + "%" : "") : "No grade yet"}</div></div>`;
+  const tabs = [["turnin", "To turn in"], ["week", "This week"], ["overdue", "Overdue"]];
+  const tabbar = `<div class="chips" style="margin-bottom:18px">${tabs.map(([v, l]) =>
+    `<a class="chip${tab === v ? " on" : ""}" href="#/class/${enc}${v === "turnin" ? "" : "?tab=" + v}">${l}</a>`).join("")}</div>`;
+  let body = "";
+  if (tab === "week") body = classWeek(ctx, short);
+  else if (tab === "overdue") body = classOverdue(ctx, short);
+  else body = classTurnin(ctx, short);
+  return taskChrome(ctx, `<div>${head}${tabbar}${body}</div>`);
 }
 /* ---------- All clear ---------- */
 function viewAllClear(ctx, totalCount) {
@@ -1348,6 +1472,7 @@ function doAction(action, id, el) {
     case "week-next": weekOffset++; render(); return;
     case "week-this": weekOffset = 0; render(); return;
     case "toggle-hidden": showHiddenWeek = !showHiddenWeek; render(); return;
+    case "sort-overdue": overdueSort = el.dataset.v || "late"; render(); return;
     case "one-more": {
       const extra = [...new Set([...(v2extra.v || []), id])];
       v2extra = { v: extra, ts: Date.now() }; saveLocal(); pushSoon(600);
@@ -1425,6 +1550,7 @@ function render() {
     chrome = railHTML(path, ctx) + tabbarHTML(path, ctx);
     if (path === "/week") main = viewWeek(ctx, asParent);
     else if (path === "/classes") main = viewClasses(ctx);
+    else if (path.startsWith("/class/")) main = viewClass(ctx, decodeURIComponent(path.slice(7)), params.get("tab") || "turnin");
     else if (path === "/overdue") main = viewOverdue(ctx);
     else main = viewTonight(ctx, params.get("class"));
   }
