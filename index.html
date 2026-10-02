@@ -42,7 +42,7 @@ a{color:var(--accent)}
 /* ---------- phone tab bar ---------- */
 .tabbar{display:none}
 @media(max-width:900px){
-  .tabbar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));position:fixed;left:0;right:0;bottom:0;
+  .tabbar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));position:fixed;left:0;right:0;bottom:0;
     background:var(--card);border-top:1px solid var(--border);padding:8px 12px calc(8px + env(safe-area-inset-bottom));z-index:20}
   .tabbar a{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 0;text-decoration:none;
     color:var(--muted);font-size:12px;font-weight:600}
@@ -124,6 +124,8 @@ a{color:var(--accent)}
 .chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
 a.chip{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;color:var(--ink)}
 a.chip.on{color:#fff}
+.tnote{margin-top:8px;font-size:13px;color:var(--ink);background:#F6F7FB;border-radius:8px;padding:8px 10px}
+.tnote.none{color:var(--muted);font-style:italic}
 .schchip{display:inline-block;margin-left:10px;padding:7px 14px;border-radius:999px;background:#EAF0FF;color:#2456D6;font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap;vertical-align:middle}
 .schchip:active{transform:scale(.97)}
 @media(max-width:900px){.chip{height:44px;border-radius:12px;font-size:14px}}
@@ -335,7 +337,6 @@ const TAGC = {
   History: ["#B45309", "#FEF0C7"], PE: ["#0F6B4A", "#DCF3E8"], Band: ["#9D174D", "#FCE7F3"]
 };
 const GRADEC = { A: ["#DCF3E8", "#0F6B4A"], B: ["#E4ECFF", "#1D4ED8"], C: ["#FEF0C7", "#854D0E"], D: ["#FFE6D9", "#9A3412"], F: ["#FFE6D9", "#9A3412"] };
-const PLAN_TYPES = new Set(["project", "writing", "research", "presentation", "test", "quiz"]);
 
 /* ================= utils ================= */
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", "&gt;": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
@@ -396,11 +397,12 @@ const ICONS = {
   moon: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg>',
   cal: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="3"></rect><path d="M3.5 10h17M8 3v4M16 3v4"></path></svg>',
   bars: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20V12M12 20V5M19 20v-6"></path></svg>',
-  school: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4" width="17" height="11" rx="2"></rect><path d="M12 15v4M8.5 21h7"></path></svg>',
+  school: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18"></path><path d="M5.5 7v4h13V7"></path><path d="M7 11v9M17 11v9"></path><path d="M7 15.5h10"></path></svg>',
   check: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>',
   clock: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3355FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 9 9"></path><path d="M12 7v5l3 2"></path></svg>',
   warn: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C2410C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 16H3z"></path><path d="M12 10v4M12 17v.5"></path></svg>',
-  chev: '<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>'
+  chev: '<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>',
+  chat: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.5 0-3-.4-4.2-1L3 20l1.2-4.1A8.5 8.5 0 1 1 21 11.5z"></path></svg>'
 };
 
 /* ================= v2 state store ================= */
@@ -772,16 +774,17 @@ function railHTML(active, ctx) {
     ${link("/overdue", ICONS.warn, "Overdue" + (pastDue(ctx).length ? `<span class="navcount">${pastDue(ctx).length}</span>` : ""))}
     ${link("/week", ICONS.cal, "This week")}
     ${link("/classes", ICONS.school, "Classes")}
+    ${link("/teachers", ICONS.chat, "Teachers" + (talkList(ctx).length ? `<span class="navcount">${talkList(ctx).length}</span>` : ""))}
     <div class="railfoot">${esc(upd)}<br><span data-syncstat>Syncing…</span></div>
   </nav>`;
 }
 function tabbarHTML(active, ctx) {
   active = active.startsWith("/class/") ? "/classes" : active;
-  const odc = pastDue(ctx).length;
+  const odc = pastDue(ctx).length, ttc = talkList(ctx).length;
   const t = (path, icon, label) =>
     `<a class="${active === path ? "on" : ""}" href="#${path}">${icon}<span>${label}</span></a>`;
   return `<nav class="tabbar" aria-label="Main">
-    ${t("/tonight", ICONS.moon, "Tonight")}${t("/overdue", ICONS.warn, "Overdue" + (odc ? ` (${odc})` : ""))}${t("/week", ICONS.cal, "This week")}${t("/classes", ICONS.school, "Classes")}
+    ${t("/tonight", ICONS.moon, "Tonight")}${t("/overdue", ICONS.warn, "Overdue" + (odc ? ` (${odc})` : ""))}${t("/week", ICONS.cal, "This week")}${t("/classes", ICONS.school, "Classes")}${t("/teachers", ICONS.chat, "Teachers" + (ttc ? ` (${ttc})` : ""))}
   </nav>`;
 }
 function dueLine(ctx, a, reason, s) {
@@ -799,6 +802,36 @@ function dueLine(ctx, a, reason, s) {
   if (dk === ctx.today) return "Due today" + was;
   if (dk === addDays(ctx.today, 1)) return "Due tomorrow, " + fmtDay(dk) + was;
   return "Due " + fmtDay(dk) + was;
+}
+/* Done (turned in) but not yet submitted — the reminder to actually hand it in. */
+function readyToSubmit(ctx) {
+  const out = [];
+  for (const a of ctx.items) {
+    const s = ctx.getState(a.id);
+    if (s.done !== "turned_in" || s.submitted) continue;
+    if (s.parent_answer === "skip" || RESOLVED.has(a.status)) continue;
+    out.push(a);
+  }
+  out.sort((x, y) => ((ctxDueKey(ctx, x) || "9999") < (ctxDueKey(ctx, y) || "9999") ? -1 : 1));
+  return out;
+}
+function submitSection(ctx, classFilter) {
+  let items = readyToSubmit(ctx);
+  if (classFilter) items = items.filter(a => shortCourse(a.course) === classFilter);
+  if (!items.length) return "";
+  const rows = items.map(a => {
+    const sel = selId === a.id ? " sel" : "";
+    return `<div class="tcard${sel}" data-action="open-task" data-id="${a.id}" role="button" tabindex="0">
+      <div class="tbody">
+        <div class="trow1">${tagHTML(a.course)}<span class="when">done, not submitted yet</span></div>
+        <div class="ttitle">${esc(a.title)}</div>
+        <div style="margin-top:10px"><button class="chip" data-action="toggle-submitted" data-id="${a.id}">Mark submitted ✓</button></div>
+      </div></div>`;
+  }).join("");
+  return `<div class="weekhead" style="margin-top:26px"><div><div class="eyebrow">READY TO SUBMIT</div>
+    <h1 style="font-size:28px">${items.length === 1 ? "1 done" : items.length + " done"}</h1>
+    <div class="weeksub">Finished but not handed in yet — submit ${items.length === 1 ? "it" : "them"} so nothing slips.</div></div></div>
+    <div class="tlist">${rows}</div>`;
 }
 /* ---------- Tonight ---------- */
 function tonightCard(ctx, r) {
@@ -841,6 +874,7 @@ function viewTonight(ctx, classFilter) {
       ${filterBar}
       <div class="tlist">${cards}</div>
       ${catchNote}
+      ${submitSection(ctx, classFilter)}
     </div>`;
   return taskChrome(ctx, left);
 }
@@ -875,12 +909,10 @@ function waitingRow(ctx, a) {
   const dk = ctxDueKey(ctx, a);
   return openTaskRow(ctx, a, `<span class="when">waiting on teacher${dk ? " &middot; due " + esc(fmtDay(dk)) : ""}</span>`);
 }
-let overdueSort = "late"; // late | due | class | points
+let overdueSort = "late"; // late | class
 function sortOverdue(ctx, arr) {
   const a = [...arr], dk = x => ctxDueKey(ctx, x) || "9999";
-  if (overdueSort === "due") a.sort((x, y) => (dk(x) < dk(y) ? -1 : 1));
-  else if (overdueSort === "class") a.sort((x, y) => (shortCourse(x.course) < shortCourse(y.course) ? -1 : 1) || (dk(x) < dk(y) ? -1 : 1));
-  else if (overdueSort === "points") a.sort((x, y) => pointsOf(y) - pointsOf(x));
+  if (overdueSort === "class") a.sort((x, y) => (shortCourse(x.course) < shortCourse(y.course) ? -1 : 1) || (dk(x) < dk(y) ? -1 : 1));
   else a.sort((x, y) => (daysBetween(dk(y), ctx.today) - daysBetween(dk(x), ctx.today)) || (pointsOf(y) - pointsOf(x)));
   return a;
 }
@@ -889,7 +921,7 @@ function viewOverdue(ctx) {
   const head = `<div class="tonight-head"><div class="eyebrow">OVERDUE</div>
     <h1>${n === 1 ? "1 overdue" : n + " overdue"}</h1>
     <div class="weeksub">Past due and still open — not done, not snoozed, not skipped. Tap one for options.</div></div>`;
-  const sorts = [["late", "Days late"], ["due", "Due date"], ["class", "Class"], ["points", "Points"]];
+  const sorts = [["late", "Days late"], ["class", "Class"]];
   const sortbar = `<div class="chips" style="margin-bottom:14px">${sorts.map(([v, l]) =>
     `<button class="chip${overdueSort === v ? " on" : ""}" data-action="sort-overdue" data-v="${v}">${l}</button>`).join("")}</div>`;
   const list = pd.map(a => {
@@ -907,8 +939,9 @@ function taskHTML(ctx, a) {
   if (!a) return "";
   const s = st(a.id);
   const reason = (tonightPick(ctx) || {}).id === a.id ? "catchup" : null;
-  const t = String(a.type || "").toLowerCase();
-  const canPart = PLAN_TYPES.has(t) || (s.plan && (s.plan.nights || []).length);
+  // "Did my part for today" only makes sense inside the planning world:
+  // today must be one of this item's planned nights.
+  const canPart = (s.plan && (s.plan.nights || []).includes(ctx.today));
   const ptag = s.plan && s.plan.set_by === "parent" ? `<span class="parenttag">Parent planned this</span>` : "";
   const asked = s.ask_parent && !s.parent_answer ? `<span class="askedbadge">asked</span>` : "";
   const manual = s.manual_due || "";
@@ -926,6 +959,8 @@ function taskHTML(ctx, a) {
         <span>Did my part for today<span class="sub">Bigger job. It comes back tomorrow.</span></span></button>` : ""}
       <button class="abtn ghost" data-action="toggle-submitted" data-id="${a.id}">${ICONS.check}
         <span>${s.submitted ? "Submitted &#10003;" : "Mark submitted"}<span class="sub">Teacher has it, even if Schoology doesn't show it yet</span></span></button>
+      <button class="abtn ghost" data-action="talk-teacher" data-id="${a.id}">${ICONS.chat}
+        <span>${s.talk_teacher ? "Talk to teacher &#10003;" : "Talk to teacher"}<span class="sub">${s.talk_teacher ? "Flagged — see the Teachers tab" : "Flag it for a live conversation"}</span></span></button>
       <div class="notnow"><h3>Plan</h3>
         <p>Split it over a few nights — choose how many, then which.</p>
         <div class="chips">
@@ -1262,6 +1297,50 @@ function viewClass(ctx, short, tab) {
   else body = classTurnin(ctx, short);
   return taskChrome(ctx, `<div>${head}${tabbar}${body}</div>`);
 }
+/* ---------- Teachers ---------- */
+// Items flagged for a live conversation with the teacher, grouped by class
+// (one teacher per class — Schoology doesn't expose teacher names).
+function talkList(ctx) {
+  const out = [];
+  for (const a of ctx.items) {
+    const s = ctx.getState(a.id);
+    if (s.talk_teacher && s.parent_answer !== "skip") out.push({ a, s });
+  }
+  return out;
+}
+function viewTeachers(ctx) {
+  const flagged = talkList(ctx);
+  const byClass = {};
+  for (const { a, s } of flagged) {
+    const c = shortCourse(a.course);
+    (byClass[c] = byClass[c] || []).push({ a, s });
+  }
+  const classes = Object.keys(byClass).sort();
+  const head = `<div class="tonight-head"><div class="eyebrow">TEACHERS</div>
+    <h1>Talk to the teacher</h1>
+    <div class="weeksub">Flagged for a live conversation. Talk, agree on a plan, write it in the note.</div></div>`;
+  let body;
+  if (!classes.length) {
+    body = `<div class="empty">Nothing flagged. In any task card, tap "Talk to teacher" to add it here.</div>`;
+  } else {
+    body = classes.map((c, i) => {
+      const rows = byClass[c].map(({ a, s }) => {
+        const dk = ctxDueKey(ctx, a);
+        const sel = selId === a.id ? " sel" : "";
+        return `<div class="tcard${sel}" data-action="open-task" data-id="${a.id}" role="button" tabindex="0">
+          <div class="tbody">
+            <div class="trow1"><span class="when">${dk ? esc(dueLine(ctx, a, null, s)) : "No due date"}</span></div>
+            <div class="ttitle">${esc(a.title)}</div>
+            ${s.note ? `<div class="tnote">${esc(s.note)}</div>` : `<div class="tnote none">No note yet — tap to add the plan after you talk.</div>`}
+            <div style="margin-top:10px"><button class="chip" data-action="talk-teacher" data-id="${a.id}">Done talking ✓</button></div>
+          </div></div>`;
+      }).join("");
+      return `<div class="weekhead" style="margin-top:${i ? "22px" : "0"}"><div><div class="eyebrow">${esc(c.toUpperCase())}</div>
+        <h1 style="font-size:22px">${esc(c)}</h1></div></div><div class="tlist">${rows}</div>`;
+    }).join("");
+  }
+  return taskChrome(ctx, `<div>${head}${body}</div>`);
+}
 /* ---------- All clear ---------- */
 function viewAllClear(ctx, totalCount) {
   const doneN = totalCount;
@@ -1309,7 +1388,7 @@ function viewAllClear(ctx, totalCount) {
       <div class="acrow"><span>Old ones cleared this week</span><span>${cleared}</span></div>
       <div class="acrow"><span>Catch-up left</span><span>${pd.length}</span></div>
     </div>
-  </div>`;
+  </div>${submitSection(ctx, null)}`;
 }
 /* ---------- Parent check-in ---------- */
 function viewParent(ctx) {
@@ -1440,6 +1519,9 @@ function doAction(action, id, el) {
       vanishing(id, "Marked submitted", v => { v.submitted = true; });
       markNightDoneIfEmpty(mkCtx(DATA.assignments, todayKey()));
       return;
+    case "talk-teacher":
+      touch(id, v => { v.talk_teacher = !v.talk_teacher; });
+      return;
     case "save-due": {
       const inp = document.getElementById("tduedate");
       touch(id, v => { v.manual_due = (inp && inp.value) || null; });
@@ -1552,6 +1634,7 @@ function render() {
     else if (path === "/classes") main = viewClasses(ctx);
     else if (path.startsWith("/class/")) main = viewClass(ctx, decodeURIComponent(path.slice(7)), params.get("tab") || "turnin");
     else if (path === "/overdue") main = viewOverdue(ctx);
+    else if (path === "/teachers") main = viewTeachers(ctx);
     else main = viewTonight(ctx, params.get("class"));
   }
   let overlays = "";
