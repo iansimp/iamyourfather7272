@@ -856,6 +856,7 @@ function taskHTML(ctx, a) {
   const ptag = s.plan && s.plan.set_by === "parent" ? `<span class="parenttag">Parent planned this</span>` : "";
   const asked = s.ask_parent && !s.parent_answer ? `<span class="askedbadge">asked</span>` : "";
   const manual = s.manual_due || "";
+  const plannedNights = (s.plan && s.plan.nights) || [];
   return `<div class="taskhead">
       <div class="trow1">${tagHTML(a.course)}<span class="when" style="color:var(--muted)">${esc(a.type || "")}</span>${asked}${ptag}</div>
       <h2>${esc(a.title)}</h2>
@@ -869,6 +870,13 @@ function taskHTML(ctx, a) {
         <span>Did my part for today<span class="sub">Bigger job. It comes back tomorrow.</span></span></button>` : ""}
       <button class="abtn ghost" data-action="toggle-submitted" data-id="${a.id}">${ICONS.check}
         <span>${s.submitted ? "Submitted &#10003;" : "Mark submitted"}<span class="sub">Teacher has it, even if Schoology doesn't show it yet</span></span></button>
+      <div class="notnow"><h3>Plan</h3>
+        <p>Split it over a few nights — choose how many, then which.</p>
+        <div class="chips">
+          <button class="chip" data-action="open-plan" data-id="${a.id}">${plannedNights.length ? "Change plan" : "Plan nights"}</button>
+          ${plannedNights.length ? `<button class="chip" data-action="plan-clear" data-id="${a.id}">Clear</button>` : ""}
+        </div>
+        ${plannedNights.length ? `<div class="snoozedline"><span>${esc(planSummary(a, plannedNights.length, plannedNights, effDueKey(a)))}</span></div>` : ""}</div>
       <div class="notnow"><h3>Snooze</h3>
         <div class="chips">
           <button class="chip" data-action="snooze-tomorrow" data-id="${a.id}">Tomorrow</button>
@@ -1326,6 +1334,7 @@ function doAction(action, id, el) {
     }
     case "plan-as": planDlg.asParent = el.dataset.v === "1"; render(); return;
     case "plan-cancel": planDlg = null; render(); return;
+    case "plan-clear": touch(id, v => { v.plan = null; }); return;
     case "plan-save": {
       const nights = [...planDlg.picked].sort(), asP = planDlg.asParent, pid = planDlg.id;
       planDlg = null;
