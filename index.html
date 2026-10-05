@@ -172,6 +172,11 @@ a.chip.on{color:#fff}
 .dcell .dn{font-size:20px;font-weight:700}
 .dcell .dc{font-size:11px;font-weight:600;color:var(--muted)}
 .dcell.today .dc{color:#B9BED0}
+.dcell{cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
+.dcell.sel{box-shadow:0 0 0 2px var(--accent)}
+.wsec{scroll-margin-top:10px}
+.wsec.flash{animation:wflash 1.2s ease}
+@keyframes wflash{0%{background:var(--accent-soft);border-radius:16px}100%{background:transparent}}
 .wsec{margin-bottom:18px}
 .wsec h2{font-size:15px;font-weight:700;color:var(--muted);margin:0 0 8px;font-family:'Figtree',sans-serif;letter-spacing:0}
 .wrow{display:flex;align-items:center;gap:10px;padding:14px 16px;background:#fff;border-radius:16px;margin-bottom:8px}
@@ -764,6 +769,7 @@ let moveId = null;           // phone: move picker for assignment
 let showHiddenWeek = false;
 let showAllCatchup = false;
 let weekOffset = 0;
+let weekSelDay = null; // mobile day-strip selection: tapping a day jumps to its section
 const byId = id => DATA.assignments.find(a => a.id === id);
 
 function railHTML(active, ctx) {
@@ -1070,22 +1076,21 @@ function viewWeek(ctx, asParent) {
     const dow = new Date(d + "T12:00:00Z").getUTCDay();
     const names = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const items = weekDayItems(ctx, d);
-    return `<div class="dcell${d === ctx.today ? " today" : ""}"><span class="dd">${names[dow]}</span>
+    return `<div class="dcell${d === ctx.today ? " today" : ""}${d === weekSelDay ? " sel" : ""}" data-action="week-day" data-day="${d}" role="button" tabindex="0" aria-label="Show ${names[dow]}"><span class="dd">${names[dow]}</span>
       <span class="dn">${parseInt(d.slice(8), 10)}</span><span class="dc">${items.length || ""}</span></div>`;
   }).join("")}</div>`;
   const secs = days.map(day => {
     const items = weekDayItems(ctx, day);
-    if (!items.length) return "";
     const label = day === ctx.today ? "TODAY" : day === addDays(ctx.today, 1) ? "TOMORROW" : fmtDay(day).toUpperCase();
-    const rows = items.map(it => {
+    const rows = items.length ? items.map(it => {
       const { a, s, due, planned } = it;
       return `<div class="wrow${planned && !due ? " dashed" : ""}" data-action="open-task" data-id="${a.id}" role="button" tabindex="0">
         ${tagHTML(a.course)}
         <span class="wt">${esc(a.title)}${planned && !due ? `, part ${(s.plan.nights || []).indexOf(day) + 1} of ${(s.plan.nights || []).length}` : ""}</span>
         <span class="wm" style="font-size:12px;color:var(--muted);font-weight:600">${esc(weekMeta(ctx, a, day, s))}</span>
         <button class="movebtn" data-action="move-open" data-id="${a.id}">Move</button></div>`;
-    }).join("");
-    return `<div class="wsec"><h2>${esc(label)} · ${esc(fmtDay(day))}${day >= ctx.today ? "" : " · past"}</h2>${rows}</div>`;
+    }).join("") : `<div class="empty" style="padding:16px">Nothing scheduled this day.</div>`;
+    return `<div class="wsec" id="wsec-${day}"><h2>${esc(label)} · ${esc(fmtDay(day))}${day >= ctx.today ? "" : " · past"}</h2>${rows}</div>`;
   }).join("");
   // hidden in-class grades
   let hiddenCount = 0;
@@ -1547,9 +1552,15 @@ function doAction(action, id, el) {
     case "move-open": moveId = id; render(); return;
     case "move-cancel": moveId = null; render(); return;
     case "move-to": { const d = el.dataset.day; moveId = null; dropOnDay(id, d); return; }
-    case "week-prev": weekOffset--; render(); return;
-    case "week-next": weekOffset++; render(); return;
-    case "week-this": weekOffset = 0; render(); return;
+    case "week-prev": weekOffset--; weekSelDay = null; render(); return;
+    case "week-next": weekOffset++; weekSelDay = null; render(); return;
+    case "week-this": weekOffset = 0; weekSelDay = null; render(); return;
+    case "week-day": {
+      weekSelDay = el.dataset.day; render();
+      const s = document.getElementById("wsec-" + el.dataset.day);
+      if (s) { s.scrollIntoView({ behavior: "smooth", block: "start" }); s.classList.add("flash"); setTimeout(() => s.classList.remove("flash"), 1300); }
+      return;
+    }
     case "toggle-hidden": showHiddenWeek = !showHiddenWeek; render(); return;
     case "sort-overdue": overdueSort = el.dataset.v || "late"; render(); return;
     case "one-more": {
@@ -1579,6 +1590,9 @@ document.addEventListener("keydown", e => {
   if (e.key === "Escape") { selId = null; planDlg = null; moveId = null; render(); }
   if (e.key === "Enter" && e.target.matches && e.target.matches('[data-action="open-task"]')) {
     selId = e.target.dataset.id; render();
+  }
+  if ((e.key === "Enter" || e.key === " ") && e.target.matches && e.target.matches('[data-action="week-day"]')) {
+    e.preventDefault(); doAction("week-day", null, e.target);
   }
 });
 /* drag & drop: week columns + parent catch-up order */
