@@ -84,6 +84,7 @@ a{color:var(--accent)}
 .tcard.isdone .ttitle{text-decoration:line-through}
 .when{font-size:13px;font-weight:600;color:var(--muted)}
 .when.late{color:var(--orange)}
+.when.redo{color:var(--orange-deep);font-weight:700}
 .tag{font-size:12px;font-weight:700;padding:3px 8px;border-radius:6px;white-space:nowrap}
 .askedbadge{font-size:11px;font-weight:700;padding:2px 7px;border-radius:6px;background:var(--accent-soft);color:var(--accent)}
 .catchnote{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:14px;background:#E9EBF2;
@@ -514,6 +515,36 @@ function waitingGrade(ctx) {
   out.sort((x, y) => ((ctxDueKey(ctx, x) || "9999") < (ctxDueKey(ctx, y) || "9999") ? -1 : 1));
   return out;
 }
+/* A recorded score — even 0 — means the teacher put a grade on it: it's graded,
+   not unsubmitted. Schoology-"missing" items count too (Schoology scores them 0,
+   per the gradebook). They still need another attempt, but they are NOT overdue. */
+function gradeScore(a) {
+  const m = String(a.grade || "").match(/(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)/);
+  return m ? { got: parseFloat(m[1]), max: parseFloat(m[2]) } : null;
+}
+const needsRedo = a => {
+  const s = String(a.status || "").trim().toLowerCase();
+  if (s === "missing") return true;
+  const sc = gradeScore(a);
+  return !!sc && sc.got === 0;
+};
+function redoList(ctx) {
+  const out = [];
+  for (const a of ctx.items) {
+    if (!needsRedo(a)) continue;
+    const s = ctx.getState(a.id);
+    if (doneV2(s) || s.parent_answer === "skip") continue;
+    if (ctxSnoozed(ctx, a.id)) continue;
+    out.push(a);
+  }
+  out.sort((x, y) => (pointsOf(y) - pointsOf(x)) || ((ctxDueKey(ctx, x) || "9999") < (ctxDueKey(ctx, y) || "9999") ? -1 : 1));
+  return out;
+}
+function redoRow(ctx, a) {
+  const dk = ctxDueKey(ctx, a), sc = gradeScore(a);
+  const mark = sc ? `scored ${sc.got} / ${sc.max}` : "missing";
+  return openTaskRow(ctx, a, `<span class="when redo">${esc(mark)} &middot; needs redo${dk ? " &middot; due " + esc(fmtDay(dk)) : ""}</span>`);
+}
 /* One-way v1 -> v2 migration. Runs on every load; only fills v2 fields that are
    empty and only when the v1 entry is newer, so v2 edits always win. */
 function migrateV1toV2() {
@@ -641,6 +672,7 @@ function pastDue(ctx) {
     if (!dk || dk >= ctx.today) continue;
     if (RESOLVED.has(a.status)) continue;
     if (awaitingGrade(a)) continue;
+    if (needsRedo(a)) continue; // graded (even 0) or Schoology-missing: redo, not overdue
     if (doneV2(s) || s.parent_answer === "skip") continue;
     if (ctxSnoozed(ctx, a.id)) continue;
     out.push(a);
@@ -807,6 +839,10 @@ function dueLine(ctx, a, reason, s) {
     const nights = s.plan.nights, k = nights.indexOf(ctx.today) + 1;
     return "Part " + k + " of " + nights.length + (dk ? ", due " + fmtDay(dk) : "") + was;
   }
+  if (needsRedo(a)) {
+    const sc = gradeScore(a);
+    return (sc ? "Scored " + sc.got + " / " + sc.max : "Missing in Schoology") + " · needs redo" + was;
+  }
   if (!dk) return "No due date";
   if (dk < ctx.today) { const n = daysBetween(dk, ctx.today); return n + (n === 1 ? " day late" : " days late") + ", due " + fmtDay(dk) + was; }
   if (dk === ctx.today) return "Due today" + was;
@@ -943,7 +979,12 @@ function viewOverdue(ctx) {
     <h1 style="font-size:28px">${wg.length === 1 ? "1 waiting" : wg.length + " waiting"}</h1>
     <div class="weeksub">Schoology shows a dash — the teacher has it, just no grade yet. Not overdue.</div></div></div>
     <div class="tlist">${wg.map(a => waitingRow(ctx, a)).join("")}</div>` : "";
-  return taskChrome(ctx, `<div>${head}${sortbar}<div class="tlist">${list}</div>${waitSec}</div>`);
+  const rd = redoList(ctx);
+  const redoSec = rd.length ? `<div class="weekhead" style="margin-top:26px"><div><div class="eyebrow">NEEDS REDO</div>
+    <h1 style="font-size:28px">${rd.length === 1 ? "1 to redo" : rd.length + " to redo"}</h1>
+    <div class="weeksub">Schoology has a grade on these (even a zero) — not overdue, but they need another attempt. Tap one for options.</div></div></div>
+    <div class="tlist">${rd.map(a => redoRow(ctx, a)).join("")}</div>` : "";
+  return taskChrome(ctx, `<div>${head}${sortbar}<div class="tlist">${list}</div>${waitSec}${redoSec}</div>`);
 }
 function taskHTML(ctx, a) {
   if (!a) return "";
@@ -1280,7 +1321,12 @@ function classOverdue(ctx, short) {
     const dk = ctxDueKey(ctx, a), late = daysBetween(dk, ctx.today);
     return openTaskRow(ctx, a, `<span class="when late">${late} ${late === 1 ? "day" : "days"} late &middot; due ${esc(fmtDay(dk))}</span>`);
   }).join("");
-  return list ? `<div class="tlist">${list}</div>` : `<div class="empty">Nothing overdue for ${esc(short)}.</div>`;
+  const rd = redoList(ctx).filter(a => shortCourse(a.course) === short);
+  const redo = rd.length ? `<div class="weekhead" style="margin-top:22px"><div><div class="eyebrow">NEEDS REDO</div>
+    <div class="weeksub">Graded or zeroed in Schoology — not overdue, but needs another attempt.</div></div></div>
+    <div class="tlist">${rd.map(a => redoRow(ctx, a)).join("")}</div>` : "";
+  return (list || redo) ? `<div class="tlist">${list}</div>${redo}`
+    : `<div class="empty">Nothing overdue for ${esc(short)}.</div>`;
 }
 function viewClass(ctx, short, tab) {
   const enc = encodeURIComponent(short);
