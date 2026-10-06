@@ -38,8 +38,8 @@
    "type": "test",
    "points": "4",
    "due_at": "2026-09-16T23:59:00-07:00",
-   "status": "due",
-   "grade": "2.28 (page: C 2.28/4)",
+   "status": "graded",
+   "grade": "C 2.28 / 4",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8489299868"
   },
@@ -50,7 +50,7 @@
    "type": "test",
    "points": "",
    "due_at": null,
-   "status": "collected \u2014 this student has made a submission that has not been graded.",
+   "status": "submitted",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8489299881"
@@ -75,7 +75,7 @@
    "points": "4",
    "due_at": "2026-09-25T23:59:00-07:00",
    "status": "graded",
-   "grade": "page: C 2.8/4 (gradebook blank)",
+   "grade": "C 2.8 / 4",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8571848197"
   },
@@ -87,7 +87,7 @@
    "points": "4",
    "due_at": "2026-08-21T23:59:00-07:00",
    "status": "graded",
-   "grade": "page: C 2.8/4 (gradebook blank)",
+   "grade": "C 2.8 / 4",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8489299842"
   },
@@ -99,7 +99,7 @@
    "points": "4",
    "due_at": null,
    "status": "graded",
-   "grade": "3.6 (page: A 3.6/4)",
+   "grade": "A 3.6 / 4",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8571813927"
   },
@@ -111,7 +111,7 @@
    "points": "4",
    "due_at": "2026-09-03T23:59:00-07:00",
    "status": "graded",
-   "grade": "page: A 4/4 (gradebook blank)",
+   "grade": "A 4 / 4",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8543706977"
   },
@@ -122,8 +122,8 @@
    "type": "classwork",
    "points": "30",
    "due_at": "2026-09-15T23:59:00-07:00",
-   "status": "due",
-   "grade": "/30 (page: 0/30)",
+   "status": "graded",
+   "grade": "0 / 30",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8549787899"
   },
@@ -135,7 +135,7 @@
    "points": "5",
    "due_at": null,
    "status": "graded",
-   "grade": "page: 0/5 (gradebook blank; status showed 'Due' on an earlier load)",
+   "grade": "0 / 5",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8569876325"
   },
@@ -147,7 +147,7 @@
    "points": "16",
    "due_at": null,
    "status": "graded",
-   "grade": "page: 0/16 (gradebook blank)",
+   "grade": "0 / 16",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8518572399"
   },
@@ -219,7 +219,7 @@
    "points": "4",
    "due_at": null,
    "status": "graded",
-   "grade": "page: 0/4",
+   "grade": "0 / 4",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8497706296"
   },
@@ -242,8 +242,8 @@
    "type": "homework",
    "points": "3",
    "due_at": "2026-08-21T23:59:00-07:00",
-   "status": "due",
-   "grade": "page: 3/3",
+   "status": "graded",
+   "grade": "3 / 3",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8517894931"
   },
@@ -255,7 +255,7 @@
    "points": "10",
    "due_at": "2026-08-21T23:59:00-07:00",
    "status": "graded",
-   "grade": "page: 10/10",
+   "grade": "10 / 10",
    "teacher_comment": "Comments show a COLBY SANDERS post with a Google Forms link (appears to be the submission, not teacher feedback)",
    "url": "https://lausd.schoology.com/assignment/8503187524"
   },
@@ -267,7 +267,7 @@
    "points": "4",
    "due_at": "2026-08-21T23:59:00-07:00",
    "status": "graded",
-   "grade": "page: 3/4",
+   "grade": "3 / 4",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8511930360"
   },
@@ -279,7 +279,7 @@
    "points": "3",
    "due_at": "2026-08-25T23:59:00-07:00",
    "status": "graded",
-   "grade": "page: 3/3",
+   "grade": "3 / 3",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8528397371"
   },
@@ -327,7 +327,7 @@
    "points": "4",
    "due_at": "2026-09-06T23:59:00-07:00",
    "status": "graded",
-   "grade": "page: 2/4",
+   "grade": "2 / 4",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8537701391"
   },
@@ -338,8 +338,8 @@
    "type": "classwork",
    "points": "3",
    "due_at": "2026-09-14T23:59:00-07:00",
-   "status": "no comment",
-   "grade": "page: 0/3",
+   "status": "graded",
+   "grade": "0 / 3",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8572241704"
   },
@@ -351,7 +351,7 @@
    "points": "3",
    "due_at": "2026-09-15T23:59:00-07:00",
    "status": "graded",
-   "grade": "page: 0/3",
+   "grade": "0 / 3",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8570474623"
   },
@@ -374,7 +374,7 @@
    "type": "classwork",
    "points": "",
    "due_at": "2026-09-28T23:59:00-07:00",
-   "status": "due",
+   "status": null,
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8588932158"
@@ -387,7 +387,7 @@
    "points": "4",
    "due_at": "2026-08-30T23:59:00-07:00",
    "status": "graded",
-   "grade": "page: 4/4",
+   "grade": "4 / 4",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8531888022"
   },
@@ -399,7 +399,7 @@
    "points": "4",
    "due_at": "2026-09-06T23:59:00-07:00",
    "status": "graded",
-   "grade": "page: 2/4",
+   "grade": "2 / 4",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8543726435"
   },
@@ -423,7 +423,7 @@
    "points": "4",
    "due_at": "2026-09-13T23:59:00-07:00",
    "status": "graded",
-   "grade": "page: 0/4",
+   "grade": "0 / 4",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8551734803"
   },
@@ -447,7 +447,7 @@
    "points": "4",
    "due_at": "2026-09-22T23:59:00-07:00",
    "status": "graded",
-   "grade": "page: 2/4",
+   "grade": "2 / 4",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8580076541"
   },
@@ -459,7 +459,7 @@
    "points": "4",
    "due_at": "2026-09-29T23:59:00-07:00",
    "status": "graded",
-   "grade": "4.1 (page: 4.1/4)",
+   "grade": "4.1 / 4",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8590013982"
   },
@@ -470,8 +470,8 @@
    "type": "homework",
    "points": "4",
    "due_at": "2026-10-04T23:59:00-07:00",
-   "status": "no comment",
-   "grade": "page: 2/4",
+   "status": "graded",
+   "grade": "2 / 4",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8592208468"
   },
@@ -494,7 +494,7 @@
    "type": "classwork",
    "points": "",
    "due_at": "2026-09-02T23:59:00-07:00",
-   "status": "due \u2014 exempt",
+   "status": "exempt",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8549718007"
@@ -507,7 +507,7 @@
    "points": "4",
    "due_at": "2026-09-11T23:59:00-07:00",
    "status": "graded",
-   "grade": "page: 4/4",
+   "grade": "4 / 4",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8534800922"
   },
@@ -519,7 +519,7 @@
    "points": "4",
    "due_at": "2026-09-13T23:59:00-07:00",
    "status": "graded",
-   "grade": "page: 4/4",
+   "grade": "4 / 4",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8552351052"
   },
@@ -590,7 +590,7 @@
    "type": "test",
    "points": "",
    "due_at": "2026-10-05T23:59:00-07:00",
-   "status": "no comment",
+   "status": null,
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8595506435"
@@ -602,7 +602,7 @@
    "type": "reading",
    "points": "",
    "due_at": "2026-09-23T23:59:00-07:00",
-   "status": "due \u2014 this student has completed assignment submission",
+   "status": "submitted",
    "grade": "Exceeds Proficiency",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8570776119"
@@ -626,7 +626,7 @@
    "type": "reading",
    "points": "",
    "due_at": "2026-10-05T23:59:00-07:00",
-   "status": "this student has made a submission that has not been graded.",
+   "status": "submitted",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8570776114"
@@ -686,7 +686,7 @@
    "type": "presentation",
    "points": "",
    "due_at": "2026-10-05T23:59:00-07:00",
-   "status": "no comment",
+   "status": null,
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8570776124"
@@ -710,8 +710,8 @@
    "type": "classwork",
    "points": "3",
    "due_at": "2026-09-01T23:59:00-07:00",
-   "status": "due",
-   "grade": "page: 3/3",
+   "status": "graded",
+   "grade": "3 / 3",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8560982789"
   },
@@ -723,7 +723,7 @@
    "points": "3",
    "due_at": "2026-09-08T23:59:00-07:00",
    "status": "graded",
-   "grade": "page: 3/3",
+   "grade": "3 / 3",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8558395937"
   },
@@ -735,7 +735,7 @@
    "points": "3",
    "due_at": "2026-09-11T23:59:00-07:00",
    "status": "graded",
-   "grade": "page: 3/3",
+   "grade": "3 / 3",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8562437068"
   },
@@ -747,7 +747,7 @@
    "points": "3",
    "due_at": "2026-09-15T23:59:00-07:00",
    "status": "graded",
-   "grade": "page: 3/3",
+   "grade": "3 / 3",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8569999298"
   },
@@ -783,7 +783,7 @@
    "points": "3",
    "due_at": "2026-09-29T23:59:00-07:00",
    "status": "graded",
-   "grade": "page: 2.5/3",
+   "grade": "2.5 / 3",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8596417920"
   },
@@ -806,7 +806,7 @@
    "type": "classwork",
    "points": "",
    "due_at": "2026-10-07T23:59:00-07:00",
-   "status": "no comment",
+   "status": null,
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8570776122"
@@ -830,7 +830,7 @@
    "type": "reading",
    "points": "",
    "due_at": "2026-10-16T23:59:00-07:00",
-   "status": "due",
+   "status": null,
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8585887292"
@@ -842,7 +842,7 @@
    "type": "writing",
    "points": "",
    "due_at": "2026-09-11T23:59:00-07:00",
-   "status": "incomplete \u2014 this student has made a submission that has not been graded.",
+   "status": "submitted",
    "grade": "",
    "teacher_comment": "Mr. Greene will work 1:1 with you Monday to finish your essay organizer and your essay.",
    "url": "https://lausd.schoology.com/assignment/8540300814"
@@ -854,7 +854,7 @@
    "type": "writing",
    "points": "",
    "due_at": "2026-09-18T15:13:00-07:00",
-   "status": "due \u2014 missing",
+   "status": "missing",
    "grade": "",
    "teacher_comment": "Absent/Late: P.E. Writing Activity - Muscle. Makeup assignment",
    "url": "https://lausd.schoology.com/assignment/8562976727"
@@ -879,7 +879,7 @@
    "points": "4",
    "due_at": "2026-09-14T15:13:00-07:00",
    "status": "graded",
-   "grade": "page: A 4/4",
+   "grade": "A 4 / 4",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8567989228"
   },
@@ -891,7 +891,7 @@
    "points": "4",
    "due_at": "2026-09-18T15:13:00-07:00",
    "status": "graded",
-   "grade": "page: A 4/4 (gradebook blank)",
+   "grade": "A 4 / 4",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8575669941"
   },
@@ -903,7 +903,7 @@
    "points": "4",
    "due_at": "2026-09-25T15:13:00-07:00",
    "status": "graded",
-   "grade": "page: A 4/4",
+   "grade": "A 4 / 4",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8586960115"
   },
@@ -915,7 +915,7 @@
    "points": "20",
    "due_at": "2026-09-28T15:13:00-07:00",
    "status": "graded",
-   "grade": "11.8 (page: F 11.8/20)",
+   "grade": "F 11.8 / 20",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8586960115"
   },
@@ -927,7 +927,7 @@
    "points": "40",
    "due_at": "2026-09-11T15:13:00-07:00",
    "status": "graded",
-   "grade": "32 / 40 (page: B 32/40)",
+   "grade": "B 32 / 40",
    "teacher_comment": "Absent: Please complete \"Excused Absence Writing Prompts\" for days missed to receive credit.",
    "url": "https://lausd.schoology.com/assignment/8562454555"
   },
@@ -938,8 +938,8 @@
    "type": "participation",
    "points": "50",
    "due_at": "2026-09-18T15:13:00-07:00",
-   "status": "due",
-   "grade": "50 (page: A 50/50)",
+   "status": "graded",
+   "grade": "A 50 / 50",
    "teacher_comment": "Please note that there have been one or more instances of non-dress in Physical Education.",
    "url": "https://lausd.schoology.com/assignment/8567827470"
   },
@@ -950,8 +950,8 @@
    "type": "participation",
    "points": "40",
    "due_at": null,
-   "status": "no comment",
-   "grade": "page: A 40/40 (gradebook blank)",
+   "status": "graded",
+   "grade": "A 40 / 40",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8575917089"
   },
@@ -963,7 +963,7 @@
    "points": "50",
    "due_at": "2026-10-02T15:13:00-07:00",
    "status": "graded",
-   "grade": "page: A 50/50",
+   "grade": "A 50 / 50",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8586945297"
   },
@@ -986,7 +986,7 @@
    "type": "permission slip",
    "points": "",
    "due_at": "2026-08-21T23:59:00-07:00",
-   "status": "due",
+   "status": null,
    "grade": "",
    "teacher_comment": "Friendly reminder, you are missing this Parent-Student-Teacher Forms",
    "url": "https://lausd.schoology.com/assignment/8508091605"
@@ -998,7 +998,7 @@
    "type": "lt1 energy category / assignment",
    "points": "",
    "due_at": "2026-09-02T15:00:00-07:00",
-   "status": "due \u2014 this student has completed assignment submission",
+   "status": "submitted",
    "grade": "",
    "teacher_comment": "There's not enough evidence, you lack a solid understanding of energy and how it works based o... [truncated in UI]",
    "url": "https://lausd.schoology.com/assignment/8543768573"
@@ -1010,7 +1010,7 @@
    "type": "lt2 force & motion category / assignment",
    "points": "",
    "due_at": "2026-10-02T23:59:00-07:00",
-   "status": "this student has made a submission that has not been graded.",
+   "status": "submitted",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8567820028"
@@ -1058,7 +1058,7 @@
    "type": "project",
    "points": "",
    "due_at": "2026-09-25T23:59:00-07:00",
-   "status": "no comment",
+   "status": null,
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8590169360"
@@ -1178,7 +1178,7 @@
    "type": "participation",
    "points": "",
    "due_at": "2026-08-21T23:59:00-07:00",
-   "status": "no comment",
+   "status": null,
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8511841476"
@@ -1202,7 +1202,7 @@
    "type": "participation",
    "points": "",
    "due_at": "2026-08-24T23:59:00-07:00",
-   "status": "due",
+   "status": null,
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8524034246"
@@ -1310,7 +1310,7 @@
    "type": "participation",
    "points": "",
    "due_at": "2026-09-14T23:59:00-07:00",
-   "status": "no comment",
+   "status": null,
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8567493856"
@@ -1322,7 +1322,7 @@
    "type": "test",
    "points": "2",
    "due_at": "2026-09-14T23:59:00-07:00",
-   "status": "due \u2014 missing",
+   "status": "missing",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8563978383"
@@ -1430,7 +1430,7 @@
    "type": "extra credit",
    "points": "10",
    "due_at": "2026-10-09T23:59:00-07:00",
-   "status": "due",
+   "status": null,
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8569672981"
@@ -1443,7 +1443,7 @@
    "points": "10",
    "due_at": "2026-08-21T23:59:00-07:00",
    "status": "graded",
-   "grade": "page: 0/10",
+   "grade": "0 / 10",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8480605459"
   },
@@ -1455,7 +1455,7 @@
    "points": "15",
    "due_at": "2026-08-21T23:59:00-07:00",
    "status": "graded",
-   "grade": "page: 15/15",
+   "grade": "15 / 15",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8480606150"
   },
@@ -1467,7 +1467,7 @@
    "points": "20",
    "due_at": "2026-08-26T23:59:00-07:00",
    "status": "graded",
-   "grade": "page: 20/20",
+   "grade": "20 / 20",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8480607821"
   },
@@ -1479,7 +1479,7 @@
    "points": "45",
    "due_at": "2026-09-03T00:00:00-07:00",
    "status": "graded",
-   "grade": "page: 45/45",
+   "grade": "45 / 45",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8524504825"
   },
@@ -1491,7 +1491,7 @@
    "points": "45",
    "due_at": "2026-09-18T23:59:00-07:00",
    "status": "graded",
-   "grade": "page: 45/45",
+   "grade": "45 / 45",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8562920724"
   },
@@ -1526,8 +1526,8 @@
    "type": "test",
    "points": "25",
    "due_at": "2026-09-02T23:59:00-07:00",
-   "status": "no comment",
-   "grade": "25 (page: 25/25)",
+   "status": "graded",
+   "grade": "25 / 25",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8536972562"
   },
@@ -1538,8 +1538,8 @@
    "type": "test",
    "points": "25",
    "due_at": "2026-09-18T23:59:00-07:00",
-   "status": "due",
-   "grade": "page: 25/25 (gradebook showed 'Due' badge)",
+   "status": "graded",
+   "grade": "25 / 25",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8568358635"
   },
