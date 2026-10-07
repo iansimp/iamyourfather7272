@@ -1,9 +1,9 @@
 {
- "fetched_at": "2026-10-06T23:10:00Z",
+ "fetched_at": "2026-10-07T23:28:30Z",
  "courses": [
   {
    "name": "ADV BAND MS A: TERM AF- PERIOD 1 - RM 143",
-   "grade": "94.59%"
+   "grade": "95.652173913043%"
   },
   {
    "name": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253",
@@ -15,7 +15,7 @@
   },
   {
    "name": "H US HIST G&C A: TERM AF- PERIOD 2 - RM 258",
-   "grade": "D 51.73%"
+   "grade": "D (51.73%)"
   },
   {
    "name": "HOMEROOM: TERM AF- PERIOD H - RM 254",
@@ -23,7 +23,7 @@
   },
   {
    "name": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
-   "grade": "B 83.93%"
+   "grade": "B (83.93%)"
   },
   {
    "name": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
@@ -108,10 +108,10 @@
    "course": "ADV BAND MS A: TERM AF- PERIOD 1 - RM 143",
    "title": "Participation 9/22-10/2",
    "type": "participation",
-   "points": "",
+   "points": "45",
    "due_at": "2026-10-02T23:59:00-07:00",
-   "status": "dash",
-   "grade": "",
+   "status": "graded",
+   "grade": "45 / 45",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8569668430"
   },
@@ -170,9 +170,9 @@
    "type": "reading",
    "points": "",
    "due_at": "2026-09-23T23:59:00-07:00",
-   "status": "submitted",
+   "status": "graded",
    "grade": "A",
-   "teacher_comment": "Exceeds Proficiency",
+   "teacher_comment": "Exceeds Proficiency. This student has completed assignment submission.",
    "url": "https://lausd.schoology.com/assignment/8570776119"
   },
   {
@@ -184,7 +184,7 @@
    "due_at": "2026-09-28T23:59:00-07:00",
    "status": "graded",
    "grade": "F",
-   "teacher_comment": "No response/missing please make arrangements to reassess to demonstrate Proficiency.",
+   "teacher_comment": "No response/missing. please make arrangements to reassess to demonstrate Proficiency.",
    "url": "https://lausd.schoology.com/assignment/8570776116"
   },
   {
@@ -194,9 +194,9 @@
    "type": "reading",
    "points": "",
    "due_at": "2026-10-05T23:59:00-07:00",
-   "status": "submitted",
+   "status": "dash",
    "grade": "",
-   "teacher_comment": null,
+   "teacher_comment": "This student has made a submission that has not been graded.",
    "url": "https://lausd.schoology.com/assignment/8570776114"
   },
   {
@@ -254,9 +254,9 @@
    "type": "presentation",
    "points": "",
    "due_at": "2026-10-05T23:59:00-07:00",
-   "status": "submitted",
+   "status": "dash",
    "grade": "",
-   "teacher_comment": null,
+   "teacher_comment": "This student has made a submission that has not been graded.",
    "url": "https://lausd.schoology.com/assignment/8570776124"
   },
   {
@@ -412,7 +412,7 @@
    "due_at": "2026-09-11T23:59:00-07:00",
    "status": "missing",
    "grade": "",
-   "teacher_comment": "Mr. Greene will work 1:1 with you Monday to finish your essay organizer and your essay.",
+   "teacher_comment": "This student has made a submission that has not been graded. mr. Greene will work 1:1 with you Monday to finish your essay organizer and your essay.",
    "url": "https://lausd.schoology.com/assignment/8540300814"
   },
   {
@@ -422,7 +422,7 @@
    "type": "lt1 energy",
    "points": "",
    "due_at": "2026-09-02T15:00:00-07:00",
-   "status": "submitted",
+   "status": "graded",
    "grade": "D",
    "teacher_comment": "There's not enough evidence, you lack a solid understanding of energy and how it works based on your Claim, Evidence, Reasoning (CER) essay. Although you mentioned a knee brace that transfers kinetic energy to convert that energy into electrical power, you merely wrote ONE sentence.",
    "url": "https://lausd.schoology.com/assignment/8543768573"
@@ -434,7 +434,7 @@
    "type": "lt2 force & motion",
    "points": "",
    "due_at": "2026-10-02T23:59:00-07:00",
-   "status": "submitted",
+   "status": "graded",
    "grade": "B",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8567820028"
@@ -472,7 +472,7 @@
    "due_at": "2026-09-14T23:59:00-07:00",
    "status": "missing",
    "grade": "0",
-   "teacher_comment": null,
+   "teacher_comment": "This student has made a submission that has not been graded.",
    "url": "https://lausd.schoology.com/assignment/8512629018"
   },
   {
@@ -520,7 +520,7 @@
    "due_at": "2026-08-14T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
-   "teacher_comment": null,
+   "teacher_comment": "In school, but not in class",
    "url": "https://lausd.schoology.com/assignment/8497918614"
   },
   {
@@ -748,7 +748,7 @@
    "due_at": "2026-09-14T23:59:00-07:00",
    "status": "missing",
    "grade": "0",
-   "teacher_comment": null,
+   "teacher_comment": "This student has completed the test/quiz",
    "url": "https://lausd.schoology.com/assignment/8563978383"
   },
   {
@@ -868,7 +868,7 @@
    "due_at": "2026-09-16T23:59:00-07:00",
    "status": "submitted",
    "grade": "",
-   "teacher_comment": null,
+   "teacher_comment": "This student has made a submission that has not been graded.",
    "url": "https://lausd.schoology.com/assignment/8489299881"
   },
   {
@@ -1144,7 +1144,7 @@
    "due_at": "2026-09-18T15:13:00-07:00",
    "status": "graded",
    "grade": "A 50 / 50",
-   "teacher_comment": null,
+   "teacher_comment": "Please note that there have been one or more instances of non-dress in Physical Education.",
    "url": "https://lausd.schoology.com/assignment/8567827470"
   },
   {
