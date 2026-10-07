@@ -727,8 +727,9 @@ function tonight(ctx) {
     if (s.parent_answer === "skip") continue;
     if (ctxSnoozed(ctx, a.id)) continue;
     if ((s.part_done_days || []).includes(ctx.today)) continue;
-    if (RESOLVED.has(a.status)) continue;
-    if (awaitingGrade(a)) continue;
+    // An explicit plan for tonight wins over Schoology-derived filters.
+    const plannedToday = s.plan && (s.plan.nights || []).includes(ctx.today);
+    if (!plannedToday && (RESOLVED.has(a.status) || awaitingGrade(a))) continue;
     const dk = ctxDueKey(ctx, a);
     const isPick = pick && a.id === pick.id;
     const isExtra = extras.has(a.id);
@@ -1061,10 +1062,15 @@ function weekDayItems(ctx, day) {
   const out = [];
   for (const a of ctx.items) {
     const s = st(a.id);
-    if (doneV2(s) || s.parent_answer === "skip" || RESOLVED.has(a.status) || awaitingGrade(a)) continue;
+    if (doneV2(s) || s.parent_answer === "skip") continue;
     if (isSnoozed(a.id, ctx.today)) continue;
-    if (hiddenInClass(ctx, a) && !showHiddenWeek) continue;
     const dk = ctxDueKey(ctx, a), nights = (s.plan || {}).nights || [];
+    // An explicit family plan wins over Schoology-derived filters: if they put it
+    // on a night, it stays on that night even after Schoology marks it resolved.
+    if (!nights.length) {
+      if (RESOLVED.has(a.status) || awaitingGrade(a)) continue;
+      if (hiddenInClass(ctx, a) && !showHiddenWeek) continue;
+    }
     const isDue = dk === day, isPlanned = nights.includes(day);
     if (!isDue && !isPlanned) continue;
     out.push({ a, s, due: isDue, planned: isPlanned, hidden: hiddenInClass(ctx, a) });
