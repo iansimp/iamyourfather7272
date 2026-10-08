@@ -496,12 +496,16 @@ function isSnoozed(id, today) {
   if (!s) return false;
   return s === "indef" || s > today;
 }
-/* Schoology dash = the teacher has the work but hasn't graded it (per Luke:
-   if it were truly missing, Schoology would show "missing"). Not actionable,
-   but stays visible for follow-up in its own section — never silently hidden. */
+/* A Schoology dash means "no grade recorded" — nothing more. Schoology shows it
+   for upcoming work too, and its own To Do list treats past-due dash items as
+   overdue. Only file under "waiting on teacher" with positive evidence the
+   teacher has the work (a "submission … not been graded" comment). Everything
+   else stays actionable so it can appear in the week view and be planned. */
 const awaitingGrade = a => {
   const s = String(a.status || "").trim().toLowerCase();
-  return s === "dash" || s === "—";
+  if (s !== "dash" && s !== "—") return false;
+  const c = String(a.teacher_comment || "").toLowerCase();
+  return c.includes("submission") || c.includes("not been graded");
 };
 function waitingGrade(ctx) {
   const out = [];
