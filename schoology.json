@@ -1,33 +1,33 @@
 {
- "fetched_at": "2026-10-07T23:28:30Z",
+ "fetched_at": "2026-10-09T23:10:00Z",
  "courses": [
   {
-   "name": "ADV BAND MS A: TERM AF- PERIOD 1 - RM 143",
-   "grade": "95.652173913043%"
+   "grade": "95.65%",
+   "name": "ADV BAND MS A: TERM AF- PERIOD 1 - RM 143"
   },
   {
-   "name": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253",
-   "grade": "C"
+   "grade": "C",
+   "name": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253"
   },
   {
-   "name": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
-   "grade": "C"
+   "grade": "C",
+   "name": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254"
   },
   {
-   "name": "H US HIST G&C A: TERM AF- PERIOD 2 - RM 258",
-   "grade": "D (51.73%)"
+   "grade": "D (51.73%)",
+   "name": "H US HIST G&C A: TERM AF- PERIOD 2 - RM 258"
   },
   {
-   "name": "HOMEROOM: TERM AF- PERIOD H - RM 254",
-   "grade": ""
+   "grade": "\u2014",
+   "name": "HOMEROOM: TERM AF- PERIOD H - RM 254"
   },
   {
-   "name": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
-   "grade": "B (83.93%)"
+   "grade": "B (89.53%)",
+   "name": "INT PE A: TERM AF- PERIOD 5 - RM GYM"
   },
   {
-   "name": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
-   "grade": "B"
+   "grade": "B",
+   "name": "MATH 8A: TERM AF- PERIOD 6 - RM 255"
   }
  ],
  "assignments": [
@@ -170,9 +170,9 @@
    "type": "reading",
    "points": "",
    "due_at": "2026-09-23T23:59:00-07:00",
-   "status": "graded",
+   "status": "submitted",
    "grade": "A",
-   "teacher_comment": "Exceeds Proficiency. This student has completed assignment submission.",
+   "teacher_comment": "Exceeds Proficiency",
    "url": "https://lausd.schoology.com/assignment/8570776119"
   },
   {
@@ -184,7 +184,7 @@
    "due_at": "2026-09-28T23:59:00-07:00",
    "status": "graded",
    "grade": "F",
-   "teacher_comment": "No response/missing. please make arrangements to reassess to demonstrate Proficiency.",
+   "teacher_comment": "No response/missing please make arrangements to reassess to demonstrate Proficiency.",
    "url": "https://lausd.schoology.com/assignment/8570776116"
   },
   {
@@ -194,9 +194,9 @@
    "type": "reading",
    "points": "",
    "due_at": "2026-10-05T23:59:00-07:00",
-   "status": "dash",
+   "status": "submitted",
    "grade": "",
-   "teacher_comment": "This student has made a submission that has not been graded.",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8570776114"
   },
   {
@@ -254,9 +254,9 @@
    "type": "presentation",
    "points": "",
    "due_at": "2026-10-05T23:59:00-07:00",
-   "status": "dash",
+   "status": "submitted",
    "grade": "",
-   "teacher_comment": "This student has made a submission that has not been graded.",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8570776124"
   },
   {
@@ -356,18 +356,6 @@
    "url": "https://lausd.schoology.com/assignment/8596417920"
   },
   {
-   "id": "c6a2a6a497",
-   "course": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253",
-   "title": "Root Words Book D Lesson 3 and 4 - Thinking and Knowing",
-   "type": "classwork",
-   "points": "",
-   "due_at": "2026-10-02T23:59:00-07:00",
-   "status": "missing",
-   "grade": "0",
-   "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8576752294"
-  },
-  {
    "id": "118771a624",
    "course": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253",
    "title": "Anne Frank Vocabulary pages 1-32",
@@ -392,16 +380,40 @@
    "url": "https://lausd.schoology.com/assignment/8570776117"
   },
   {
-   "id": "065ca893cc",
+   "id": "72c625a3e1",
+   "course": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253",
+   "title": "Root Words Book D Lesson 3 and 4 - Thinking and Knowing",
+   "type": "classwork",
+   "points": "",
+   "due_at": "2026-10-09T23:59:00-07:00",
+   "status": "dash",
+   "grade": "",
+   "teacher_comment": null,
+   "url": null
+  },
+  {
+   "id": "9fb04c5fae",
    "course": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253",
    "title": "Root Words Book D Lesson 5 and 6 - Reading and Writing",
    "type": "reading",
    "points": "",
-   "due_at": "2026-10-16T23:59:00-07:00",
+   "due_at": "2026-10-23T23:59:00-07:00",
    "status": "dash",
    "grade": "",
    "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8585887292"
+   "url": null
+  },
+  {
+   "id": "8f8bb278d3",
+   "course": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253",
+   "title": "Root Words Book D Lesson 7 and 8 - Speaking",
+   "type": "presentation",
+   "points": "",
+   "due_at": "2026-11-06T23:59:00-07:00",
+   "status": "dash",
+   "grade": "",
+   "teacher_comment": null,
+   "url": null
   },
   {
    "id": "e049dcd62f",
@@ -412,7 +424,7 @@
    "due_at": "2026-09-11T23:59:00-07:00",
    "status": "missing",
    "grade": "",
-   "teacher_comment": "This student has made a submission that has not been graded. mr. Greene will work 1:1 with you Monday to finish your essay organizer and your essay.",
+   "teacher_comment": "Mr. Greene will work 1:1 with you Monday to finish your essay organizer and your essay.",
    "url": "https://lausd.schoology.com/assignment/8540300814"
   },
   {
@@ -422,7 +434,7 @@
    "type": "lt1 energy",
    "points": "",
    "due_at": "2026-09-02T15:00:00-07:00",
-   "status": "graded",
+   "status": "submitted",
    "grade": "D",
    "teacher_comment": "There's not enough evidence, you lack a solid understanding of energy and how it works based on your Claim, Evidence, Reasoning (CER) essay. Although you mentioned a knee brace that transfers kinetic energy to convert that energy into electrical power, you merely wrote ONE sentence.",
    "url": "https://lausd.schoology.com/assignment/8543768573"
@@ -434,7 +446,7 @@
    "type": "lt2 force & motion",
    "points": "",
    "due_at": "2026-10-02T23:59:00-07:00",
-   "status": "graded",
+   "status": "submitted",
    "grade": "B",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8567820028"
@@ -470,9 +482,9 @@
    "type": "project",
    "points": "",
    "due_at": "2026-09-14T23:59:00-07:00",
-   "status": "missing",
-   "grade": "0",
-   "teacher_comment": "This student has made a submission that has not been graded.",
+   "status": "submitted",
+   "grade": "A",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8512629018"
   },
   {
@@ -748,7 +760,7 @@
    "due_at": "2026-09-14T23:59:00-07:00",
    "status": "missing",
    "grade": "0",
-   "teacher_comment": "This student has completed the test/quiz",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8563978383"
   },
   {
@@ -830,8 +842,8 @@
    "type": "participation",
    "points": "",
    "due_at": "2026-09-30T23:59:00-07:00",
-   "status": "missing",
-   "grade": "0",
+   "status": "graded",
+   "grade": "C",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8567547664"
   },
@@ -842,8 +854,8 @@
    "type": "homework",
    "points": "",
    "due_at": "2026-09-30T23:59:00-07:00",
-   "status": "missing",
-   "grade": "0",
+   "status": "graded",
+   "grade": "A",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8567539737"
   },
@@ -868,7 +880,7 @@
    "due_at": "2026-09-16T23:59:00-07:00",
    "status": "submitted",
    "grade": "",
-   "teacher_comment": "This student has made a submission that has not been graded.",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8489299881"
   },
   {
@@ -1034,10 +1046,22 @@
    "type": "writing",
    "points": "",
    "due_at": "2026-10-15T23:59:00-07:00",
-   "status": "dash",
+   "status": "submitted",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8571815273"
+  },
+  {
+   "id": "44af6f4610",
+   "course": "H US HIST G&C A: TERM AF- PERIOD 2 - RM 258",
+   "title": "Declaration of Independence Source Analysis",
+   "type": "writing",
+   "points": "",
+   "due_at": "2026-10-15T23:59:00-07:00",
+   "status": "dash",
+   "grade": "",
+   "teacher_comment": null,
+   "url": null
   },
   {
    "id": "bbd864e78a",
@@ -1070,7 +1094,7 @@
    "type": "writing",
    "points": "10",
    "due_at": "2026-10-05T15:13:00-07:00",
-   "status": "exempt",
+   "status": "graded",
    "grade": "A 10 / 10",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8598563842"
@@ -1176,12 +1200,24 @@
    "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
    "title": "Week 10/05 - 10/09",
    "type": "participation",
-   "points": "",
+   "points": "50",
    "due_at": "2026-10-09T15:13:00-07:00",
+   "status": "graded",
+   "grade": "A 50 / 50",
+   "teacher_comment": "Staff member confiscated a green laser pen.",
+   "url": "https://lausd.schoology.com/assignment/8595849334"
+  },
+  {
+   "id": "75e27efe72",
+   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
+   "title": "Week 10/12 - 10/16",
+   "type": "participation",
+   "points": "",
+   "due_at": "2026-10-16T15:13:00-07:00",
    "status": "dash",
    "grade": "",
    "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8595849334"
+   "url": null
   },
   {
    "id": "24c511b279",
@@ -1260,10 +1296,10 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "M1L9 Practice Problems 62-64",
    "type": "classwork",
-   "points": "",
+   "points": "3",
    "due_at": "2026-08-31T23:59:00-07:00",
-   "status": "dash",
-   "grade": "",
+   "status": "graded",
+   "grade": "3 / 3",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8543727506"
   },
@@ -1272,10 +1308,10 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "M1L10 p69-71",
    "type": "classwork",
-   "points": "",
+   "points": "3",
    "due_at": "2026-09-01T23:59:00-07:00",
-   "status": "dash",
-   "grade": "",
+   "status": "graded",
+   "grade": "3 / 3",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8549632617"
   },
@@ -1284,10 +1320,10 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "M1L12 p.87-89",
    "type": "classwork",
-   "points": "",
+   "points": "3",
    "due_at": "2026-09-02T23:59:00-07:00",
-   "status": "dash",
-   "grade": "",
+   "status": "graded",
+   "grade": "3 / 3",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8549707941"
   },
@@ -1326,30 +1362,6 @@
    "grade": "0 / 3",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8570474623"
-  },
-  {
-   "id": "de27c546f1",
-   "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
-   "title": "p. 161-162 U2L6 Practice Problems",
-   "type": "classwork",
-   "points": "",
-   "due_at": "2026-09-24T23:59:00-07:00",
-   "status": "dash",
-   "grade": "",
-   "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8583940316"
-  },
-  {
-   "id": "cf7e352964",
-   "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
-   "title": "p.186-187 Practice Problems Lesson 10 Unit 2",
-   "type": "classwork",
-   "points": "",
-   "due_at": "2026-09-28T23:59:00-07:00",
-   "status": "dash",
-   "grade": "",
-   "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8588932158"
   },
   {
    "id": "5a1ea871a9",
@@ -1574,10 +1586,22 @@
    "type": "test",
    "points": "",
    "due_at": "2026-10-05T23:59:00-07:00",
-   "status": "dash",
-   "grade": "",
+   "status": "graded",
+   "grade": "B",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8595506435"
+  },
+  {
+   "id": "b588e2b928",
+   "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
+   "title": "Unit 2 Test Retake",
+   "type": "test",
+   "points": "",
+   "due_at": "2026-10-08T23:59:00-07:00",
+   "status": "graded",
+   "grade": "B",
+   "teacher_comment": null,
+   "url": null
   }
  ]
 }
