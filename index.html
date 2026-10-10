@@ -157,6 +157,10 @@ a.chip.on{color:#fff}
 .wcard{display:flex;flex-direction:column;gap:5px;padding:10px;border-radius:12px;background:#fff;cursor:grab}
 .wcard.solid{border:1.5px solid var(--border)}
 .wcard.dashed{border:1.5px dashed #9AA0B2}
+.wcard.due-unplanned{border:1.5px solid var(--orange-border);background:var(--orange-bg)}
+.wcard.due-unplanned .wm{color:var(--orange-deep)}
+.wcard.due-planned{border:1.5px solid var(--accent);background:var(--accent-soft)}
+.wcard.due-planned .wm{color:var(--accent-dark)}
 .wcard .wt{font-size:13px;font-weight:600;line-height:1.3;overflow-wrap:anywhere;min-width:0}
 .wcard .wm{font-size:11px;font-weight:600;color:var(--muted)}
 .wcard .wm.late{color:var(--orange)}
@@ -183,6 +187,8 @@ a.chip.on{color:#fff}
 .wrow{display:flex;align-items:center;gap:10px;padding:14px 16px;background:#fff;border-radius:16px;margin-bottom:8px}
 .wrow .wt{flex-grow:1;font-size:15px;font-weight:600;min-width:0}
 .wrow.dashed{border:1.5px dashed var(--ring)}
+.wrow.due-unplanned{border:1.5px solid var(--orange-border);background:var(--orange-bg)}
+.wrow.due-planned{border:1.5px solid var(--accent);background:var(--accent-soft)}
 .movebtn{font-size:13px;font-weight:600;padding:8px 10px;border-radius:8px;background:var(--ground);border:0;color:var(--ink);white-space:nowrap}
 .showhidden{align-self:flex-start;height:44px;padding:0 4px;border:0;background:transparent;color:var(--accent);font-size:14px;font-weight:600}
 /* plan dialog */
@@ -1009,7 +1015,7 @@ function taskHTML(ctx, a) {
       ${a.url ? `<a class="schchip" href="${esc(sAbs(a.url))}" target="_blank" rel="noopener">Schoology ↗</a>` : ""}</div>
     </div>
     <div class="taskactions">
-      <button class="abtn ghost" data-action="turned-in" data-id="${a.id}">${ICONS.check}<span>Mark turned in</span></button>
+      <button class="abtn ghost" data-action="turned-in" data-id="${a.id}">${ICONS.check}<span>Mark done</span></button>
       ${canPart ? `<button class="abtn ghost" data-action="part-done" data-id="${a.id}">${ICONS.clock}<span>Did my part for today</span></button>` : ""}
       <button class="abtn ghost" data-action="toggle-submitted" data-id="${a.id}">${ICONS.check}<span>${s.submitted ? "Submitted &#10003;" : "Mark submitted"}</span></button>
       <button class="abtn ghost" data-action="talk-teacher" data-id="${a.id}">${ICONS.chat}<span>${s.talk_teacher ? "Talk to teacher &#10003;" : "Talk to teacher"}</span></button>
@@ -1069,22 +1075,26 @@ function weekDayItems(ctx, day) {
     if (doneV2(s) || s.parent_answer === "skip") continue;
     if (isSnoozed(a.id, ctx.today)) continue;
     const dk = ctxDueKey(ctx, a), nights = (s.plan || {}).nights || [];
-    // An explicit family plan wins over Schoology-derived filters: if they put it
-    // on a night, it stays on that night even after Schoology marks it resolved.
-    if (!nights.length) {
+    const manualK = ctx.manualDue ? ctx.manualDue(a.id) : "";
+    // An explicit family plan wins over Schoology-derived filters: planned
+    // nights OR a family-set due date keep the item visible even after
+    // Schoology marks it resolved/awaiting-grade. Without that explicit plan,
+    // resolved and hidden in-class items stay out of the planner.
+    const hasExplicitPlan = nights.length > 0 || !!manualK;
+    if (!hasExplicitPlan) {
       if (RESOLVED.has(a.status) || awaitingGrade(a)) continue;
       if (hiddenInClass(ctx, a) && !showHiddenWeek) continue;
     }
     const isDue = dk === day, isPlanned = nights.includes(day);
     if (!isDue && !isPlanned) continue;
-    out.push({ a, s, due: isDue, planned: isPlanned, hidden: hiddenInClass(ctx, a) });
+    out.push({ a, s, due: isDue, planned: isPlanned, hasPlan: nights.length > 0, hidden: hiddenInClass(ctx, a) });
   }
   out.sort((x, y) => (pointsOf(y.a) - pointsOf(x.a)) || (x.a.title < y.a.title ? -1 : 1));
   return out;
 }
 function weekCardHTML(ctx, it, day, asParent) {
-  const { a, s, due, planned } = it;
-  const cls = due ? "solid" : "dashed";
+  const { a, s, due, planned, hasPlan } = it;
+  const cls = due ? ((planned || hasPlan) ? "solid due-planned" : "solid due-unplanned") : "dashed";
   const border = planned && !due ? ` style="border-color:${TAGC[shortCourse(a.course)] ? TAGC[shortCourse(a.course)][0] : "#9AA0B2"}"` : "";
   const ptag = s.plan && s.plan.set_by === "parent" && planned ? `<span class="parenttag">Parent</span>` : "";
   const move = asParent
@@ -1134,8 +1144,8 @@ function viewWeek(ctx, asParent) {
     const items = weekDayItems(ctx, day);
     const label = day === ctx.today ? "TODAY" : day === addDays(ctx.today, 1) ? "TOMORROW" : fmtDay(day).toUpperCase();
     const rows = items.length ? items.map(it => {
-      const { a, s, due, planned } = it;
-      return `<div class="wrow${planned && !due ? " dashed" : ""}" data-action="open-task" data-id="${a.id}" role="button" tabindex="0">
+      const { a, s, due, planned, hasPlan } = it;
+      return `<div class="wrow${due ? ((planned || hasPlan) ? " due-planned" : " due-unplanned") : (planned ? " dashed" : "")}" data-action="open-task" data-id="${a.id}" role="button" tabindex="0">
         ${tagHTML(a.course)}
         <span class="wt">${esc(a.title)}${planned && !due ? `, part ${(s.plan.nights || []).indexOf(day) + 1} of ${(s.plan.nights || []).length}` : ""}</span>
         <span class="wm" style="font-size:12px;color:var(--muted);font-weight:600">${esc(weekMeta(ctx, a, day, s))}</span>
@@ -1548,7 +1558,7 @@ function doAction(action, id, el) {
       markNightDoneIfEmpty(mkCtx(DATA.assignments, todayKey()));
       render(); return;
     case "turned-in":
-      vanishing(id, "Marked turned in", v => { v.done = "turned_in"; v.done_at = new Date().toISOString(); });
+      vanishing(id, "Marked done", v => { v.done = "turned_in"; v.done_at = new Date().toISOString(); });
       markNightDoneIfEmpty(mkCtx(DATA.assignments, todayKey()));
       return;
     case "part-done": {
