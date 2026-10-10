@@ -588,6 +588,14 @@ function migrateV1toV2() {
 }
 /* ================= sync transport (GET, ack-checked, retried) ================= */
 let pushTimer = null, pendingPush = false, syncStatus = "starting";
+// dirtyPush persists across reloads in localStorage. Without it, a fresh page
+// load would report "Saved" after a successful *read* even though local edits
+// were never acknowledged by the server, stranding them on that device.
+const LS_DIRTY = "sw_v2_dirty";
+let dirtyPush = false;
+try { dirtyPush = localStorage.getItem(LS_DIRTY) === "1"; } catch (e) {}
+const markDirty = () => { dirtyPush = true; try { localStorage.setItem(LS_DIRTY, "1"); } catch (e) {} };
+const markClean = () => { dirtyPush = false; try { localStorage.removeItem(LS_DIRTY); } catch (e) {} };
 function setSyncStatus(s) {
   syncStatus = s;
   document.querySelectorAll("[data-syncstat]").forEach(el => {
@@ -607,11 +615,12 @@ function pushState(opts = {}) {
     .then(r => { if (!r.ok) throw new Error("http " + r.status); return r.json(); })
     .then(remote => {
       if (!remote || typeof remote !== "object" || !("v2state" in remote)) throw new Error("bad ack");
+      markClean();
       setSyncStatus("saved");
     })
     .catch(() => { pendingPush = true; setSyncStatus("offline"); });
 }
-const pushSoon = ms => { clearTimeout(pushTimer); pushTimer = setTimeout(pushState, ms); };
+const pushSoon = ms => { markDirty(); clearTimeout(pushTimer); pushTimer = setTimeout(pushState, ms); };
 function mergeState(remote) {
   let changed = false;
   // v2state: per-id last-write-wins
@@ -647,12 +656,12 @@ function pullState(cb) {
   fetch(SYNC_URL + "?action=read").then(r => r.json()).then(remote => {
     const changed = mergeState(remote);
     if (changed) migrateV1toV2();
-    if (pendingPush) pushState();
+    if (pendingPush || dirtyPush) pushState();
     else if (syncStatus === "starting" || syncStatus === "offline") setSyncStatus("saved");
     cb(changed);
   }).catch(() => { setSyncStatus("offline"); cb(false); });
 }
-window.addEventListener("online", () => { if (pendingPush) pushState(); });
+window.addEventListener("online", () => { if (pendingPush || dirtyPush) pushState(); });
 window.addEventListener("pagehide", () => { if (pushTimer || pendingPush) pushState({ keepalive: true }); });
 /* ================= derived lists (pure) ================= */
 // ctx: {items, today, getState, catchupOrder, extraIds, manualDue(id)->daykey|null}
