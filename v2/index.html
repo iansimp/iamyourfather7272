@@ -611,8 +611,14 @@ const v2payload = () => ({ v2state, v2catchup, v2nights, v2extra, v2pick });
 function pushState(opts = {}) {
   clearTimeout(pushTimer); pushTimer = null; pendingPush = false;
   setSyncStatus("saving");
-  fetch(SYNC_URL + "?action=write&data=" + encodeURIComponent(JSON.stringify(v2payload())), opts.keepalive ? { keepalive: true } : {})
-    .then(r => { if (!r.ok) throw new Error("http " + r.status); return r.json(); })
+  const payload = JSON.stringify(v2payload());
+  const fetchOpts = opts.keepalive ? { keepalive: true } : {};
+  const checkAck = r => { if (!r.ok) throw new Error("http " + r.status); return r.json(); };
+  const doGet = () => fetch(SYNC_URL + "?action=write&data=" + encodeURIComponent(payload), fetchOpts).then(checkAck);
+  // Try POST first (payload in body avoids long-URL limits); fall back to GET.
+  fetch(SYNC_URL + "?action=write", Object.assign({ method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: "data=" + encodeURIComponent(payload) }, fetchOpts))
+    .then(checkAck)
+    .catch(() => doGet())
     .then(remote => {
       if (!remote || typeof remote !== "object" || !("v2state" in remote)) throw new Error("bad ack");
       markClean();
