@@ -1,12 +1,12 @@
 {
- "fetched_at": "2026-10-09T23:10:00Z",
+ "fetched_at": "2026-10-12T22:40:00Z",
  "courses": [
   {
-   "grade": "95.65%",
+   "grade": "105.86%",
    "name": "ADV BAND MS A: TERM AF- PERIOD 1 - RM 143"
   },
   {
-   "grade": "C",
+   "grade": "D",
    "name": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253"
   },
   {
@@ -14,7 +14,7 @@
    "name": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254"
   },
   {
-   "grade": "D (51.73%)",
+   "grade": "C 59.91%",
    "name": "H US HIST G&C A: TERM AF- PERIOD 2 - RM 258"
   },
   {
@@ -22,7 +22,7 @@
    "name": "HOMEROOM: TERM AF- PERIOD H - RM 254"
   },
   {
-   "grade": "B (89.53%)",
+   "grade": "A 92.6%",
    "name": "INT PE A: TERM AF- PERIOD 5 - RM GYM"
   },
   {
@@ -36,10 +36,10 @@
    "course": "ADV BAND MS A: TERM AF- PERIOD 1 - RM 143",
    "title": "Taft Extra Credit- Middle School Night",
    "type": "extra credit",
-   "points": "",
+   "points": "1",
    "due_at": "2026-10-09T23:59:00-07:00",
-   "status": "dash",
-   "grade": "",
+   "status": "graded",
+   "grade": "26 / 1",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8569672981"
   },
@@ -156,10 +156,10 @@
    "course": "ADV BAND MS A: TERM AF- PERIOD 1 - RM 143",
    "title": "Playing Test #3",
    "type": "test",
-   "points": "",
+   "points": "25",
    "due_at": "2026-10-09T23:59:00-07:00",
-   "status": "dash",
-   "grade": "",
+   "status": "graded",
+   "grade": "25 / 25",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8581706236"
   },
@@ -195,8 +195,8 @@
    "points": "",
    "due_at": "2026-10-05T23:59:00-07:00",
    "status": "submitted",
-   "grade": "",
-   "teacher_comment": null,
+   "grade": "F",
+   "teacher_comment": "No Response/Missing please read the book and make arrangements with me to reassess to demonstrate Proficiency.",
    "url": "https://lausd.schoology.com/assignment/8570776114"
   },
   {
@@ -362,7 +362,7 @@
    "type": "classwork",
    "points": "",
    "due_at": "2026-10-07T23:59:00-07:00",
-   "status": "dash",
+   "status": "submitted",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8570776122"
@@ -374,7 +374,7 @@
    "type": "classwork",
    "points": "",
    "due_at": "2026-10-09T23:59:00-07:00",
-   "status": "dash",
+   "status": "submitted",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8570776117"
@@ -386,8 +386,8 @@
    "type": "classwork",
    "points": "",
    "due_at": "2026-10-09T23:59:00-07:00",
-   "status": "dash",
-   "grade": "",
+   "status": "missing",
+   "grade": "0",
    "teacher_comment": null,
    "url": null
   },
@@ -423,15 +423,15 @@
    "points": "",
    "due_at": "2026-09-11T23:59:00-07:00",
    "status": "missing",
-   "grade": "",
-   "teacher_comment": "Mr. Greene will work 1:1 with you Monday to finish your essay organizer and your essay.",
+   "grade": "0",
+   "teacher_comment": "Please submit your Thesis Statement Organizer and Your film notee organizer from If You Build It so I can grade your essay. mr. Greene will work 1:1 with you Monday to finish your essay organizer and your essay.",
    "url": "https://lausd.schoology.com/assignment/8540300814"
   },
   {
    "id": "f6c1f3da9e",
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "LT-Engergy -Report to the Recue Team",
-   "type": "lt1 energy",
+   "type": "lt1 energy (9.09%)",
    "points": "",
    "due_at": "2026-09-02T15:00:00-07:00",
    "status": "submitted",
@@ -443,7 +443,7 @@
    "id": "337a13ae1e",
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "Flee Map Scientific Argument - Force & Motion",
-   "type": "lt2 force & motion",
+   "type": "lt2 force & motion (9.09%)",
    "points": "",
    "due_at": "2026-10-02T23:59:00-07:00",
    "status": "submitted",
@@ -455,7 +455,7 @@
    "id": "14fa450c6a",
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "Forces and Motion Challenge",
-   "type": "lt2 force & motion",
+   "type": "lt2 force & motion (9.09%)",
    "points": "",
    "due_at": "2026-10-19T23:59:00-07:00",
    "status": "dash",
@@ -498,6 +498,18 @@
    "grade": "C",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8590169360"
+  },
+  {
+   "id": "9126571ed6",
+   "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
+   "title": "Force & Motion Reflection",
+   "type": "project",
+   "points": "",
+   "due_at": "2026-10-13T23:59:00-07:00",
+   "status": "dash",
+   "grade": "",
+   "teacher_comment": null,
+   "url": null
   },
   {
    "id": "a5a7b3728a",
@@ -1032,10 +1044,10 @@
    "course": "H US HIST G&C A: TERM AF- PERIOD 2 - RM 258",
    "title": "Classroom Policies Essay",
    "type": "writing",
-   "points": "",
+   "points": "4",
    "due_at": "2026-09-28T23:59:00-07:00",
-   "status": "dash",
-   "grade": "",
+   "status": "graded",
+   "grade": "A 4 / 4",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8588264991"
   },
@@ -1056,10 +1068,10 @@
    "course": "H US HIST G&C A: TERM AF- PERIOD 2 - RM 258",
    "title": "Declaration of Independence Source Analysis",
    "type": "writing",
-   "points": "",
+   "points": "4",
    "due_at": "2026-10-15T23:59:00-07:00",
-   "status": "dash",
-   "grade": "",
+   "status": "graded",
+   "grade": "B 3.4 / 4",
    "teacher_comment": null,
    "url": null
   },
@@ -1143,8 +1155,8 @@
    "points": "20",
    "due_at": "2026-09-28T15:13:00-07:00",
    "status": "graded",
-   "grade": "F 11.8 / 20",
-   "teacher_comment": null,
+   "grade": "A 20 / 20",
+   "teacher_comment": "Went home early: 15 minute - 1 1/4 Mile Run Make-up for credit on 10/12/26",
    "url": "https://lausd.schoology.com/assignment/8586960115"
   },
   {
@@ -1156,7 +1168,7 @@
    "due_at": "2026-09-11T15:13:00-07:00",
    "status": "graded",
    "grade": "B 32 / 40",
-   "teacher_comment": "Absent: Please complete \"Excused Absence Writing Prompts\" for days missed to receive credit.",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8562454555"
   },
   {
@@ -1176,7 +1188,7 @@
    "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
    "title": "Week 9/22 - 9/25",
    "type": "participation",
-   "points": "40",
+   "points": "50",
    "due_at": "2026-09-25T15:13:00-07:00",
    "status": "graded",
    "grade": "A 40 / 40",
@@ -1204,7 +1216,7 @@
    "due_at": "2026-10-09T15:13:00-07:00",
    "status": "graded",
    "grade": "A 50 / 50",
-   "teacher_comment": "Staff member confiscated a green laser pen.",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8595849334"
   },
   {
@@ -1600,6 +1612,18 @@
    "due_at": "2026-10-08T23:59:00-07:00",
    "status": "graded",
    "grade": "B",
+   "teacher_comment": null,
+   "url": null
+  },
+  {
+   "id": "a7c48e4bf2",
+   "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
+   "title": "Retake Chapter 2 Test - Submit Evidence",
+   "type": "test",
+   "points": "",
+   "due_at": "2026-10-20T23:59:00-07:00",
+   "status": "dash",
+   "grade": "",
    "teacher_comment": null,
    "url": null
   }
