@@ -624,6 +624,12 @@ async function pushState(opts = {}) {
   try {
     const full = v2payload();
     const ids = Object.keys(full.v2state || {});
+    // Track max ts of actually-sent records (not wall-clock) to avoid the save-race.
+    let sentMaxTs = +(localStorage.getItem("sw_v2_last_push") || 0);
+    for (const k in full.v2state) sentMaxTs = Math.max(sentMaxTs, full.v2state[k].ts || 0);
+    for (const k of ["v2catchup", "v2nights", "v2extra", "v2pick"]) {
+      if (full[k] && full[k].ts) sentMaxTs = Math.max(sentMaxTs, full[k].ts);
+    }
     const CHUNK = 20;
     for (let i = 0; i < Math.max(1, ids.length); i += CHUNK) {
       const chunkIds = ids.slice(i, i + CHUNK);
@@ -638,7 +644,7 @@ async function pushState(opts = {}) {
       if (!remote || typeof remote !== "object" || !("v2state" in remote)) throw new Error("bad ack");
     }
     markClean();
-    localStorage.setItem("sw_v2_last_push", String(Date.now()));
+    localStorage.setItem("sw_v2_last_push", String(sentMaxTs));
     setSyncStatus("saved");
   } catch (e) {
     pendingPush = true; setSyncStatus("offline");
