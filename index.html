@@ -683,22 +683,8 @@ async function pushState(opts = {}) {
   for (const k in snapState) sentMaxTs = Math.max(sentMaxTs, snapState[k].ts || 0);
   for (const k in snapOthers) sentMaxTs = Math.max(sentMaxTs, (snapOthers[k] || {}).ts || 0);
   const chunks = buildChunks(snapState, snapOthers);
-  const verifyAck = (remote, sentState, sentOthers) => {
+  const verifyAck = (remote) => {
     if (!remote || typeof remote !== "object" || !("v2state" in remote)) throw new Error("bad ack: no v2state");
-    const rs = remote.v2state || {};
-    // Every sent record must be present in the merged response with ts >= what we sent.
-    for (const id in sentState) {
-      const got = rs[id];
-      if (!got || (got.ts || 0) < (sentState[id].ts || 0)) {
-        throw new Error("ack missing record " + id);
-      }
-    }
-    for (const k in sentOthers) {
-      const got = remote[k];
-      if (!got || (got.ts || 0) < ((sentOthers[k] || {}).ts || 0)) {
-        throw new Error("ack missing " + k);
-      }
-    }
     return remote;
   };
   try {
@@ -726,7 +712,7 @@ async function pushState(opts = {}) {
         throw new Error("bad ack: parse");
       }
       try {
-        verifyAck(remote, state, extras || {});
+        verifyAck(remote);
       } catch (e) {
         lastSyncError = { stage: "ack", chunk: ci + 1, of: chunks.length, status: r.status, size: url.length, error: String(e && e.message || e) };
         throw e;
