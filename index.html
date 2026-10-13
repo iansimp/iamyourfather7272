@@ -594,16 +594,8 @@ let pushTimer = null, pendingPush = false, syncStatus = "starting";
 const LS_DIRTY = "sw_v2_dirty";
 let dirtyPush = false;
 try { dirtyPush = localStorage.getItem(LS_DIRTY) === "1"; } catch (e) {}
-// Edit generation: incremented on every local edit. Used to detect edits made during a push.
-let editGen = 0;
-try { editGen = +(localStorage.getItem("sw_v2_editgen") || 0); } catch (e) {}
-const markDirty = () => { dirtyPush = true; editGen++; try { localStorage.setItem(LS_DIRTY, "1"); localStorage.setItem("sw_v2_editgen", String(editGen)); } catch (e) {} };
+const markDirty = () => { dirtyPush = true; try { localStorage.setItem(LS_DIRTY, "1"); } catch (e) {} };
 const markClean = () => { dirtyPush = false; try { localStorage.removeItem(LS_DIRTY); } catch (e) {} };
-// Push serialization: only one active push cycle at a time.
-let pushActive = false;
-let pushQueued = false;
-// Last sync failure details (for diagnostics, not shown in UI).
-let lastSyncError = null;
 function setSyncStatus(s) {
   syncStatus = s;
   document.querySelectorAll("[data-syncstat]").forEach(el => {
@@ -615,128 +607,43 @@ function setSyncStatus(s) {
     el.textContent = txt; el.style.color = col;
   });
 }
-const v2payload = (cutoff) => {
-  const lastPush = cutoff !== undefined ? cutoff : +(localStorage.getItem("sw_v2_last_push") || 0);
-  // Delta: only v2state entries changed since last successful push (server merges per-key).
+const v2payload = () => {
+  const lastPush = +(localStorage.getItem("sw_v2_last_push") || 0);
   const deltaState = {};
   for (const k in v2state) if ((v2state[k].ts || 0) > lastPush) deltaState[k] = v2state[k];
   const payload = { v2state: deltaState };
   const others = { v2catchup, v2nights, v2extra, v2pick };
   for (const key in others) if (others[key] && (others[key].ts || 0) > lastPush) payload[key] = others[key];
-  return { payload, lastPush, sentMaxTs: 0 };
-};
-// Pack v2state entries into chunks by measured URL size (conservative budget well under the ~21KB failure point).
-const CHUNK_BUDGET = 8000;
-const buildChunks = (deltaState, otherPayload) => {
-  const ids = Object.keys(deltaState);
-  const chunks = [];
-  let cur = {}, curExtra = 0;
-  const baseLen = (SYNC_URL + "?action=write&data=").length + 30; // +30 for &cb= cache-buster
-  const sizeOf = (stateObj, extraObj) => {
-    const p = { v2state: stateObj };
-    if (extraObj) for (const k in extraObj) p[k] = extraObj[k];
-    return baseLen + encodeURIComponent(JSON.stringify(p)).length;
-  };
-  // Other objects go with the first chunk if they fit, else in their own bounded request.
-  let firstExtras = otherPayload || {};
-  for (const id of ids) {
-    const entry = deltaState[id];
-    const entryJson = encodeURIComponent(JSON.stringify({ [id]: entry })).length;
-    if (entryJson + baseLen > CHUNK_BUDGET) {
-      // Single record too large: retain locally, report explicit error.
-      lastSyncError = { stage: "pack", reason: "oversized-record", id, size: entryJson + baseLen };
-      setSyncStatus("offline");
-      continue;
-    }
-    const trial = Object.assign({}, cur, { [id]: entry });
-    const trialExtras = chunks.length === 0 ? firstExtras : null;
-    if (sizeOf(trial, trialExtras) > CHUNK_BUDGET && Object.keys(cur).length > 0) {
-      chunks.push({ state: cur, extras: chunks.length === 0 ? firstExtras : null });
-      cur = { [id]: entry };
-    } else {
-      cur = trial;
-    }
-  }
-  if (Object.keys(cur).length > 0 || chunks.length === 0) {
-    chunks.push({ state: cur, extras: chunks.length === 0 ? firstExtras : null });
-  } else if (chunks.length > 0 && Object.keys(firstExtras).length > 0 && !chunks[0].extras) {
-    // First chunk didn't take the extras (didn't fit); send them separately.
-    chunks.push({ state: {}, extras: firstExtras });
-  }
-  return chunks;
+  if (Object.keys(deltaState).length === 0 && Object.keys(payload).length === 1) return { v2state, v2catchup, v2nights, v2extra, v2pick };
+  return payload;
 };
 async function pushState(opts = {}) {
-  // Serialize: if a push is already active, queue another pass instead of overlapping.
-  if (pushActive) { pushQueued = true; return; }
-  pushActive = true;
   clearTimeout(pushTimer); pushTimer = null; pendingPush = false;
   setSyncStatus("saving");
   const fetchOpts = opts.keepalive ? { keepalive: true } : {};
-  // Freeze the outgoing snapshot (deep copy) and capture generation + cutoff before any await.
-  const startGen = editGen;
-  const { payload, lastPush } = v2payload();
-  const snapState = JSON.parse(JSON.stringify(payload.v2state || {}));
-  const snapOthers = JSON.parse(JSON.stringify(
-    Object.fromEntries(Object.entries(payload).filter(([k]) => k !== "v2state"))
-  ));
-  let sentMaxTs = lastPush;
-  for (const k in snapState) sentMaxTs = Math.max(sentMaxTs, snapState[k].ts || 0);
-  for (const k in snapOthers) sentMaxTs = Math.max(sentMaxTs, (snapOthers[k] || {}).ts || 0);
-  const chunks = buildChunks(snapState, snapOthers);
-  const verifyAck = (remote) => {
-    if (!remote || typeof remote !== "object" || !("v2state" in remote)) throw new Error("bad ack: no v2state");
-    return remote;
-  };
   try {
-    for (let ci = 0; ci < chunks.length; ci++) {
-      const { state, extras } = chunks[ci];
-      const chunkPayload = { v2state: state };
-      if (extras) for (const k in extras) chunkPayload[k] = extras[k];
-      const url = SYNC_URL + "?action=write&data=" + encodeURIComponent(JSON.stringify(chunkPayload)) + "&cb=" + Date.now() + "_" + ci;
-      let r;
-      try {
-        r = await fetch(url, fetchOpts);
-      } catch (e) {
-        lastSyncError = { stage: "fetch", chunk: ci + 1, of: chunks.length, size: url.length, error: String(e && e.message || e) };
-        throw e;
-      }
-      if (!r.ok) {
-        lastSyncError = { stage: "http", chunk: ci + 1, of: chunks.length, status: r.status, size: url.length };
-        throw new Error("http " + r.status);
-      }
-      let remote;
-      try {
-        remote = await r.json();
-      } catch (e) {
-        lastSyncError = { stage: "parse", chunk: ci + 1, of: chunks.length, status: r.status, size: url.length };
-        throw new Error("bad ack: parse");
-      }
-      try {
-        verifyAck(remote);
-      } catch (e) {
-        lastSyncError = { stage: "ack", chunk: ci + 1, of: chunks.length, status: r.status, size: url.length, error: String(e && e.message || e) };
-        throw e;
-      }
+    const full = v2payload();
+    const ids = Object.keys(full.v2state || {});
+    const CHUNK = 20;
+    for (let i = 0; i < Math.max(1, ids.length); i += CHUNK) {
+      const chunkIds = ids.slice(i, i + CHUNK);
+      const chunkState = {};
+      chunkIds.forEach(k => chunkState[k] = full.v2state[k]);
+      const chunkPayload = { v2state: chunkState };
+      if (i === 0) for (const k of ["v2catchup", "v2nights", "v2extra", "v2pick"]) if (full[k]) chunkPayload[k] = full[k];
+      const url = SYNC_URL + "?action=write&data=" + encodeURIComponent(JSON.stringify(chunkPayload)) + "&cb=" + Date.now();
+      const r = await fetch(url, fetchOpts);
+      if (!r.ok) throw new Error("http " + r.status);
+      const remote = await r.json();
+      if (!remote || typeof remote !== "object" || !("v2state" in remote)) throw new Error("bad ack");
     }
-    // Advance the cutoff only to the max ts actually sent — never to wall-clock time.
-    // This ensures edits made during the push (ts > sentMaxTs) are picked up next time.
-    localStorage.setItem("sw_v2_last_push", String(sentMaxTs));
-    lastSyncError = null;
-    // If the generation changed during saving, another edit landed mid-push: keep dirty and run again.
-    if (editGen !== startGen) {
-      markDirty();
-      setSyncStatus("saving");
-    } else {
-      markClean();
-      setSyncStatus("saved");
-    }
+    markClean();
+    localStorage.setItem("sw_v2_last_push", String(Date.now()));
+    setSyncStatus("saved");
   } catch (e) {
-    pendingPush = true; markDirty(); setSyncStatus("offline");
-  } finally {
-    pushActive = false;
-    if (pushQueued) { pushQueued = false; pushSoon(300); }
+    pendingPush = true; setSyncStatus("offline");
   }
-}
+};
 const pushSoon = ms => { markDirty(); clearTimeout(pushTimer); pushTimer = setTimeout(pushState, ms); };
 function mergeState(remote) {
   let changed = false;
