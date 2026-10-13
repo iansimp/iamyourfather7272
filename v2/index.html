@@ -619,19 +619,37 @@ const v2payload = () => {
   if (Object.keys(deltaState).length === 0 && Object.keys(payload).length === 1) return { v2state, v2catchup, v2nights, v2extra, v2pick };
   return payload;
 };
-function pushState(opts = {}) {
+async function pushState(opts = {}) {
   clearTimeout(pushTimer); pushTimer = null; pendingPush = false;
   setSyncStatus("saving");
-  const payload = JSON.stringify(v2payload());
-  fetch(SYNC_URL + "?action=write&data=" + encodeURIComponent(payload), opts.keepalive ? { keepalive: true } : {})
-    .then(r => { if (!r.ok) throw new Error("http " + r.status); return r.json(); })
-    .then(remote => {
-      if (!remote || typeof remote !== "object" || !("v2state" in remote)) throw new Error("bad ack");
-      markClean();
-      localStorage.setItem("sw_v2_last_push", String(Date.now()));
-      setSyncStatus("saved");
-    })
-    .catch(() => { pendingPush = true; setSyncStatus("offline"); });
+  const fetchOpts = opts.keepalive ? { keepalive: true } : {};
+  const checkAck = async (url) => {
+    const r = await fetch(url, fetchOpts);
+    if (!r.ok) throw new Error("http " + r.status);
+    const remote = await r.json();
+    if (!remote || typeof remote !== "object" || !("v2state" in remote)) throw new Error("bad ack");
+    return remote;
+  };
+  try {
+    const full = v2payload();
+    const ids = Object.keys(full.v2state || {});
+    const CHUNK = 20;
+    // Send v2state in chunks (server merges per-key); other keys go with first chunk.
+    for (let i = 0; i < Math.max(1, ids.length); i += CHUNK) {
+      const chunkIds = ids.slice(i, i + CHUNK);
+      const chunkState = {};
+      chunkIds.forEach(k => chunkState[k] = full.v2state[k]);
+      const chunkPayload = { v2state: chunkState };
+      if (i === 0) for (const k of ["v2catchup", "v2nights", "v2extra", "v2pick"]) if (full[k]) chunkPayload[k] = full[k];
+      const url = SYNC_URL + "?action=write&data=" + encodeURIComponent(JSON.stringify(chunkPayload));
+      await checkAck(url);
+    }
+    markClean();
+    localStorage.setItem("sw_v2_last_push", String(Date.now()));
+    setSyncStatus("saved");
+  } catch (e) {
+    pendingPush = true; setSyncStatus("offline");
+  }
 }
 const pushSoon = ms => { markDirty(); clearTimeout(pushTimer); pushTimer = setTimeout(pushState, ms); };
 function mergeState(remote) {
