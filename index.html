@@ -607,21 +607,28 @@ function setSyncStatus(s) {
     el.textContent = txt; el.style.color = col;
   });
 }
-const v2payload = () => ({ v2state, v2catchup, v2nights, v2extra, v2pick });
+const v2payload = () => {
+  const lastPush = +(localStorage.getItem("sw_v2_last_push") || 0);
+  // Delta: only v2state entries changed since last successful push (server merges per-key).
+  const deltaState = {};
+  for (const k in v2state) if ((v2state[k].ts || 0) > lastPush) deltaState[k] = v2state[k];
+  const payload = { v2state: deltaState };
+  const others = { v2catchup, v2nights, v2extra, v2pick };
+  for (const key in others) if (others[key] && (others[key].ts || 0) > lastPush) payload[key] = others[key];
+  // Safety: if delta is empty, send full (shouldn't happen, but avoids a no-op push).
+  if (Object.keys(deltaState).length === 0 && Object.keys(payload).length === 1) return { v2state, v2catchup, v2nights, v2extra, v2pick };
+  return payload;
+};
 function pushState(opts = {}) {
   clearTimeout(pushTimer); pushTimer = null; pendingPush = false;
   setSyncStatus("saving");
   const payload = JSON.stringify(v2payload());
-  const fetchOpts = opts.keepalive ? { keepalive: true } : {};
-  const checkAck = r => { if (!r.ok) throw new Error("http " + r.status); return r.json(); };
-  const doGet = () => fetch(SYNC_URL + "?action=write&data=" + encodeURIComponent(payload), fetchOpts).then(checkAck);
-  // Try POST first (payload in body avoids long-URL limits); fall back to GET.
-  fetch(SYNC_URL + "?action=write", Object.assign({ method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: "data=" + encodeURIComponent(payload) }, fetchOpts))
-    .then(checkAck)
-    .catch(() => doGet())
+  fetch(SYNC_URL + "?action=write&data=" + encodeURIComponent(payload), opts.keepalive ? { keepalive: true } : {})
+    .then(r => { if (!r.ok) throw new Error("http " + r.status); return r.json(); })
     .then(remote => {
       if (!remote || typeof remote !== "object" || !("v2state" in remote)) throw new Error("bad ack");
       markClean();
+      localStorage.setItem("sw_v2_last_push", String(Date.now()));
       setSyncStatus("saved");
     })
     .catch(() => { pendingPush = true; setSyncStatus("offline"); });
