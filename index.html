@@ -631,7 +631,7 @@ const buildChunks = (deltaState, otherPayload) => {
   const ids = Object.keys(deltaState);
   const chunks = [];
   let cur = {}, curExtra = 0;
-  const baseLen = (SYNC_URL + "?action=write&data=").length;
+  const baseLen = (SYNC_URL + "?action=write&data=").length + 30; // +30 for &cb= cache-buster
   const sizeOf = (stateObj, extraObj) => {
     const p = { v2state: stateObj };
     if (extraObj) for (const k in extraObj) p[k] = extraObj[k];
@@ -706,7 +706,7 @@ async function pushState(opts = {}) {
       const { state, extras } = chunks[ci];
       const chunkPayload = { v2state: state };
       if (extras) for (const k in extras) chunkPayload[k] = extras[k];
-      const url = SYNC_URL + "?action=write&data=" + encodeURIComponent(JSON.stringify(chunkPayload));
+      const url = SYNC_URL + "?action=write&data=" + encodeURIComponent(JSON.stringify(chunkPayload)) + "&cb=" + Date.now() + "_" + ci;
       let r;
       try {
         r = await fetch(url, fetchOpts);
