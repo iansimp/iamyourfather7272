@@ -1606,13 +1606,13 @@ function doAction(action, id, el) {
       markNightDoneIfEmpty(mkCtx(DATA.assignments, todayKey()));
       render(); return;
     }
-    case "snooze-tomorrow": vanishing(id, "Snoozed until tomorrow", v => { v.snoozed_until = addDays(todayKey(), 1); }); return;
-    case "snooze-weekend": vanishing(id, "Snoozed until weekend", v => { v.snoozed_until = nextWeekday(todayKey(), 6); }); return;
-    case "snooze-3d": vanishing(id, "Snoozed 3 days", v => { v.snoozed_until = addDays(todayKey(), 3); }); return;
-    case "snooze-1w": vanishing(id, "Snoozed 1 week", v => { v.snoozed_until = addDays(todayKey(), 7); }); return;
-    case "snooze-2w": vanishing(id, "Snoozed 2 weeks", v => { v.snoozed_until = addDays(todayKey(), 14); }); return;
-    case "snooze-1m": vanishing(id, "Snoozed 1 month", v => { v.snoozed_until = addDays(todayKey(), 30); }); return;
-    case "snooze-indef": vanishing(id, "Snoozed indefinitely", v => { v.snoozed_until = "indef"; }); return;
+    case "snooze-tomorrow": vanishing(id, "Snoozed until tomorrow", v => { v.snoozed_until = addDays(todayKey(), 1); v.done = null; v.done_at = null; }); return;
+    case "snooze-weekend": vanishing(id, "Snoozed until weekend", v => { v.snoozed_until = nextWeekday(todayKey(), 6); v.done = null; v.done_at = null; }); return;
+    case "snooze-3d": vanishing(id, "Snoozed 3 days", v => { v.snoozed_until = addDays(todayKey(), 3); v.done = null; v.done_at = null; }); return;
+    case "snooze-1w": vanishing(id, "Snoozed 1 week", v => { v.snoozed_until = addDays(todayKey(), 7); v.done = null; v.done_at = null; }); return;
+    case "snooze-2w": vanishing(id, "Snoozed 2 weeks", v => { v.snoozed_until = addDays(todayKey(), 14); v.done = null; v.done_at = null; }); return;
+    case "snooze-1m": vanishing(id, "Snoozed 1 month", v => { v.snoozed_until = addDays(todayKey(), 30); v.done = null; v.done_at = null; }); return;
+    case "snooze-indef": vanishing(id, "Snoozed indefinitely", v => { v.snoozed_until = "indef"; v.done = null; v.done_at = null; }); return;
     case "unsnooze": touch(id, v => { v.snoozed_until = null; }); return;
     case "mark-noise": vanishing(id, "Marked not real work", v => { v.parent_answer = "skip"; v.ask_parent = false; }); return;
     case "unskip": touch(id, v => { v.parent_answer = null; }); return;
