@@ -1,5 +1,5 @@
 {
- "fetched_at": "2026-10-19T22:51:51Z",
+ "fetched_at": "2026-10-20T23:35:15Z",
  "courses": [
   {
    "name": "ADV BAND MS A: TERM AF- PERIOD 1 - RM 143",
@@ -27,7 +27,7 @@
   },
   {
    "name": "HOMEROOM: TERM AF- PERIOD H - RM 254",
-   "grade": "\u2014"
+   "grade": "\u2013"
   }
  ],
  "assignments": [
@@ -290,9 +290,9 @@
    "type": "presentation",
    "points": "",
    "due_at": "2026-10-05T23:59:00-07:00",
-   "status": "dash",
+   "status": "submitted",
    "grade": "",
-   "teacher_comment": null,
+   "teacher_comment": "This student has made a submission that has not been graded.",
    "url": "https://lausd.schoology.com/assignment/8570776124"
   },
   {
@@ -410,9 +410,9 @@
    "type": "classwork",
    "points": "",
    "due_at": "2026-10-09T23:59:00-07:00",
-   "status": "dash",
+   "status": "submitted",
    "grade": "",
-   "teacher_comment": null,
+   "teacher_comment": "This student has made a submission that has not been graded.",
    "url": "https://lausd.schoology.com/assignment/8570776117"
   },
   {
@@ -508,7 +508,7 @@
    "due_at": "2026-10-02T23:59:00-07:00",
    "status": "graded",
    "grade": "B",
-   "teacher_comment": null,
+   "teacher_comment": "This student has completed assignment submission",
    "url": "https://lausd.schoology.com/assignment/8567820028"
   },
   {
@@ -544,7 +544,7 @@
    "due_at": "2026-09-14T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
-   "teacher_comment": null,
+   "teacher_comment": "This student has completed assignment submission",
    "url": "https://lausd.schoology.com/assignment/8512629018"
   },
   {
@@ -556,7 +556,7 @@
    "due_at": "2026-09-25T23:59:00-07:00",
    "status": "graded",
    "grade": "C",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8590169360"
   },
   {
@@ -568,7 +568,7 @@
    "due_at": "2026-10-13T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
-   "teacher_comment": null,
+   "teacher_comment": "This student has completed assignment submission",
    "url": "https://lausd.schoology.com/assignment/8606371997"
   },
   {
@@ -605,7 +605,7 @@
    "status": "graded",
    "grade": "A",
    "teacher_comment": "In school, but not in class",
-   "url": "https://lausd.schoology.com/assignment/8497918618"
+   "url": "https://lausd.schoology.com/assignment/8497918614"
   },
   {
    "id": "935213564d",
@@ -664,7 +664,7 @@
    "due_at": "2026-08-20T23:59:00-07:00",
    "status": "exempt",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8515039357"
   },
   {
@@ -758,8 +758,8 @@
    "type": "participation",
    "points": "",
    "due_at": "2026-08-28T23:59:00-07:00",
-   "status": "dash",
-   "grade": "",
+   "status": "graded",
+   "grade": "A",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8520406839"
   },
@@ -784,7 +784,7 @@
    "due_at": "2026-09-01T23:59:00-07:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8520420617"
   },
   {
@@ -832,7 +832,7 @@
    "due_at": "2026-09-14T23:59:00-07:00",
    "status": "missing",
    "grade": "0",
-   "teacher_comment": null,
+   "teacher_comment": "This student has completed the test/quiz",
    "url": "https://lausd.schoology.com/assignment/8563978383"
   },
   {
@@ -904,7 +904,7 @@
    "due_at": "2026-09-29T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8590170605"
   },
   {
@@ -930,6 +930,18 @@
    "grade": "A",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8567539737"
+  },
+  {
+   "id": "e787376d49",
+   "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
+   "title": "Discussion Question: (Respond to 2 other students)",
+   "type": "participation",
+   "points": "",
+   "due_at": "2026-10-20T23:59:00-07:00",
+   "status": "submitted",
+   "grade": "",
+   "teacher_comment": "This student has posted in the discussion",
+   "url": "https://lausd.schoology.com/assignment/8617288793"
   },
   {
    "id": "185ec75fc2",
@@ -1000,7 +1012,7 @@
    "due_at": "2026-09-16T23:59:00-07:00",
    "status": "submitted",
    "grade": "",
-   "teacher_comment": null,
+   "teacher_comment": "This student has made a submission that has not been graded.",
    "url": "https://lausd.schoology.com/assignment/8489299881"
   },
   {
@@ -1022,7 +1034,7 @@
    "type": "test",
    "points": "",
    "due_at": "2026-10-16T23:59:00-07:00",
-   "status": "submitted",
+   "status": "dash",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8560106222"
@@ -1097,7 +1109,7 @@
    "status": "graded",
    "grade": "F 0 / 5",
    "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8569876325"
+   "url": "https://lausd.schoology.com/assignment/8518572399"
   },
   {
    "id": "4c32d36cf2",
@@ -1192,7 +1204,7 @@
    "due_at": "2026-10-15T23:59:00-07:00",
    "status": "graded",
    "grade": "B 3.4 / 4",
-   "teacher_comment": "No comment",
+   "teacher_comment": "This student has completed assignment submission",
    "url": "https://lausd.schoology.com/assignment/8571815273"
   },
   {
@@ -1204,188 +1216,8 @@
    "due_at": "2026-10-15T23:59:00-07:00",
    "status": "graded",
    "grade": "B 3 / 4",
-   "teacher_comment": null,
+   "teacher_comment": "This student has completed assignment submission",
    "url": "https://lausd.schoology.com/assignment/8560106171"
-  },
-  {
-   "id": "bbd864e78a",
-   "course": "HOMEROOM: TERM AF- PERIOD H - RM 254",
-   "title": "Student-Parent-Teacher Compact",
-   "type": "permission slip",
-   "points": "",
-   "due_at": "2026-08-21T23:59:00-07:00",
-   "status": null,
-   "grade": "",
-   "teacher_comment": "Friendly reminder, you are missing this Parent-Student-Teacher Forms",
-   "url": "https://lausd.schoology.com/assignment/8508091605"
-  },
-  {
-   "id": "51150469ba",
-   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
-   "title": "P.E. Writing Activity - Muscle",
-   "type": "writing",
-   "points": "",
-   "due_at": "2026-09-18T15:13:00-07:00",
-   "status": "missing",
-   "grade": "0",
-   "teacher_comment": "Absent/Late: P.E. Writing Activity - Muscle. Makeup assignment",
-   "url": "https://lausd.schoology.com/assignment/8562976727"
-  },
-  {
-   "id": "85b11943e5",
-   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
-   "title": "P.E. Writing Activity - Writing Prompt # 1",
-   "type": "writing",
-   "points": "10",
-   "due_at": "2026-10-05T15:13:00-07:00",
-   "status": "graded",
-   "grade": "A 10 / 10",
-   "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8598563842"
-  },
-  {
-   "id": "1480e01476",
-   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
-   "title": "#1: Mile Run - Intervals",
-   "type": "fitness",
-   "points": "4",
-   "due_at": "2026-09-14T15:13:00-07:00",
-   "status": "graded",
-   "grade": "A 4 / 4",
-   "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8567989228"
-  },
-  {
-   "id": "6c3a25a013",
-   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
-   "title": "#2: Mile Run - Intervals",
-   "type": "fitness",
-   "points": "4",
-   "due_at": "2026-09-18T15:13:00-07:00",
-   "status": "graded",
-   "grade": "A 4 / 4",
-   "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8575669941"
-  },
-  {
-   "id": "99b9b5b9af",
-   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
-   "title": "#3: Mile Run - Intervals",
-   "type": "fitness",
-   "points": "4",
-   "due_at": "2026-09-25T15:13:00-07:00",
-   "status": "graded",
-   "grade": "A 4 / 4",
-   "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8582386700"
-  },
-  {
-   "id": "f5663a2552",
-   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
-   "title": "#4: 15 Minute Run - (1 1/4 Miles)",
-   "type": "fitness",
-   "points": "20",
-   "due_at": "2026-09-28T15:13:00-07:00",
-   "status": "graded",
-   "grade": "A 20 / 20",
-   "teacher_comment": "Went home early: 15 minute - 1 1/4 Mile Run Make-up for credit on 10/12/26",
-   "url": "https://lausd.schoology.com/assignment/8586960115"
-  },
-  {
-   "id": "ab1fc78234",
-   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
-   "title": "#4: 15 Minute Run - (1 1/4 Miles)",
-   "type": "fitness",
-   "points": "20",
-   "due_at": "2026-10-19T15:13:00-07:00",
-   "status": "graded",
-   "grade": "B 16 / 20",
-   "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8615495955"
-  },
-  {
-   "id": "5505cd38cf",
-   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
-   "title": "Week 9/8 - 9/11",
-   "type": "participation",
-   "points": "40",
-   "due_at": "2026-09-11T15:13:00-07:00",
-   "status": "graded",
-   "grade": "B 32 / 40",
-   "teacher_comment": "Absent: Please complete \"Excused Absence Writing Prompts\" for days missed to receive credit.",
-   "url": "https://lausd.schoology.com/assignment/8562454555"
-  },
-  {
-   "id": "927d39918d",
-   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
-   "title": "Week 9/14 - 9/18",
-   "type": "participation",
-   "points": "50",
-   "due_at": "2026-09-18T15:13:00-07:00",
-   "status": "graded",
-   "grade": "A 50 / 50",
-   "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8567827470"
-  },
-  {
-   "id": "fb345d0118",
-   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
-   "title": "Week 9/22 - 9/25",
-   "type": "participation",
-   "points": "50",
-   "due_at": "2026-09-25T15:13:00-07:00",
-   "status": "graded",
-   "grade": "A 40 / 40",
-   "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8575917089"
-  },
-  {
-   "id": "5a228f1f3e",
-   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
-   "title": "Week 9/28 - 10/02",
-   "type": "participation",
-   "points": "50",
-   "due_at": "2026-10-02T15:13:00-07:00",
-   "status": "graded",
-   "grade": "A 50 / 50",
-   "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8586945297"
-  },
-  {
-   "id": "6c63691cee",
-   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
-   "title": "Week 10/05 - 10/09",
-   "type": "participation",
-   "points": "50",
-   "due_at": "2026-10-09T15:13:00-07:00",
-   "status": "graded",
-   "grade": "A 50 / 50",
-   "teacher_comment": "Staff member confiscated a green laser pen.",
-   "url": "https://lausd.schoology.com/assignment/8595849334"
-  },
-  {
-   "id": "75e27efe72",
-   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
-   "title": "Week 10/12 - 10/16",
-   "type": "participation",
-   "points": "50",
-   "due_at": "2026-10-16T15:13:00-07:00",
-   "status": "graded",
-   "grade": "A 50 / 50",
-   "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8604795697"
-  },
-  {
-   "id": "8c2ac2a53d",
-   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
-   "title": "Week 10/19 - 10/23",
-   "type": "participation",
-   "points": "",
-   "due_at": "2026-10-23T15:13:00-07:00",
-   "status": "dash",
-   "grade": "",
-   "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8612992625"
   },
   {
    "id": "24c511b279",
@@ -1406,7 +1238,7 @@
    "type": "classwork",
    "points": "",
    "due_at": null,
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8511479592"
@@ -1481,7 +1313,7 @@
    "status": "graded",
    "grade": "3 / 3",
    "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8549632617"
+   "url": "https://lausd.schoology.com/assignment/8549707941"
   },
   {
    "id": "9360f6154a",
@@ -1493,7 +1325,7 @@
    "status": "graded",
    "grade": "3 / 3",
    "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8549707941"
+   "url": "https://lausd.schoology.com/assignment/8549632617"
   },
   {
    "id": "bf698dea82",
@@ -1516,7 +1348,7 @@
    "due_at": "2026-09-14T23:59:00-07:00",
    "status": "graded",
    "grade": "0 / 3",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8572241704"
   },
   {
@@ -1658,7 +1490,7 @@
    "type": "skills",
    "points": "",
    "due_at": null,
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8610016098"
@@ -1694,7 +1526,7 @@
    "type": "skills",
    "points": "",
    "due_at": null,
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8573473892"
@@ -1706,7 +1538,7 @@
    "type": "skills",
    "points": "",
    "due_at": null,
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8581842714"
@@ -1718,7 +1550,7 @@
    "type": "skills",
    "points": "",
    "due_at": null,
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8585454710"
@@ -1730,7 +1562,7 @@
    "type": "skills",
    "points": "",
    "due_at": null,
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8600084569"
@@ -1742,7 +1574,7 @@
    "type": "quiz",
    "points": "",
    "due_at": null,
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8613171997"
@@ -1802,7 +1634,7 @@
    "type": "test",
    "points": "",
    "due_at": "2026-10-20T23:59:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8606734020"
@@ -1818,6 +1650,186 @@
    "grade": "2.5 / 4",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8613061468"
+  },
+  {
+   "id": "51150469ba",
+   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
+   "title": "P.E. Writing Activity - Muscle",
+   "type": "writing",
+   "points": "",
+   "due_at": "2026-09-18T15:13:00-07:00",
+   "status": "missing",
+   "grade": "0",
+   "teacher_comment": "Absent/Late: P.E. Writing Activity - Muscle. Makeup assignment",
+   "url": "https://lausd.schoology.com/assignment/8562976727"
+  },
+  {
+   "id": "85b11943e5",
+   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
+   "title": "P.E. Writing Activity - Writing Prompt # 1",
+   "type": "writing",
+   "points": "10",
+   "due_at": "2026-10-05T15:13:00-07:00",
+   "status": "graded",
+   "grade": "A 10 / 10",
+   "teacher_comment": null,
+   "url": "https://lausd.schoology.com/assignment/8598563842"
+  },
+  {
+   "id": "1480e01476",
+   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
+   "title": "#1: Mile Run - Intervals",
+   "type": "fitness",
+   "points": "4",
+   "due_at": "2026-09-14T15:13:00-07:00",
+   "status": "graded",
+   "grade": "A 4 / 4",
+   "teacher_comment": null,
+   "url": "https://lausd.schoology.com/assignment/8567989228"
+  },
+  {
+   "id": "6c3a25a013",
+   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
+   "title": "#2: Mile Run - Intervals",
+   "type": "fitness",
+   "points": "4",
+   "due_at": "2026-09-18T15:13:00-07:00",
+   "status": "graded",
+   "grade": "A 4 / 4",
+   "teacher_comment": null,
+   "url": "https://lausd.schoology.com/assignment/8575669941"
+  },
+  {
+   "id": "99b9b5b9af",
+   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
+   "title": "#3: Mile Run - Intervals",
+   "type": "fitness",
+   "points": "4",
+   "due_at": "2026-09-25T15:13:00-07:00",
+   "status": "graded",
+   "grade": "A 4 / 4",
+   "teacher_comment": null,
+   "url": "https://lausd.schoology.com/assignment/8582386700"
+  },
+  {
+   "id": "f5663a2552",
+   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
+   "title": "#4: 15 Minute Run - (1 1/4 Miles)",
+   "type": "fitness",
+   "points": "20",
+   "due_at": "2026-09-28T15:13:00-07:00",
+   "status": "graded",
+   "grade": "A 20 / 20",
+   "teacher_comment": "Went home early: 15 minute - 1 1/4 Mile Run Make-up for credit on 10/12/26",
+   "url": "https://lausd.schoology.com/assignment/8586960115"
+  },
+  {
+   "id": "ab1fc78234",
+   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
+   "title": "#4: 15 Minute Run - (1 1/4 Miles)",
+   "type": "fitness",
+   "points": "20",
+   "due_at": "2026-10-19T15:13:00-07:00",
+   "status": "graded",
+   "grade": "B 16 / 20",
+   "teacher_comment": null,
+   "url": "https://lausd.schoology.com/assignment/8615495955"
+  },
+  {
+   "id": "5505cd38cf",
+   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
+   "title": "Week 9/8 - 9/11",
+   "type": "participation",
+   "points": "40",
+   "due_at": "2026-09-11T15:13:00-07:00",
+   "status": "graded",
+   "grade": "B 32 / 40",
+   "teacher_comment": "Absent: Please complete \"Excused Absence Writing Prompts\" for days missed to receive credit.",
+   "url": "https://lausd.schoology.com/assignment/8562454555"
+  },
+  {
+   "id": "927d39918d",
+   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
+   "title": "Week 9/14 - 9/18",
+   "type": "participation",
+   "points": "50",
+   "due_at": "2026-09-18T15:13:00-07:00",
+   "status": "graded",
+   "grade": "A 50 / 50",
+   "teacher_comment": "Please note that there have been one or more instances of non-dress in Physical Education.",
+   "url": "https://lausd.schoology.com/assignment/8567827470"
+  },
+  {
+   "id": "fb345d0118",
+   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
+   "title": "Week 9/22 - 9/25",
+   "type": "participation",
+   "points": "50",
+   "due_at": "2026-09-25T15:13:00-07:00",
+   "status": "graded",
+   "grade": "A 40 / 40",
+   "teacher_comment": null,
+   "url": "https://lausd.schoology.com/assignment/8575917089"
+  },
+  {
+   "id": "5a228f1f3e",
+   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
+   "title": "Week 9/28 - 10/02",
+   "type": "participation",
+   "points": "50",
+   "due_at": "2026-10-02T15:13:00-07:00",
+   "status": "graded",
+   "grade": "A 50 / 50",
+   "teacher_comment": null,
+   "url": "https://lausd.schoology.com/assignment/8586945297"
+  },
+  {
+   "id": "6c63691cee",
+   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
+   "title": "Week 10/05 - 10/09",
+   "type": "participation",
+   "points": "50",
+   "due_at": "2026-10-09T15:13:00-07:00",
+   "status": "graded",
+   "grade": "A 50 / 50",
+   "teacher_comment": "Staff member confiscated a green laser pen.",
+   "url": "https://lausd.schoology.com/assignment/8595849334"
+  },
+  {
+   "id": "75e27efe72",
+   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
+   "title": "Week 10/12 - 10/16",
+   "type": "participation",
+   "points": "50",
+   "due_at": "2026-10-16T15:13:00-07:00",
+   "status": "graded",
+   "grade": "A 50 / 50",
+   "teacher_comment": null,
+   "url": "https://lausd.schoology.com/assignment/8604795697"
+  },
+  {
+   "id": "8c2ac2a53d",
+   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
+   "title": "Week 10/19 - 10/23",
+   "type": "participation",
+   "points": "",
+   "due_at": "2026-10-23T15:13:00-07:00",
+   "status": "dash",
+   "grade": "",
+   "teacher_comment": null,
+   "url": "https://lausd.schoology.com/assignment/8612992625"
+  },
+  {
+   "id": "bbd864e78a",
+   "course": "HOMEROOM: TERM AF- PERIOD H - RM 254",
+   "title": "Student-Parent-Teacher Compact",
+   "type": "permission slip",
+   "points": "",
+   "due_at": "2026-08-21T23:59:00-07:00",
+   "status": "dash",
+   "grade": "",
+   "teacher_comment": "Friendly reminder, you are missing this Parent-Student-Teacher Forms",
+   "url": "https://lausd.schoology.com/assignment/8508091605"
   }
  ]
 }
