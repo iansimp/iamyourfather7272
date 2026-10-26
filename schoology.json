@@ -1,5 +1,5 @@
 {
- "fetched_at": "2026-10-25T22:40:00Z",
+ "fetched_at": "2026-10-26T22:58:00Z",
  "courses": [
   {
    "name": "ADV BAND MS A: TERM AF- PERIOD 1 - RM 143",
@@ -23,7 +23,7 @@
   },
   {
    "name": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
-   "grade": "A (92.09%)"
+   "grade": "A (92.24%)"
   },
   {
    "name": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
@@ -232,7 +232,7 @@
    "due_at": "2026-10-05T23:59:00-07:00",
    "status": "graded",
    "grade": "C",
-   "teacher_comment": "Near Proficiency please re-read these 60 pages of the book and make arrangements with me to re",
+   "teacher_comment": "Near Proficiency please re-read these 60 pages of the book and make arrangements with me to reassess to demonstrate Proficiency.",
    "url": "https://lausd.schoology.com/assignment/8570776114"
   },
   {
@@ -244,7 +244,7 @@
    "due_at": "2026-10-12T23:59:00-07:00",
    "status": "graded",
    "grade": "F",
-   "teacher_comment": "No response/Missing please re-read these 60 pages of the book and make arrangements with me to",
+   "teacher_comment": "No response/Missing please re-read these 60 pages of the book and make arrangements with me to reassess to demonstrate Proficiency.",
    "url": "https://lausd.schoology.com/assignment/8570776110"
   },
   {
@@ -302,7 +302,7 @@
    "type": "presentation",
    "points": null,
    "due_at": "2026-10-05T23:59:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8570776130"
@@ -434,7 +434,7 @@
    "type": "classwork",
    "points": null,
    "due_at": "2026-10-13T23:59:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8608324838"
@@ -446,7 +446,7 @@
    "type": "classwork",
    "points": null,
    "due_at": "2026-10-23T23:59:00-07:00",
-   "status": null,
+   "status": "submitted",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8570776113"
@@ -458,7 +458,7 @@
    "type": "reading",
    "points": null,
    "due_at": "2026-10-23T23:59:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8585887292"
@@ -470,7 +470,7 @@
    "type": "presentation",
    "points": null,
    "due_at": "2026-11-06T23:59:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8602155563"
@@ -482,7 +482,7 @@
    "type": "classwork",
    "points": null,
    "due_at": "2026-11-20T23:59:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8608977356"
@@ -496,7 +496,7 @@
    "due_at": "2026-09-11T23:59:00-07:00",
    "status": "missing",
    "grade": "0",
-   "teacher_comment": "Where are you film notes for If You Build It so I can finish grading your essay? please",
+   "teacher_comment": "Where are you film notes for If You Build It so I can finish grading your essay? please submit your Thesis Statement Organizer and Your film note organizer from If You Build It so I can grade your essay. mr. Greene will work 1:1 with you Monday to finish your essay organizer and your essay.",
    "url": "https://lausd.schoology.com/assignment/8540300814"
   },
   {
@@ -1052,6 +1052,18 @@
    "url": "https://lausd.schoology.com/assignment/8610628179"
   },
   {
+   "id": "b90a2816f7",
+   "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
+   "title": "p.59-60 Check for Understanding",
+   "type": "participation",
+   "points": null,
+   "due_at": "2026-10-26T23:59:00-07:00",
+   "status": "dash",
+   "grade": "",
+   "teacher_comment": "No comment",
+   "url": "https://lausd.schoology.com/assignment/8610628845"
+  },
+  {
    "id": "7871823749",
    "course": "H US HIST G&C A: TERM AF- PERIOD 2 - RM 258",
    "title": "Colonial America Exam",
@@ -1100,6 +1112,18 @@
    "url": "https://lausd.schoology.com/assignment/8560106222"
   },
   {
+   "id": "6303a0d7f0",
+   "course": "H US HIST G&C A: TERM AF- PERIOD 2 - RM 258",
+   "title": "Constitution Exam",
+   "type": "test",
+   "points": null,
+   "due_at": "2026-11-19T23:59:00-07:00",
+   "status": "dash",
+   "grade": "",
+   "teacher_comment": "No comment",
+   "url": "https://lausd.schoology.com/assignment/8615510683"
+  },
+  {
    "id": "6516612613",
    "course": "H US HIST G&C A: TERM AF- PERIOD 2 - RM 258",
    "title": "Stamp Act Boycott Committee v. Propaganda Deconstruction",
@@ -1110,6 +1134,18 @@
    "grade": "C 2.8 / 4",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8571848197"
+  },
+  {
+   "id": "5048fbb6ad",
+   "course": "H US HIST G&C A: TERM AF- PERIOD 2 - RM 258",
+   "title": "Constitution Project",
+   "type": "project",
+   "points": null,
+   "due_at": "2026-11-10T23:59:00-07:00",
+   "status": "dash",
+   "grade": "",
+   "teacher_comment": "No comment",
+   "url": "https://lausd.schoology.com/assignment/8624924629"
   },
   {
    "id": "2d5747d477",
@@ -1238,10 +1274,22 @@
    "type": "research",
    "points": null,
    "due_at": "2026-11-09T11:45:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8620845174"
+  },
+  {
+   "id": "802902d124",
+   "course": "H US HIST G&C A: TERM AF- PERIOD 2 - RM 258",
+   "title": "US Constitution Unit Packet",
+   "type": "classwork",
+   "points": null,
+   "due_at": "2026-11-18T14:30:00-07:00",
+   "status": "dash",
+   "grade": "",
+   "teacher_comment": "No comment",
+   "url": "https://lausd.schoology.com/assignment/8624896846"
   },
   {
    "id": "785a799617",
@@ -1400,6 +1448,18 @@
    "url": "https://lausd.schoology.com/assignment/8615495955"
   },
   {
+   "id": "d832659242",
+   "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
+   "title": "#5: 15 Minute Run - (1 1/4 Miles)",
+   "type": "fitness",
+   "points": 20,
+   "due_at": "2026-10-30T15:13:00-07:00",
+   "status": "graded",
+   "grade": "A 20 / 20",
+   "teacher_comment": "No comment",
+   "url": "https://lausd.schoology.com/assignment/8624867756"
+  },
+  {
    "id": "5505cd38cf",
    "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
    "title": "Week 9/8 - 9/11",
@@ -1428,7 +1488,7 @@
    "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
    "title": "Week 9/22 - 9/25",
    "type": "participation",
-   "points": 50,
+   "points": 40,
    "due_at": "2026-09-25T15:13:00-07:00",
    "status": "graded",
    "grade": "A 40 / 40",
@@ -1490,7 +1550,7 @@
    "type": "participation",
    "points": null,
    "due_at": "2026-10-30T15:13:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8622593385"
@@ -1514,7 +1574,7 @@
    "type": "classwork",
    "points": null,
    "due_at": null,
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8620783703"
@@ -1526,7 +1586,7 @@
    "type": "classwork",
    "points": null,
    "due_at": null,
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8620783707"
@@ -1538,7 +1598,7 @@
    "type": "classwork",
    "points": null,
    "due_at": null,
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8620783710"
@@ -1550,7 +1610,7 @@
    "type": "classwork",
    "points": null,
    "due_at": null,
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8620783715"
@@ -1562,7 +1622,7 @@
    "type": "classwork",
    "points": null,
    "due_at": null,
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8620783784"
@@ -1574,7 +1634,7 @@
    "type": "classwork",
    "points": null,
    "due_at": null,
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8511479592"
@@ -1706,7 +1766,7 @@
    "type": "classwork",
    "points": null,
    "due_at": "2026-10-16T23:59:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8620783658"
@@ -1718,7 +1778,7 @@
    "type": "classwork",
    "points": null,
    "due_at": "2026-10-17T23:59:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8620783662"
@@ -1730,7 +1790,7 @@
    "type": "classwork",
    "points": null,
    "due_at": "2026-10-18T23:59:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8620783668"
@@ -1742,7 +1802,7 @@
    "type": "classwork",
    "points": null,
    "due_at": "2026-10-19T23:59:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8620783672"
@@ -1754,7 +1814,7 @@
    "type": "classwork",
    "points": null,
    "due_at": "2026-10-20T23:59:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8620783679"
@@ -1766,7 +1826,7 @@
    "type": "classwork",
    "points": null,
    "due_at": "2026-10-21T23:59:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8620783683"
@@ -1778,7 +1838,7 @@
    "type": "classwork",
    "points": null,
    "due_at": "2026-10-22T23:59:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8620783687"
@@ -1790,7 +1850,7 @@
    "type": "classwork",
    "points": null,
    "due_at": "2026-10-23T23:59:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8620783696"
@@ -1802,7 +1862,7 @@
    "type": "classwork",
    "points": null,
    "due_at": "2026-10-25T23:59:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8620783700"
@@ -1910,7 +1970,7 @@
    "type": "homework",
    "points": null,
    "due_at": "2026-10-25T23:59:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8622134053"
@@ -1946,7 +2006,7 @@
    "type": "skills",
    "points": null,
    "due_at": null,
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8610016098"
@@ -1982,7 +2042,7 @@
    "type": "skills",
    "points": null,
    "due_at": null,
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8573473892"
@@ -1994,7 +2054,7 @@
    "type": "skills",
    "points": null,
    "due_at": null,
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8581842714"
@@ -2006,7 +2066,7 @@
    "type": "skills",
    "points": null,
    "due_at": null,
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8585454710"
@@ -2018,7 +2078,7 @@
    "type": "skills",
    "points": null,
    "due_at": null,
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8600084569"
@@ -2030,7 +2090,7 @@
    "type": "quiz",
    "points": null,
    "due_at": null,
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8613171997"
@@ -2090,7 +2150,7 @@
    "type": "test",
    "points": null,
    "due_at": "2026-10-20T23:59:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": "No comment",
    "url": "https://lausd.schoology.com/assignment/8606734020"
