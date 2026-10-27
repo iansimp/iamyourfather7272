@@ -1,5 +1,5 @@
 {
- "fetched_at": "2026-10-26T22:58:00Z",
+ "fetched_at": "2026-10-27T23:02:00Z",
  "courses": [
   {
    "name": "ADV BAND MS A: TERM AF- PERIOD 1 - RM 143",
@@ -7,7 +7,7 @@
   },
   {
    "name": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253",
-   "grade": "C"
+   "grade": "B"
   },
   {
    "name": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
@@ -15,7 +15,7 @@
   },
   {
    "name": "H US HIST G&C A: TERM AF- PERIOD 2 - RM 258",
-   "grade": "C (65.99%)"
+   "grade": "C 65.99%"
   },
   {
    "name": "HOMEROOM: TERM AF- PERIOD H - RM 254",
@@ -23,7 +23,7 @@
   },
   {
    "name": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
-   "grade": "A (92.24%)"
+   "grade": "A 92.24%"
   },
   {
    "name": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
@@ -40,7 +40,7 @@
    "due_at": "2026-10-09T23:59:00-07:00",
    "status": "graded",
    "grade": "26 / 1",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8569672981"
   },
   {
@@ -52,7 +52,7 @@
    "due_at": "2026-08-21T23:59:00-07:00",
    "status": "graded",
    "grade": "0 / 10",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8480605459"
   },
   {
@@ -64,7 +64,7 @@
    "due_at": "2026-08-21T23:59:00-07:00",
    "status": "graded",
    "grade": "15 / 15",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8480606150"
   },
   {
@@ -76,7 +76,7 @@
    "due_at": "2026-08-26T23:59:00-07:00",
    "status": "graded",
    "grade": "20 / 20",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8480607821"
   },
   {
@@ -88,7 +88,7 @@
    "due_at": "2026-09-03T00:00:00-07:00",
    "status": "graded",
    "grade": "45 / 45",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8524504825"
   },
   {
@@ -100,7 +100,7 @@
    "due_at": "2026-09-18T23:59:00-07:00",
    "status": "graded",
    "grade": "45 / 45",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8562920724"
   },
   {
@@ -112,7 +112,7 @@
    "due_at": "2026-10-02T23:59:00-07:00",
    "status": "graded",
    "grade": "45 / 45",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8569668430"
   },
   {
@@ -124,7 +124,7 @@
    "due_at": "2026-10-16T23:59:00-07:00",
    "status": "graded",
    "grade": "50 / 50",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8581713069"
   },
   {
@@ -132,11 +132,11 @@
    "course": "ADV BAND MS A: TERM AF- PERIOD 1 - RM 143",
    "title": "Participation 10/19-10/30",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-30T23:59:00-07:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8610449944"
   },
   {
@@ -144,11 +144,11 @@
    "course": "ADV BAND MS A: TERM AF- PERIOD 1 - RM 143",
    "title": "Winter Concert 12/17",
    "type": "participation",
-   "points": null,
-   "due_at": "2026-12-17T23:59:00-07:00",
+   "points": "",
+   "due_at": "2026-12-17T23:59:00-08:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8611229907"
   },
   {
@@ -160,7 +160,7 @@
    "due_at": "2026-09-02T23:59:00-07:00",
    "status": "graded",
    "grade": "25 / 25",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8536972562"
   },
   {
@@ -172,7 +172,7 @@
    "due_at": "2026-09-18T23:59:00-07:00",
    "status": "graded",
    "grade": "25 / 25",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8568358635"
   },
   {
@@ -184,7 +184,7 @@
    "due_at": "2026-10-09T23:59:00-07:00",
    "status": "graded",
    "grade": "25 / 25",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8581706236"
   },
   {
@@ -196,7 +196,7 @@
    "due_at": "2026-10-23T23:59:00-07:00",
    "status": "graded",
    "grade": "25 / 25",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8610447438"
   },
   {
@@ -204,7 +204,7 @@
    "course": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253",
    "title": "Anne Frank Comprehension Check Week 1 Reading: 6.14.42 thru 12.13.42",
    "type": "reading",
-   "points": null,
+   "points": "",
    "due_at": "2026-09-23T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
@@ -216,7 +216,7 @@
    "course": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253",
    "title": "Anne Frank Comprehension Check Week 2 Reading: pgs. 60-120 (Dec. 13, 1942 to November 27, 1943)",
    "type": "reading",
-   "points": null,
+   "points": "",
    "due_at": "2026-09-28T23:59:00-07:00",
    "status": "graded",
    "grade": "F",
@@ -228,7 +228,7 @@
    "course": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253",
    "title": "Anne Frank Comprehension Check Week 3 p.120 to p.181 (Dec. 6, 1943 to March 19, 1944)",
    "type": "reading",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-05T23:59:00-07:00",
    "status": "graded",
    "grade": "C",
@@ -240,7 +240,7 @@
    "course": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253",
    "title": "Anne Frank Comprehension Check Week 4 p.182 to p.242 (March 20, 1944 to May 26, 1944)",
    "type": "reading",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-12T23:59:00-07:00",
    "status": "graded",
    "grade": "F",
@@ -252,7 +252,7 @@
    "course": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253",
    "title": "Anne Frank Comprehension Check Week 5 p.242 to p.283 (May 31, 1944 to AFTERWORD)",
    "type": "reading",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-19T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
@@ -260,27 +260,39 @@
    "url": "https://lausd.schoology.com/assignment/8570776107"
   },
   {
+   "id": "5103e39196",
+   "course": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253",
+   "title": "Word Sneak Assessment: Anne Frank Vocabulary #1",
+   "type": "test",
+   "points": "",
+   "due_at": "2026-10-19T23:59:00-07:00",
+   "status": "graded",
+   "grade": "A",
+   "teacher_comment": null,
+   "url": "https://lausd.schoology.com/assignment/8626653343"
+  },
+  {
    "id": "4c2f3ac05a",
    "course": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253",
    "title": "WW2 Research Questions",
    "type": "research",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-02T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8595663317"
   },
   {
-   "id": "bf548e95f5",
+   "id": "3cc533bb2c",
    "course": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253",
-   "title": "WW 2 Backdrop - Audience Member Grade",
+   "title": "Audience Member Grade: WW 2 Backdrop",
    "type": "presentation",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-05T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8570776129"
   },
   {
@@ -288,11 +300,11 @@
    "course": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253",
    "title": "WW2 Backdrop Slide Presentation Team Grade",
    "type": "presentation",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-05T23:59:00-07:00",
    "status": "submitted",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8570776124"
   },
   {
@@ -300,11 +312,11 @@
    "course": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253",
    "title": "WW2 Presentation Individual Team Member Grade",
    "type": "presentation",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-05T23:59:00-07:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8570776130"
   },
   {
@@ -316,7 +328,7 @@
    "due_at": "2026-09-01T23:59:00-07:00",
    "status": "graded",
    "grade": "3 / 3",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8560982789"
   },
   {
@@ -328,7 +340,7 @@
    "due_at": "2026-09-08T23:59:00-07:00",
    "status": "graded",
    "grade": "3 / 3",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8558395937"
   },
   {
@@ -340,7 +352,7 @@
    "due_at": "2026-09-11T23:59:00-07:00",
    "status": "graded",
    "grade": "3 / 3",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8562437068"
   },
   {
@@ -352,7 +364,7 @@
    "due_at": "2026-09-15T23:59:00-07:00",
    "status": "graded",
    "grade": "3 / 3",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8569999298"
   },
   {
@@ -364,7 +376,7 @@
    "due_at": "2026-09-22T23:59:00-07:00",
    "status": "graded",
    "grade": "3 / 3",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8584181318"
   },
   {
@@ -372,11 +384,11 @@
    "course": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253",
    "title": "Root Words Book D Lesson 1 and 2 - Believing",
    "type": "classwork",
-   "points": null,
+   "points": "",
    "due_at": "2026-09-25T23:59:00-07:00",
    "status": "missing",
    "grade": "0",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8554908972"
   },
   {
@@ -388,7 +400,7 @@
    "due_at": "2026-09-29T23:59:00-07:00",
    "status": "graded",
    "grade": "2.5 / 3",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8596417920"
   },
   {
@@ -396,11 +408,11 @@
    "course": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253",
    "title": "Anne Frank Vocabulary pages 1-32",
    "type": "classwork",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-07T23:59:00-07:00",
    "status": "submitted",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8570776122"
   },
   {
@@ -408,11 +420,11 @@
    "course": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253",
    "title": "Anne Frank Vocabulary pages 33-63",
    "type": "classwork",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-09T23:59:00-07:00",
    "status": "submitted",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8570776117"
   },
   {
@@ -420,11 +432,11 @@
    "course": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253",
    "title": "Root Words Book D Lesson 3 and 4 - Thinking and Knowing",
    "type": "classwork",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-09T23:59:00-07:00",
    "status": "missing",
    "grade": "0",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8576752294"
   },
   {
@@ -432,11 +444,11 @@
    "course": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253",
    "title": "Best Test Tuesday - Noredink.com",
    "type": "classwork",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-13T23:59:00-07:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8608324838"
   },
   {
@@ -444,11 +456,11 @@
    "course": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253",
    "title": "Anne Frank Vocabulary pages 64 - 120",
    "type": "classwork",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-23T23:59:00-07:00",
    "status": "submitted",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8570776113"
   },
   {
@@ -456,11 +468,11 @@
    "course": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253",
    "title": "Root Words Book D Lesson 5 and 6 - Reading and Writing",
    "type": "reading",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-23T23:59:00-07:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8585887292"
   },
   {
@@ -468,11 +480,11 @@
    "course": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253",
    "title": "Root Words Book D Lesson 7 and 8 - Speaking",
    "type": "presentation",
-   "points": null,
-   "due_at": "2026-11-06T23:59:00-07:00",
+   "points": "",
+   "due_at": "2026-11-06T23:59:00-08:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8602155563"
   },
   {
@@ -480,11 +492,11 @@
    "course": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253",
    "title": "Root Words Book D Lesson 9 and 10 - Earth and Air",
    "type": "classwork",
-   "points": null,
-   "due_at": "2026-11-20T23:59:00-07:00",
+   "points": "",
+   "due_at": "2026-11-20T23:59:00-08:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8608977356"
   },
   {
@@ -492,11 +504,11 @@
    "course": "H ENGLISH 8A: TERM AF- PERIOD 4 - RM 253",
    "title": "Essay: If You Build It",
    "type": "writing",
-   "points": null,
+   "points": "",
    "due_at": "2026-09-11T23:59:00-07:00",
-   "status": "missing",
-   "grade": "0",
-   "teacher_comment": "Where are you film notes for If You Build It so I can finish grading your essay? please submit your Thesis Statement Organizer and Your film note organizer from If You Build It so I can grade your essay. mr. Greene will work 1:1 with you Monday to finish your essay organizer and your essay.",
+   "status": "submitted",
+   "grade": "",
+   "teacher_comment": "Please give me edit access to your essay. where are you film notes for If You Build It so I can finish grading your essay? please submit your Thesis Statement Organizer and Your film notes organizer from If You Build It so I can grade your essay. mr. Greene will work 1:1 with you Monday to finish your essay organizer and your essay.",
    "url": "https://lausd.schoology.com/assignment/8540300814"
   },
   {
@@ -504,7 +516,7 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "LT-Engergy -Report to the Recue Team",
    "type": "lt1 energy",
-   "points": null,
+   "points": "",
    "due_at": "2026-09-02T15:00:00-07:00",
    "status": "graded",
    "grade": "D",
@@ -516,11 +528,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "Flee Map Scientific Argument - Force & Motion",
    "type": "lt2 force & motion",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-02T23:59:00-07:00",
    "status": "graded",
    "grade": "B",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8567820028"
   },
   {
@@ -528,7 +540,7 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "Forces and Motion Challenge",
    "type": "lt2 force & motion",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-19T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
@@ -540,11 +552,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "L1- Windmill Project",
    "type": "project",
-   "points": null,
+   "points": "",
    "due_at": "2026-09-11T23:59:00-07:00",
    "status": "graded",
    "grade": "C",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8572110548"
   },
   {
@@ -552,11 +564,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "Windmill Slides",
    "type": "project",
-   "points": null,
+   "points": "",
    "due_at": "2026-09-14T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8512629018"
   },
   {
@@ -564,11 +576,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "Newton's Law of Motion Comic Strip",
    "type": "project",
-   "points": null,
+   "points": "",
    "due_at": "2026-09-25T23:59:00-07:00",
    "status": "graded",
    "grade": "C",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8590169360"
   },
   {
@@ -576,11 +588,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "Force & Motion Reflection",
    "type": "project",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-13T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8606371997"
   },
   {
@@ -588,11 +600,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "Welcome! All About Me",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-08-12T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8495169954"
   },
   {
@@ -600,11 +612,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "Exploring the Scientific Method",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-08-13T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8495183486"
   },
   {
@@ -612,7 +624,7 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "Engineering Process",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-08-14T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
@@ -624,11 +636,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "Quiz: Scientific Method",
    "type": "quiz",
-   "points": null,
+   "points": "",
    "due_at": "2026-08-14T23:59:00-07:00",
    "status": "graded",
    "grade": "B",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8498142457"
   },
   {
@@ -636,11 +648,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "Metric Conversions, Density, & Displacement",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-08-17T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8503657903"
   },
   {
@@ -648,11 +660,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "Course Syllabus for 7th Grade",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-08-18T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8507595465"
   },
   {
@@ -660,11 +672,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "Graphs",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-08-19T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8509975686"
   },
   {
@@ -672,11 +684,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "Graphing Quiz",
    "type": "quiz",
-   "points": null,
+   "points": "",
    "due_at": "2026-08-20T23:59:00-07:00",
    "status": "exempt",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8515039357"
   },
   {
@@ -684,7 +696,7 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "Claim, Evidence and Reasoning",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-08-21T23:59:00-07:00",
    "status": "absent",
    "grade": "",
@@ -696,11 +708,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "Depth and Complexity",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-08-21T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8511841476"
   },
   {
@@ -708,11 +720,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "Genius Lab Form (Parent signature)",
    "type": "permission slip",
-   "points": null,
+   "points": "",
    "due_at": "2026-08-21T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8504478868"
   },
   {
@@ -720,11 +732,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "Energy Inventions A1-A3",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-08-24T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8524034246"
   },
   {
@@ -732,7 +744,7 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "Reflecting on Energy p. 7 & 8",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-08-25T23:59:00-07:00",
    "status": "graded",
    "grade": "C",
@@ -744,11 +756,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "Do the Objects Have Energy? p. 13-14",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-08-26T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8520399632"
   },
   {
@@ -756,11 +768,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "Energy and the Rescue Team p. 27-29",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-08-27T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8520403767"
   },
   {
@@ -768,11 +780,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "Where Does Energy Come From? p.30",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-08-28T23:59:00-07:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8520406839"
   },
   {
@@ -780,11 +792,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "How We Store Energy p. 33, 35-37",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-08-31T23:59:00-07:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8520411756"
   },
   {
@@ -792,11 +804,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "Hand-Crank Flashlights p.42-43 (C1-C2)",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-09-01T23:59:00-07:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8520420617"
   },
   {
@@ -804,11 +816,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "Report for the Rescue team p.55-56",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-09-02T23:59:00-07:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8520426502"
   },
   {
@@ -816,11 +828,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "p. 61-62 CER Argument: Ed-You Swivel Chairs",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-09-03T23:59:00-07:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8543638775"
   },
   {
@@ -828,11 +840,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "pg. 46- Explaining Two Claims.",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-09-14T23:59:00-07:00",
    "status": "graded",
    "grade": "C",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8567493856"
   },
   {
@@ -840,11 +852,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "Windmill Reflection",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-09-14T23:59:00-07:00",
    "status": "missing",
    "grade": "0",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8563978383"
   },
   {
@@ -852,11 +864,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "pg.19 Friction",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-09-17T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8567459409"
   },
   {
@@ -864,11 +876,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "pg. 30 -Check Your Understanding",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-09-21T23:59:00-07:00",
    "status": "missing",
    "grade": "0",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8567464648"
   },
   {
@@ -876,11 +888,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "Critical Juncture (Work Habits grade)",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-09-23T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8581832079"
   },
   {
@@ -888,11 +900,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "pg. 59 - Check your understanding.",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-09-25T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8567498396"
   },
   {
@@ -900,7 +912,7 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "pg. 64 - Exploring Collision Forces",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-09-28T23:59:00-07:00",
    "status": "graded",
    "grade": "C",
@@ -912,11 +924,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "Blooket: Homework Assignment (Solo) submit",
    "type": "homework",
-   "points": null,
+   "points": "",
    "due_at": "2026-09-29T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8590170605"
   },
   {
@@ -924,11 +936,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "pg.84-85 - Reporting to Dr. Gonzalez",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-09-30T23:59:00-07:00",
    "status": "graded",
    "grade": "C",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8567547664"
   },
   {
@@ -936,11 +948,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "pg.78 - Homework Reading \"Wrecking Ball\"",
    "type": "homework",
-   "points": null,
+   "points": "",
    "due_at": "2026-09-30T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8567539737"
   },
   {
@@ -948,11 +960,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "Discussion Question: (Respond to 2 other students)",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-20T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8617288793"
   },
   {
@@ -960,11 +972,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "p. 9 Rules About Magnets",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-20T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8610625815"
   },
   {
@@ -972,11 +984,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "p.10 Annotating Article, \"Meeting a Scientist Who Studied Magnets\" A1-A2",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-20T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8610626088"
   },
   {
@@ -984,7 +996,7 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "p.16 Magnetic Launchers and Catchers",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-20T23:59:00-07:00",
    "status": "graded",
    "grade": "B",
@@ -996,11 +1008,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "p. 19 Annotating Article, \"Earth's Geomagnetism\" B1-B3",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-21T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8610626889"
   },
   {
@@ -1008,7 +1020,7 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "p. 26 Annotating Article, \"Painting with Static Electricity\" C1-C2",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-22T23:59:00-07:00",
    "status": "graded",
    "grade": "C",
@@ -1020,7 +1032,7 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "p. 32-33 Check for Understanding",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-22T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
@@ -1032,11 +1044,11 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "p. 38 Simulating Energy Transfers",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-23T23:59:00-07:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8610627937"
   },
   {
@@ -1044,24 +1056,48 @@
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "p. 44 Explanation About Magnets and Kinetic Energy",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-23T23:59:00-07:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8610628179"
+  },
+  {
+   "id": "0a9c5a0c71",
+   "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
+   "title": "p. Annotating Article, \"The Potential for Speed\" D1-D10",
+   "type": "participation",
+   "points": "",
+   "due_at": "2026-10-26T23:59:00-07:00",
+   "status": "dash",
+   "grade": "",
+   "teacher_comment": null,
+   "url": "https://lausd.schoology.com/assignment/8610629048"
   },
   {
    "id": "b90a2816f7",
    "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
    "title": "p.59-60 Check for Understanding",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-26T23:59:00-07:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8610628845"
+  },
+  {
+   "id": "2879aa850d",
+   "course": "H INTEG SCIENCE 8A: TERM AF- PERIOD 3 - RM 254",
+   "title": "p. 67 Homework",
+   "type": "homework",
+   "points": "",
+   "due_at": "2026-10-27T23:59:00-07:00",
+   "status": "dash",
+   "grade": "",
+   "teacher_comment": null,
+   "url": "https://lausd.schoology.com/assignment/8610629682"
   },
   {
    "id": "7871823749",
@@ -1072,7 +1108,7 @@
    "due_at": "2026-09-16T23:59:00-07:00",
    "status": "graded",
    "grade": "C 2.28 / 4",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8489299868"
   },
   {
@@ -1080,11 +1116,11 @@
    "course": "H US HIST G&C A: TERM AF- PERIOD 2 - RM 258",
    "title": "Colonial America Exam Short Response Questions",
    "type": "test",
-   "points": null,
+   "points": "",
    "due_at": "2026-09-16T23:59:00-07:00",
    "status": "submitted",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8489299881"
   },
   {
@@ -1096,7 +1132,7 @@
    "due_at": "2026-10-16T23:59:00-07:00",
    "status": "graded",
    "grade": "B 3 / 4",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8560106195"
   },
   {
@@ -1104,11 +1140,11 @@
    "course": "H US HIST G&C A: TERM AF- PERIOD 2 - RM 258",
    "title": "Honors American Revolution Exam Short Response Questions",
    "type": "test",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-16T23:59:00-07:00",
    "status": "submitted",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8560106222"
   },
   {
@@ -1116,11 +1152,11 @@
    "course": "H US HIST G&C A: TERM AF- PERIOD 2 - RM 258",
    "title": "Constitution Exam",
    "type": "test",
-   "points": null,
-   "due_at": "2026-11-19T23:59:00-07:00",
+   "points": "",
+   "due_at": "2026-11-19T23:59:00-08:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8615510683"
   },
   {
@@ -1132,7 +1168,7 @@
    "due_at": "2026-09-25T23:59:00-07:00",
    "status": "graded",
    "grade": "C 2.8 / 4",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8571848197"
   },
   {
@@ -1140,11 +1176,11 @@
    "course": "H US HIST G&C A: TERM AF- PERIOD 2 - RM 258",
    "title": "Constitution Project",
    "type": "project",
-   "points": null,
-   "due_at": "2026-11-10T23:59:00-07:00",
+   "points": "",
+   "due_at": "2026-11-10T23:59:00-08:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8624924629"
   },
   {
@@ -1168,7 +1204,7 @@
    "due_at": "2026-09-25T23:59:00-07:00",
    "status": "graded",
    "grade": "A 3.6 / 4",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8571813927"
   },
   {
@@ -1180,7 +1216,7 @@
    "due_at": "2026-10-23T23:59:00-07:00",
    "status": "graded",
    "grade": "B 3.2 / 4",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8615510616"
   },
   {
@@ -1192,7 +1228,7 @@
    "due_at": "2026-09-03T23:59:00-07:00",
    "status": "graded",
    "grade": "A 4 / 4",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8543706977"
   },
   {
@@ -1204,7 +1240,7 @@
    "due_at": "2026-09-15T23:59:00-07:00",
    "status": "graded",
    "grade": "F 0 / 30",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8549787899"
   },
   {
@@ -1216,7 +1252,7 @@
    "due_at": "2026-09-15T23:59:00-07:00",
    "status": "graded",
    "grade": "F 0 / 5",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8569876325"
   },
   {
@@ -1240,7 +1276,7 @@
    "due_at": "2026-10-15T13:30:00-07:00",
    "status": "graded",
    "grade": "A 5 / 5",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8610481211"
   },
   {
@@ -1252,7 +1288,7 @@
    "due_at": "2026-10-15T13:30:00-07:00",
    "status": "graded",
    "grade": "A 16 / 16",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8571873055"
   },
   {
@@ -1272,11 +1308,11 @@
    "course": "H US HIST G&C A: TERM AF- PERIOD 2 - RM 258",
    "title": "US Constitution INQUIRY JOURNAL PRIMARY SOURCES",
    "type": "research",
-   "points": null,
-   "due_at": "2026-11-09T11:45:00-07:00",
+   "points": "",
+   "due_at": "2026-11-09T11:45:00-08:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8620845174"
   },
   {
@@ -1284,11 +1320,11 @@
    "course": "H US HIST G&C A: TERM AF- PERIOD 2 - RM 258",
    "title": "US Constitution Unit Packet",
    "type": "classwork",
-   "points": null,
-   "due_at": "2026-11-18T14:30:00-07:00",
+   "points": "",
+   "due_at": "2026-11-18T14:30:00-08:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8624896846"
   },
   {
@@ -1300,7 +1336,7 @@
    "due_at": "2026-09-15T23:59:00-07:00",
    "status": "graded",
    "grade": "F 0 / 4",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8489299845"
   },
   {
@@ -1324,7 +1360,7 @@
    "due_at": "2026-09-28T23:59:00-07:00",
    "status": "graded",
    "grade": "A 4 / 4",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8588264991"
   },
   {
@@ -1336,7 +1372,7 @@
    "due_at": "2026-10-15T23:59:00-07:00",
    "status": "graded",
    "grade": "B 3.4 / 4",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8571815273"
   },
   {
@@ -1348,7 +1384,7 @@
    "due_at": "2026-10-15T23:59:00-07:00",
    "status": "graded",
    "grade": "B 3 / 4",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8560106171"
   },
   {
@@ -1356,7 +1392,7 @@
    "course": "HOMEROOM: TERM AF- PERIOD H - RM 254",
    "title": "Student-Parent-Teacher Compact",
    "type": "permission slip",
-   "points": null,
+   "points": "",
    "due_at": "2026-08-21T23:59:00-07:00",
    "status": "dash",
    "grade": "",
@@ -1368,7 +1404,7 @@
    "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
    "title": "P.E. Writing Activity - Muscle",
    "type": "writing",
-   "points": null,
+   "points": "",
    "due_at": "2026-09-18T15:13:00-07:00",
    "status": "missing",
    "grade": "0",
@@ -1384,7 +1420,7 @@
    "due_at": "2026-10-05T15:13:00-07:00",
    "status": "graded",
    "grade": "A 10 / 10",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8598563842"
   },
   {
@@ -1396,7 +1432,7 @@
    "due_at": "2026-09-14T15:13:00-07:00",
    "status": "graded",
    "grade": "A 4 / 4",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8567989228"
   },
   {
@@ -1408,7 +1444,7 @@
    "due_at": "2026-09-18T15:13:00-07:00",
    "status": "graded",
    "grade": "A 4 / 4",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8575669941"
   },
   {
@@ -1420,7 +1456,7 @@
    "due_at": "2026-09-25T15:13:00-07:00",
    "status": "graded",
    "grade": "A 4 / 4",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8582386700"
   },
   {
@@ -1444,7 +1480,7 @@
    "due_at": "2026-10-19T15:13:00-07:00",
    "status": "graded",
    "grade": "B 16 / 20",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8615495955"
   },
   {
@@ -1456,7 +1492,7 @@
    "due_at": "2026-10-30T15:13:00-07:00",
    "status": "graded",
    "grade": "A 20 / 20",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8624867756"
   },
   {
@@ -1492,7 +1528,7 @@
    "due_at": "2026-09-25T15:13:00-07:00",
    "status": "graded",
    "grade": "A 40 / 40",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8575917089"
   },
   {
@@ -1504,7 +1540,7 @@
    "due_at": "2026-10-02T15:13:00-07:00",
    "status": "graded",
    "grade": "A 50 / 50",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8586945297"
   },
   {
@@ -1528,7 +1564,7 @@
    "due_at": "2026-10-16T15:13:00-07:00",
    "status": "graded",
    "grade": "A 50 / 50",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8604795697"
   },
   {
@@ -1540,7 +1576,7 @@
    "due_at": "2026-10-23T15:13:00-07:00",
    "status": "graded",
    "grade": "A 50 / 50",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8612992625"
   },
   {
@@ -1548,11 +1584,11 @@
    "course": "INT PE A: TERM AF- PERIOD 5 - RM GYM",
    "title": "Week 10/26 - 10/30",
    "type": "participation",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-30T15:13:00-07:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8622593385"
   },
   {
@@ -1564,7 +1600,7 @@
    "due_at": null,
    "status": "graded",
    "grade": "0 / 4",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8497706296"
   },
   {
@@ -1572,11 +1608,11 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "HW Zearn M3L10",
    "type": "classwork",
-   "points": null,
+   "points": "",
    "due_at": null,
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8620783703"
   },
   {
@@ -1584,11 +1620,11 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "HW Zearn M3L11",
    "type": "classwork",
-   "points": null,
+   "points": "",
    "due_at": null,
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8620783707"
   },
   {
@@ -1596,11 +1632,11 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "HW Zearn M3L12",
    "type": "classwork",
-   "points": null,
+   "points": "",
    "due_at": null,
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8620783710"
   },
   {
@@ -1608,11 +1644,11 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "Hw Zearn M3L13",
    "type": "classwork",
-   "points": null,
+   "points": "",
    "due_at": null,
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8620783715"
   },
   {
@@ -1620,11 +1656,11 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "HW Zearn M3L14",
    "type": "classwork",
-   "points": null,
+   "points": "",
    "due_at": null,
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8620783784"
   },
   {
@@ -1632,11 +1668,11 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "Khan Course Challenge - 8th Grade Math",
    "type": "classwork",
-   "points": null,
+   "points": "",
    "due_at": null,
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8511479592"
   },
   {
@@ -1648,7 +1684,7 @@
    "due_at": "2026-08-21T23:59:00-07:00",
    "status": "graded",
    "grade": "3 / 3",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8503187524"
   },
   {
@@ -1660,7 +1696,7 @@
    "due_at": "2026-08-21T23:59:00-07:00",
    "status": "graded",
    "grade": "10 / 10",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8511930360"
   },
   {
@@ -1672,7 +1708,7 @@
    "due_at": "2026-08-21T23:59:00-07:00",
    "status": "graded",
    "grade": "3 / 4",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8517894931"
   },
   {
@@ -1684,7 +1720,7 @@
    "due_at": "2026-08-25T23:59:00-07:00",
    "status": "graded",
    "grade": "3 / 3",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8528397371"
   },
   {
@@ -1696,7 +1732,7 @@
    "due_at": "2026-08-31T23:59:00-07:00",
    "status": "graded",
    "grade": "3 / 3",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8543727506"
   },
   {
@@ -1708,7 +1744,7 @@
    "due_at": "2026-09-01T23:59:00-07:00",
    "status": "graded",
    "grade": "3 / 3",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8549632617"
   },
   {
@@ -1720,7 +1756,7 @@
    "due_at": "2026-09-02T23:59:00-07:00",
    "status": "graded",
    "grade": "3 / 3",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8549707941"
   },
   {
@@ -1732,7 +1768,7 @@
    "due_at": "2026-09-06T23:59:00-07:00",
    "status": "graded",
    "grade": "2 / 4",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8572241704"
   },
   {
@@ -1744,7 +1780,7 @@
    "due_at": "2026-09-14T23:59:00-07:00",
    "status": "graded",
    "grade": "0 / 3",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8570474623"
   },
   {
@@ -1756,7 +1792,7 @@
    "due_at": "2026-09-15T23:59:00-07:00",
    "status": "graded",
    "grade": "0 / 3",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8537701391"
   },
   {
@@ -1764,11 +1800,11 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "HW Zearn M3L1",
    "type": "classwork",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-16T23:59:00-07:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8620783658"
   },
   {
@@ -1776,11 +1812,11 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "HW Zearn M3L2",
    "type": "classwork",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-17T23:59:00-07:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8620783662"
   },
   {
@@ -1788,11 +1824,11 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "HW Zearn M3L3",
    "type": "classwork",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-18T23:59:00-07:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8620783668"
   },
   {
@@ -1800,11 +1836,11 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "HW Zearn M3L4",
    "type": "classwork",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-19T23:59:00-07:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8620783672"
   },
   {
@@ -1812,11 +1848,11 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "HW Zearn M3L5",
    "type": "classwork",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-20T23:59:00-07:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8620783679"
   },
   {
@@ -1824,11 +1860,11 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "HW Zearn M3L6",
    "type": "classwork",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-21T23:59:00-07:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8620783683"
   },
   {
@@ -1836,11 +1872,11 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "HW Zearn M3L7",
    "type": "classwork",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-22T23:59:00-07:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8620783687"
   },
   {
@@ -1848,11 +1884,11 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "HW Zearn M3L8",
    "type": "classwork",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-23T23:59:00-07:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8620783696"
   },
   {
@@ -1860,11 +1896,11 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "HW Zearn M3L9",
    "type": "classwork",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-25T23:59:00-07:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8620783700"
   },
   {
@@ -1876,7 +1912,7 @@
    "due_at": "2026-08-30T23:59:00-07:00",
    "status": "graded",
    "grade": "4 / 4",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8562180217"
   },
   {
@@ -1888,7 +1924,7 @@
    "due_at": "2026-09-06T23:59:00-07:00",
    "status": "graded",
    "grade": "2 / 4",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8551734803"
   },
   {
@@ -1900,7 +1936,7 @@
    "due_at": "2026-09-13T23:59:00-07:00",
    "status": "graded",
    "grade": "0 / 4",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8562182545"
   },
   {
@@ -1912,7 +1948,7 @@
    "due_at": "2026-09-13T23:59:00-07:00",
    "status": "graded",
    "grade": "0 / 4",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8543726435"
   },
   {
@@ -1924,7 +1960,7 @@
    "due_at": "2026-09-13T23:59:00-07:00",
    "status": "graded",
    "grade": "0 / 4",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8531888022"
   },
   {
@@ -1936,7 +1972,7 @@
    "due_at": "2026-09-22T23:59:00-07:00",
    "status": "graded",
    "grade": "2 / 4",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8580076541"
   },
   {
@@ -1948,7 +1984,7 @@
    "due_at": "2026-09-29T23:59:00-07:00",
    "status": "graded",
    "grade": "4.1 / 4",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8590013982"
   },
   {
@@ -1960,7 +1996,7 @@
    "due_at": "2026-10-04T23:59:00-07:00",
    "status": "graded",
    "grade": "2 / 4",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8592208468"
   },
   {
@@ -1968,11 +2004,11 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "IXL Z5: Graph a line using slope",
    "type": "homework",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-25T23:59:00-07:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8622134053"
   },
   {
@@ -1984,7 +2020,7 @@
    "due_at": "2026-08-25T23:59:00-07:00",
    "status": "graded",
    "grade": "1 / 1",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8552351052"
   },
   {
@@ -1992,11 +2028,11 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "M1L11 Cool Down",
    "type": "classwork",
-   "points": null,
+   "points": "",
    "due_at": "2026-09-02T23:59:00-07:00",
    "status": "exempt",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8534800922"
   },
   {
@@ -2004,11 +2040,11 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "Level 0 - Telling Time Analogue",
    "type": "skills",
-   "points": null,
+   "points": "",
    "due_at": null,
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8610016098"
   },
   {
@@ -2020,7 +2056,7 @@
    "due_at": null,
    "status": "graded",
    "grade": "4 / 4",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8549718007"
   },
   {
@@ -2032,7 +2068,7 @@
    "due_at": null,
    "status": "graded",
    "grade": "4 / 4",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8528660399"
   },
   {
@@ -2040,11 +2076,11 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "Level 3 (No Calc) Decimals",
    "type": "skills",
-   "points": null,
+   "points": "",
    "due_at": null,
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8573473892"
   },
   {
@@ -2052,11 +2088,11 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "Level 4 - Add and Subtract Fractions",
    "type": "skills",
-   "points": null,
+   "points": "",
    "due_at": null,
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8581842714"
   },
   {
@@ -2064,11 +2100,11 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "Level 5 - Square Roots",
    "type": "skills",
-   "points": null,
+   "points": "",
    "due_at": null,
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8585454710"
   },
   {
@@ -2076,11 +2112,11 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "Level 6 - Expressions and distributive Property",
    "type": "skills",
-   "points": null,
+   "points": "",
    "due_at": null,
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8600084569"
   },
   {
@@ -2088,11 +2124,11 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "Level 7 - Skills Quiz - Line and Angles",
    "type": "quiz",
-   "points": null,
+   "points": "",
    "due_at": null,
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8613171997"
   },
   {
@@ -2100,11 +2136,11 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "Transversal Quiz",
    "type": "quiz",
-   "points": null,
+   "points": "",
    "due_at": "2026-09-11T23:59:00-07:00",
    "status": "graded",
    "grade": "A",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8564470440"
   },
   {
@@ -2112,11 +2148,11 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "Test - Unit 1",
    "type": "test",
-   "points": null,
+   "points": "",
    "due_at": "2026-09-17T23:59:00-07:00",
    "status": "graded",
    "grade": "B",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8573891461"
   },
   {
@@ -2124,11 +2160,11 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "Unit 2 Test",
    "type": "test",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-05T23:59:00-07:00",
    "status": "graded",
    "grade": "B",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8595506435"
   },
   {
@@ -2136,11 +2172,11 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "Unit 2 Test Retake",
    "type": "test",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-08T23:59:00-07:00",
    "status": "graded",
    "grade": "B",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8602985774"
   },
   {
@@ -2148,11 +2184,11 @@
    "course": "MATH 8A: TERM AF- PERIOD 6 - RM 255",
    "title": "Retake Chapter 2 Test - Submit Evidence",
    "type": "test",
-   "points": null,
+   "points": "",
    "due_at": "2026-10-20T23:59:00-07:00",
    "status": "dash",
    "grade": "",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8606734020"
   },
   {
@@ -2164,7 +2200,7 @@
    "due_at": "2026-10-16T23:59:00-07:00",
    "status": "graded",
    "grade": "2.5 / 4",
-   "teacher_comment": "No comment",
+   "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8613061468"
   }
  ]
