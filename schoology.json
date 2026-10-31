@@ -1,5 +1,5 @@
 {
- "fetched_at": "2026-10-30T23:00:00Z",
+ "fetched_at": "2026-10-31T22:59:00Z",
  "courses": [
   {
    "name": "ADV BAND MS A: TERM AF- PERIOD 1 - RM 143",
@@ -314,7 +314,7 @@
    "type": "presentation",
    "points": "",
    "due_at": "2026-10-05T23:59:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8570776130"
@@ -470,8 +470,8 @@
    "type": "reading",
    "points": "",
    "due_at": "2026-10-23T23:59:00-07:00",
-   "status": "dash",
-   "grade": "",
+   "status": "missing",
+   "grade": "0",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8585887292"
   },
@@ -482,7 +482,7 @@
    "type": "classwork",
    "points": "",
    "due_at": "2026-10-30T23:59:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8628294619"
@@ -494,7 +494,7 @@
    "type": "presentation",
    "points": "",
    "due_at": "2026-11-06T23:59:00-08:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8602155563"
@@ -506,7 +506,7 @@
    "type": "classwork",
    "points": "",
    "due_at": "2026-11-20T23:59:00-08:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8608977356"
@@ -794,7 +794,7 @@
    "type": "participation",
    "points": "",
    "due_at": "2026-08-28T23:59:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8520406839"
@@ -806,7 +806,7 @@
    "type": "participation",
    "points": "",
    "due_at": "2026-08-31T23:59:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8520411756"
@@ -818,7 +818,7 @@
    "type": "participation",
    "points": "",
    "due_at": "2026-09-01T23:59:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8520420617"
@@ -830,7 +830,7 @@
    "type": "participation",
    "points": "",
    "due_at": "2026-09-02T23:59:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8520426502"
@@ -842,7 +842,7 @@
    "type": "participation",
    "points": "",
    "due_at": "2026-09-03T23:59:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8543638775"
@@ -1058,7 +1058,7 @@
    "type": "participation",
    "points": "",
    "due_at": "2026-10-23T23:59:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8610627937"
@@ -1070,7 +1070,7 @@
    "type": "participation",
    "points": "",
    "due_at": "2026-10-23T23:59:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8610628179"
@@ -1082,7 +1082,7 @@
    "type": "participation",
    "points": "",
    "due_at": "2026-10-26T23:59:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8610629048"
@@ -1094,7 +1094,7 @@
    "type": "participation",
    "points": "",
    "due_at": "2026-10-26T23:59:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8610628845"
@@ -1106,7 +1106,7 @@
    "type": "homework",
    "points": "",
    "due_at": "2026-10-27T23:59:00-07:00",
-   "status": null,
+   "status": "dash",
    "grade": "",
    "teacher_comment": null,
    "url": "https://lausd.schoology.com/assignment/8610629682"
@@ -1721,7 +1721,7 @@
    "status": "graded",
    "grade": "3 / 3",
    "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8503187524"
+   "url": "https://lausd.schoology.com/assignment/8517894931"
   },
   {
    "id": "56f9b6ff78",
@@ -1733,7 +1733,7 @@
    "status": "graded",
    "grade": "10 / 10",
    "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8511930360"
+   "url": "https://lausd.schoology.com/assignment/8503187524"
   },
   {
    "id": "8447d2f98b",
@@ -1745,7 +1745,7 @@
    "status": "graded",
    "grade": "3 / 4",
    "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8517894931"
+   "url": "https://lausd.schoology.com/assignment/8511930360"
   },
   {
    "id": "7c0090af69",
@@ -1805,7 +1805,7 @@
    "status": "graded",
    "grade": "2 / 4",
    "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8572241704"
+   "url": "https://lausd.schoology.com/assignment/8537701391"
   },
   {
    "id": "16e3f80338",
@@ -1817,7 +1817,7 @@
    "status": "graded",
    "grade": "0 / 3",
    "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8570474623"
+   "url": "https://lausd.schoology.com/assignment/8572241704"
   },
   {
    "id": "c491df1398",
@@ -1829,7 +1829,7 @@
    "status": "graded",
    "grade": "0 / 3",
    "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8537701391"
+   "url": "https://lausd.schoology.com/assignment/8570474623"
   },
   {
    "id": "9d59c51918",
@@ -1949,7 +1949,7 @@
    "status": "graded",
    "grade": "4 / 4",
    "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8562180217"
+   "url": "https://lausd.schoology.com/assignment/8531888022"
   },
   {
    "id": "43d0a6eac0",
@@ -1961,7 +1961,7 @@
    "status": "graded",
    "grade": "2 / 4",
    "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8551734803"
+   "url": "https://lausd.schoology.com/assignment/8543726435"
   },
   {
    "id": "96fc171ee7",
@@ -1973,7 +1973,7 @@
    "status": "graded",
    "grade": "0 / 4",
    "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8562182545"
+   "url": "https://lausd.schoology.com/assignment/8562180217"
   },
   {
    "id": "c5a398d6f8",
@@ -1985,7 +1985,7 @@
    "status": "graded",
    "grade": "0 / 4",
    "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8543726435"
+   "url": "https://lausd.schoology.com/assignment/8551734803"
   },
   {
    "id": "f30a62d888",
@@ -1997,7 +1997,7 @@
    "status": "graded",
    "grade": "0 / 4",
    "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8531888022"
+   "url": "https://lausd.schoology.com/assignment/8562182545"
   },
   {
    "id": "180e86f4c2",
@@ -2057,7 +2057,7 @@
    "status": "graded",
    "grade": "1 / 1",
    "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8552351052"
+   "url": "https://lausd.schoology.com/assignment/8528660399"
   },
   {
    "id": "89f6c4354a",
@@ -2069,7 +2069,7 @@
    "status": "exempt",
    "grade": "",
    "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8534800922"
+   "url": "https://lausd.schoology.com/assignment/8549718007"
   },
   {
    "id": "371559983e",
@@ -2093,7 +2093,7 @@
    "status": "graded",
    "grade": "4 / 4",
    "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8549718007"
+   "url": "https://lausd.schoology.com/assignment/8534800922"
   },
   {
    "id": "4642fc3c5e",
@@ -2105,7 +2105,7 @@
    "status": "graded",
    "grade": "4 / 4",
    "teacher_comment": null,
-   "url": "https://lausd.schoology.com/assignment/8528660399"
+   "url": "https://lausd.schoology.com/assignment/8552351052"
   },
   {
    "id": "ed4794da0a",
